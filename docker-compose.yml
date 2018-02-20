@@ -1,0 +1,44 @@
+version: "3.5"
+
+services:
+
+  api:
+    build:
+      context: .
+      dockerfile: api.dockerfile
+    environment:
+      docker: "true"
+      production: "false"
+    env_file:
+    #create a .sentryenv with SENTRY_DSN=...
+      - .sentryenv
+    volumes:
+      - .:/var/www:cached
+      - ./logs:/var/log:cached
+    expose:
+      - 9000
+      - 9501
+    networks:
+      - default
+      - sentry_network
+
+  mysql-db:
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 'test_pass'
+      MYSQL_USER: 'test'
+      MYSQL_PASS: 'pass'
+    volumes:
+     - ./data/mysql:/var/lib/mysql:cached
+    ports:
+      - 3310:3306
+
+networks:
+  default:
+    name: devpledge_api
+
+  sentry_network:
+    external:
+      name: global_sentry
+
