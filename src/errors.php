@@ -11,7 +11,7 @@ $container = $app->getContainer();
 $container['notFoundHandler'] = function ( $c ) {
 	return function ( Request $request, Response $response ) use ( $c ) {
 		$data              = new stdClass();
-		$data->error = 'Not Found dude';
+		$data->error = 'Not Found';
 		$data->errorStatus = '404';
 		$data->sentRequestBody = $request->getBody();
 		$data->sentRequestMethod = $request->getMethod();
