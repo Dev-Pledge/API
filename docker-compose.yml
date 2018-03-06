@@ -6,7 +6,7 @@ services:
     container_name: dev_pledge_api
     build:
       context: .
-      dockerfile: api.dockerfile
+      dockerfile: api.dockerfile.dev
     environment:
       docker: "true"
       production: "false"
