@@ -3,6 +3,10 @@
 namespace DevPledge\Framework\Controller;
 
 
+use DevPledge\Application\Command\CreateOrganisationCommand;
+use DevPledge\Domain\User;
+use DevPledge\Uuid\Uuid;
+use League\Tactician\CommandBus;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use DevPledge\Application\Repository\Organisation\OrganisationRepository;
@@ -22,6 +26,38 @@ class OrganisationController
     public function __construct(OrganisationRepository $organisationRepository)
     {
         $this->organisationRepository = $organisationRepository;
+    }
+
+    /**
+     * @param Request $req
+     * @param Response $res
+     * @param CommandBus $bus
+     * @return Response
+     */
+    public function postOrganisation(Request $req, Response $res, CommandBus $bus)
+    {
+        $body = $req->getParsedBody();
+        $userId = $body['user_id'] ?? null;
+        if ($userId === null) {
+            return $res->withJson([
+                'Missing user_id'
+            ], 400);
+        }
+
+        $name = $body['name'] ?? null;
+        if ($name === null) {
+            return $res->withJson([
+                'Missing name'
+            ], 400);
+        }
+
+        $userUuid = new Uuid($userId);
+        $user = new User(); // TODO: Get user from $userUuid
+
+        // See CommandHandler\CreateOrganisationHandler
+        $command = new CreateOrganisationCommand($user, $name);
+        $organisation = $bus->handle($command);
+        return $res->withJson($organisation);
     }
 
     /**
