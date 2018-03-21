@@ -1,4 +1,7 @@
 <?php
+
+use DevPledge\Application\Container\ContainerBase;
+
 if ( PHP_SAPI == 'cli-server' ) {
 	// To help the built-in PHP dev server, check if the request was actually for
 	// something which should probably be served as a static file
@@ -29,6 +32,8 @@ $error_handler->registerShutdownFunction();
  */
 $settings = require __DIR__ . '/../src/settings.php';
 $app         = new \Slim\App( $settings );
+
+ContainerBase::setApp( $app );
 
 require __DIR__ . '/../src/errors.php';
 
