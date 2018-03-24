@@ -1,6 +1,6 @@
 <?php
 
-use DevPledge\Application\Container\AddNotFoundHandler;
+use DevPledge\Container\AddNotFoundHandler;
 use Slim\Container;
 use Slim\Http\Request;
 use Slim\Http\Response;

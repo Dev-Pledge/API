@@ -1,6 +1,6 @@
 <?php
 
-namespace DevPledge\Application\Container;
+namespace DevPledge\Container;
 
 
 use Slim\App;

@@ -1,6 +1,6 @@
 <?php
 
-use DevPledge\Application\Container\ContainerBase;
+use DevPledge\Container\ContainerBase;
 
 if ( PHP_SAPI == 'cli-server' ) {
 	// To help the built-in PHP dev server, check if the request was actually for
