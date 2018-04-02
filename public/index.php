@@ -1,6 +1,15 @@
 <?php
 
-use DevPledge\Container\ContainerBase;
+use DevPledge\Integrations\Command\ExtrapolateCommandHandlers;
+use DevPledge\Integrations\ControllerDependency\ExtrapolateControllerDependencies;
+use DevPledge\Integrations\FactoryDependency\ExtrapolateFactoryDependencies;
+use DevPledge\Integrations\Handler\ExtrapolateHandlers;
+use DevPledge\Integrations\Integrations;
+use DevPledge\Integrations\RepositoryDependency\ExtrapolateRepositoryDependencies;
+use DevPledge\Integrations\Route\ExtrapolateRouteGroups;
+use DevPledge\Integrations\ServiceProvider\ExtrapolateServices;
+use DevPledge\Integrations\Setting\ExtrapolateSettings;
+
 
 if ( PHP_SAPI == 'cli-server' ) {
 	// To help the built-in PHP dev server, check if the request was actually for
@@ -18,44 +27,26 @@ session_start();
 
 require __DIR__ . '/../dotenv.php';
 
-/**
- * SENTRY SET UP
- */
-$client        = new Raven_Client( getenv( 'SENTRY_DSN' ) );
-$error_handler = new Raven_ErrorHandler( $client );
-$error_handler->registerExceptionHandler();
-$error_handler->registerErrorHandler();
-$error_handler->registerShutdownFunction();
 
-/**
- * Instantiate the app
- */
-$settings = require __DIR__ . '/../src/settings.php';
-$app         = new \Slim\App( $settings );
+Integrations::initSentry( getenv( 'SENTRY_DSN' ) );
+Integrations::initApplication( require __DIR__ . '/../src/settings.php' );
+Integrations::addCommonSettings();
+Integrations::addCommonServices();
+Integrations::addCommonHandlers();
 
-ContainerBase::setApp( $app );
+Integrations::addExtrapolations( [
+	new ExtrapolateSettings( __DIR__ . '/../src/Framework/Settings', "DevPledge\\Framework\\Settings" ),
+	new ExtrapolateServices( __DIR__ . '/../src/Framework/Services', "DevPledge\\Framework\\Services" ),
+	new ExtrapolateServices( __DIR__ . '/../src/Application/Services', "DevPledge\\Application\\Services" ),
+	new ExtrapolateHandlers( __DIR__ . '/../src/Framework/Handlers', "DevPledge\\Framework\\Handlers" ),
+	new ExtrapolateRepositoryDependencies( __DIR__ . '/../src/Framework/RepositoryDependencies', "DevPledge\\Framework\\RepositoryDependencies" ),
+	new ExtrapolateControllerDependencies( __DIR__ . '/../src/Framework/ControllerDependencies', "DevPledge\\Framework\\ControllerDependencies" ),
+	new ExtrapolateFactoryDependencies( __DIR__ . '/../src/Framework/FactoryDependencies', "DevPledge\\Framework\\FactoryDependencies" ),
+	new ExtrapolateRouteGroups( __DIR__ . '/../src/Framework/RouteGroups', "DevPledge\\Framework\\RouteGroups" ),
+	new ExtrapolateCommandHandlers( __DIR__ . '/../src/Application/CommandHandlers', "DevPledge\\Application\\CommandHandlers" )
+] );
 
-require __DIR__ . '/../src/errors.php';
 
-/**
- * Set up dependencies
- */
-require __DIR__ . '/../src/dependencies.php';
-
-/**
- * Register middleware
- */
-require __DIR__ . '/../src/middleware.php';
-
-/**
- * Register routes
- */
-require __DIR__ . '/../src/routes.php';
-
-/**
- * Run app
- */
-$app->run();
-
+Integrations::run();
 
 

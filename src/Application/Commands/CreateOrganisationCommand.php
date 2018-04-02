@@ -1,10 +1,15 @@
 <?php
 
-namespace DevPledge\Application\Command;
+namespace DevPledge\Application\Commands;
 
 use DevPledge\Domain\User;
+use DevPledge\Integrations\Command\AbstractCommand;
 
-class CreateOrganisationCommand
+/**
+ * Class CreateOrganisationCommand
+ * @package DevPledge\Application\Command
+ */
+class CreateOrganisationCommand extends AbstractCommand
 {
     /**
      * @var User

@@ -26,7 +26,8 @@
     "vlucas/phpdotenv": "^2.4",
     "sentry/sentry": "^1.8",
     "dev-pledge/uuid": "^1.0",
-    "league/tactician": "^1.0"
+    "league/tactician": "^1.0",
+    "dev-pledge/slim-integrations": "dev-master"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.8 < 6.0",

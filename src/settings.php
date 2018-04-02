@@ -14,22 +14,6 @@ return [
 			'name'  => 'slim-app',
 			'path'  => isset( $_ENV['docker'] ) ? 'php://stdout' : __DIR__ . '/../logs/app.log',
 			'level' => \Monolog\Logger::DEBUG,
-		],
-
-		// MySQL settings
-		'database'               => [
-			'dsn'  => 'mysql:dbname=' . getenv( 'MYSQL_DB' ) . ';host=' . getenv( 'MYSQL_HOST' ),
-			'user' => getenv( 'MYSQL_USER' ),
-			'pass' => getenv( 'MYSQL_PASSWORD' ),
-		],
-
-		'security' => [
-			'jwt' => [
-				'algorithm' => 'SHA256',
-				'secret'    => getenv( 'JWT_SECRET' ),
-				'ttl'       => 3600,
-				'ttr'       => 7200,
-			],
-		],
-	],
+		]
+	]
 ];
