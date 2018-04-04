@@ -30,7 +30,7 @@ class Pledge
     /**
      * @var int
      */
-    private $kudos_points;
+    private $kudos;
 
     /**
      * @var float
@@ -63,7 +63,7 @@ class Pledge
      * @param Uuid $userId
      * @param Uuid $organisationId
      * @param Uuid $problemId
-     * @param int $kudos_points
+     * @param int $kudos
      * @param float $value
      * @param Currency $currency
      * @param string $comment
@@ -75,7 +75,7 @@ class Pledge
         Uuid $userId,
         Uuid $organisationId,
         Uuid $problemId,
-        int $kudos_points,
+        int $kudos,
         float $value,
         Currency $currency,
         string $comment,
@@ -86,7 +86,7 @@ class Pledge
         $this->userId = $userId;
         $this->organisationId = $organisationId;
         $this->problemId = $problemId;
-        $this->kudos_points = $kudos_points;
+        $this->kudos = $kudos;
         $this->value = $value;
         $this->currency = $currency;
         $this->comment = $comment;
@@ -171,16 +171,16 @@ class Pledge
      */
     public function getKudosPoints(): int
     {
-        return $this->kudos_points;
+        return $this->kudos;
     }
 
     /**
-     * @param int $kudos_points
+     * @param int $kudos
      * @return Pledge
      */
-    public function setKudosPoints(int $kudos_points): Pledge
+    public function setKudosPoints(int $kudos): Pledge
     {
-        $this->kudos_points = $kudos_points;
+        $this->kudos = $kudos;
         return $this;
     }
 
