@@ -5,8 +5,13 @@ namespace DevPledge\Domain;
 
 use DevPledge\Uuid\Uuid;
 
-class Organisation
+abstract class Repo
 {
+    /**
+     * @var string
+     */
+    protected static $baseUrl;
+
     /**
      * @var Uuid
      */
@@ -43,6 +48,14 @@ class Organisation
     }
 
     /**
+     * @return string
+     */
+    public static function getBaseUrl(): string
+    {
+        return self::$baseUrl;
+    }
+
+    /**
      * @return Uuid
      */
     public function getId(): Uuid
@@ -52,11 +65,29 @@ class Organisation
 
     /**
      * @param Uuid $id
-     * @return Organisation
+     * @return Repo
      */
-    public function setId(Uuid $id): Organisation
+    public function setId(Uuid $id): Repo
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return Repo
+     */
+    public function setName(string $name): Repo
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -70,9 +101,9 @@ class Organisation
 
     /**
      * @param \DateTime $createdAt
-     * @return Organisation
+     * @return Repo
      */
-    public function setCreatedAt(\DateTime $createdAt): Organisation
+    public function setCreatedAt(\DateTime $createdAt): Repo
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -88,9 +119,9 @@ class Organisation
 
     /**
      * @param \DateTime|null $updatedAt
-     * @return Organisation
+     * @return Repo
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): Organisation
+    public function setUpdatedAt(?\DateTime $updatedAt): Repo
     {
         $this->updatedAt = $updatedAt;
         return $this;
