@@ -5,7 +5,7 @@ namespace DevPledge\Domain;
 
 use DevPledge\Uuid\Uuid;
 
-class ProblemSolutionGroup
+class UserGroup
 {
     /**
      * @var Uuid
@@ -13,7 +13,7 @@ class ProblemSolutionGroup
     private $id;
 
     /**
-     * @var Uuid
+     * @var Uuid|null
      */
     private $problemId;
 
@@ -35,12 +35,12 @@ class ProblemSolutionGroup
     /**
      * ProblemSolutionGroup constructor.
      * @param Uuid $id
-     * @param Uuid $problemId
+     * @param Uuid|null $problemId
      * @param string $name
      * @param \DateTime $createdAt
      * @param \DateTime|null $updatedAt
      */
-    public function __construct(Uuid $id, Uuid $problemId, string $name, \DateTime $createdAt, ?\DateTime $updatedAt)
+    public function __construct(Uuid $id, ?Uuid $problemId, string $name, \DateTime $createdAt, ?\DateTime $updatedAt)
     {
         $this->id = $id;
         $this->problemId = $problemId;
@@ -59,16 +59,16 @@ class ProblemSolutionGroup
 
     /**
      * @param Uuid $id
-     * @return ProblemSolutionGroup
+     * @return UserGroup
      */
-    public function setId(Uuid $id): ProblemSolutionGroup
+    public function setId(Uuid $id): UserGroup
     {
         $this->id = $id;
         return $this;
     }
 
     /**
-     * @return Uuid
+     * @return Uuid|null
      */
     public function getProblemId(): Uuid
     {
@@ -76,10 +76,10 @@ class ProblemSolutionGroup
     }
 
     /**
-     * @param Uuid $problemId
-     * @return ProblemSolutionGroup
+     * @param Uuid|null $problemId
+     * @return UserGroup
      */
-    public function setProblemId(Uuid $problemId): ProblemSolutionGroup
+    public function setProblemId(?Uuid $problemId): UserGroup
     {
         $this->problemId = $problemId;
         return $this;
@@ -95,9 +95,9 @@ class ProblemSolutionGroup
 
     /**
      * @param string $name
-     * @return ProblemSolutionGroup
+     * @return UserGroup
      */
-    public function setName(string $name): ProblemSolutionGroup
+    public function setName(string $name): UserGroup
     {
         $this->name = $name;
         return $this;
@@ -113,9 +113,9 @@ class ProblemSolutionGroup
 
     /**
      * @param \DateTime $createdAt
-     * @return ProblemSolutionGroup
+     * @return UserGroup
      */
-    public function setCreatedAt(\DateTime $createdAt): ProblemSolutionGroup
+    public function setCreatedAt(\DateTime $createdAt): UserGroup
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -131,9 +131,9 @@ class ProblemSolutionGroup
 
     /**
      * @param \DateTime|null $updatedAt
-     * @return ProblemSolutionGroup
+     * @return UserGroup
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): ProblemSolutionGroup
+    public function setUpdatedAt(?\DateTime $updatedAt): UserGroup
     {
         $this->updatedAt = $updatedAt;
         return $this;
