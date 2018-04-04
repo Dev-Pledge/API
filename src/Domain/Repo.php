@@ -65,10 +65,12 @@ abstract class Repo
 
     /**
      * @param Uuid $id
+     * @return Repo
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Repo
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -81,10 +83,12 @@ abstract class Repo
 
     /**
      * @param string $name
+     * @return Repo
      */
-    public function setName(string $name): void
+    public function setName(string $name): Repo
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -97,10 +101,12 @@ abstract class Repo
 
     /**
      * @param \DateTime $createdAt
+     * @return Repo
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Repo
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -113,9 +119,11 @@ abstract class Repo
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Repo
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Repo
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

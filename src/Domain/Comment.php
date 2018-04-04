@@ -88,10 +88,12 @@ class Comment
 
     /**
      * @param Uuid $id
+     * @return Comment
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Comment
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -104,10 +106,12 @@ class Comment
 
     /**
      * @param Uuid $userId
+     * @return Comment
      */
-    public function setUserId(Uuid $userId): void
+    public function setUserId(Uuid $userId): Comment
     {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -120,10 +124,12 @@ class Comment
 
     /**
      * @param string $type
+     * @return Comment
      */
-    public function setType(string $type): void
+    public function setType(string $type): Comment
     {
         $this->type = $type;
+        return $this;
     }
 
     /**
@@ -136,10 +142,12 @@ class Comment
 
     /**
      * @param Uuid $onId
+     * @return Comment
      */
-    public function setOnId(Uuid $onId): void
+    public function setOnId(Uuid $onId): Comment
     {
         $this->onId = $onId;
+        return $this;
     }
 
     /**
@@ -152,10 +160,12 @@ class Comment
 
     /**
      * @param string $comment
+     * @return Comment
      */
-    public function setComment(string $comment): void
+    public function setComment(string $comment): Comment
     {
         $this->comment = $comment;
+        return $this;
     }
 
     /**
@@ -168,10 +178,12 @@ class Comment
 
     /**
      * @param Uuid|null $parentId
+     * @return Comment
      */
-    public function setParentId(?Uuid $parentId): void
+    public function setParentId(?Uuid $parentId): Comment
     {
         $this->parentId = $parentId;
+        return $this;
     }
 
     /**
@@ -184,10 +196,12 @@ class Comment
 
     /**
      * @param \DateTime $createdAt
+     * @return Comment
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Comment
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -200,9 +214,11 @@ class Comment
 
     /**
      * @param \DateTime $updatedAt
+     * @return Comment
      */
-    public function setUpdatedAt(\DateTime $updatedAt): void
+    public function setUpdatedAt(\DateTime $updatedAt): Comment
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

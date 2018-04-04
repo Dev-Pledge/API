@@ -104,10 +104,12 @@ class Pledge
 
     /**
      * @param Uuid $id
+     * @return Pledge
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Pledge
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -120,10 +122,12 @@ class Pledge
 
     /**
      * @param Uuid $userId
+     * @return Pledge
      */
-    public function setUserId(Uuid $userId): void
+    public function setUserId(Uuid $userId): Pledge
     {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -136,10 +140,12 @@ class Pledge
 
     /**
      * @param Uuid $organisationId
+     * @return Pledge
      */
-    public function setOrganisationId(Uuid $organisationId): void
+    public function setOrganisationId(Uuid $organisationId): Pledge
     {
         $this->organisationId = $organisationId;
+        return $this;
     }
 
     /**
@@ -152,10 +158,12 @@ class Pledge
 
     /**
      * @param Uuid $problemId
+     * @return Pledge
      */
-    public function setProblemId(Uuid $problemId): void
+    public function setProblemId(Uuid $problemId): Pledge
     {
         $this->problemId = $problemId;
+        return $this;
     }
 
     /**
@@ -168,10 +176,12 @@ class Pledge
 
     /**
      * @param int $kudos_points
+     * @return Pledge
      */
-    public function setKudosPoints(int $kudos_points): void
+    public function setKudosPoints(int $kudos_points): Pledge
     {
         $this->kudos_points = $kudos_points;
+        return $this;
     }
 
     /**
@@ -184,10 +194,12 @@ class Pledge
 
     /**
      * @param float $value
+     * @return Pledge
      */
-    public function setValue(float $value): void
+    public function setValue(float $value): Pledge
     {
         $this->value = $value;
+        return $this;
     }
 
     /**
@@ -200,10 +212,12 @@ class Pledge
 
     /**
      * @param Currency $currency
+     * @return Pledge
      */
-    public function setCurrency(Currency $currency): void
+    public function setCurrency(Currency $currency): Pledge
     {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -216,10 +230,12 @@ class Pledge
 
     /**
      * @param string $comment
+     * @return Pledge
      */
-    public function setComment(string $comment): void
+    public function setComment(string $comment): Pledge
     {
         $this->comment = $comment;
+        return $this;
     }
 
     /**
@@ -232,10 +248,12 @@ class Pledge
 
     /**
      * @param \DateTime $createdAt
+     * @return Pledge
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Pledge
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -248,9 +266,11 @@ class Pledge
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Pledge
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Pledge
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

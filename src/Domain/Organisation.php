@@ -52,10 +52,12 @@ class Organisation
 
     /**
      * @param Uuid $id
+     * @return Organisation
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Organisation
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -68,10 +70,12 @@ class Organisation
 
     /**
      * @param \DateTime $createdAt
+     * @return Organisation
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Organisation
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -84,9 +88,11 @@ class Organisation
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Organisation
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Organisation
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

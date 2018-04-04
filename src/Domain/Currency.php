@@ -59,10 +59,12 @@ class Currency
 
     /**
      * @param Uuid $id
+     * @return Currency
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Currency
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -75,10 +77,12 @@ class Currency
 
     /**
      * @param string $name
+     * @return Currency
      */
-    public function setName(string $name): void
+    public function setName(string $name): Currency
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -91,10 +95,12 @@ class Currency
 
     /**
      * @param string $abbreviation
+     * @return Currency
      */
-    public function setAbbreviation(string $abbreviation): void
+    public function setAbbreviation(string $abbreviation): Currency
     {
         $this->abbreviation = $abbreviation;
+        return $this;
     }
 
     /**
@@ -107,10 +113,12 @@ class Currency
 
     /**
      * @param \DateTime $createdAt
+     * @return Currency
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Currency
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -123,9 +131,11 @@ class Currency
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Currency
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Currency
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

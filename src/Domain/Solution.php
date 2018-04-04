@@ -104,10 +104,12 @@ class Solution
 
     /**
      * @param Uuid $id
+     * @return Solution
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Solution
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -120,10 +122,12 @@ class Solution
 
     /**
      * @param Uuid $userId
+     * @return Solution
      */
-    public function setUserId(Uuid $userId): void
+    public function setUserId(Uuid $userId): Solution
     {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -136,10 +140,12 @@ class Solution
 
     /**
      * @param Uuid $solutionGroupId
+     * @return Solution
      */
-    public function setSolutionGroupId(Uuid $solutionGroupId): void
+    public function setSolutionGroupId(Uuid $solutionGroupId): Solution
     {
         $this->solutionGroupId = $solutionGroupId;
+        return $this;
     }
 
     /**
@@ -152,10 +158,12 @@ class Solution
 
     /**
      * @param Uuid $problemSolutionGroupId
+     * @return Solution
      */
-    public function setProblemSolutionGroupId(Uuid $problemSolutionGroupId): void
+    public function setProblemSolutionGroupId(Uuid $problemSolutionGroupId): Solution
     {
         $this->problemSolutionGroupId = $problemSolutionGroupId;
+        return $this;
     }
 
     /**
@@ -168,10 +176,12 @@ class Solution
 
     /**
      * @param Uuid $problemId
+     * @return Solution
      */
-    public function setProblemId(Uuid $problemId): void
+    public function setProblemId(Uuid $problemId): Solution
     {
         $this->problemId = $problemId;
+        return $this;
     }
 
     /**
@@ -184,10 +194,12 @@ class Solution
 
     /**
      * @param Repo $repo
+     * @return Solution
      */
-    public function setRepo(Repo $repo): void
+    public function setRepo(Repo $repo): Solution
     {
         $this->repo = $repo;
+        return $this;
     }
 
     /**
@@ -200,10 +212,12 @@ class Solution
 
     /**
      * @param \DateTime $lastActive
+     * @return Solution
      */
-    public function setLastActive(\DateTime $lastActive): void
+    public function setLastActive(\DateTime $lastActive): Solution
     {
         $this->lastActive = $lastActive;
+        return $this;
     }
 
     /**
@@ -216,10 +230,12 @@ class Solution
 
     /**
      * @param bool $deleted
+     * @return Solution
      */
-    public function setDeleted(bool $deleted): void
+    public function setDeleted(bool $deleted): Solution
     {
         $this->deleted = $deleted;
+        return $this;
     }
 
     /**
@@ -232,10 +248,12 @@ class Solution
 
     /**
      * @param \DateTime $createdAt
+     * @return Solution
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Solution
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -248,9 +266,11 @@ class Solution
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Solution
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Solution
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

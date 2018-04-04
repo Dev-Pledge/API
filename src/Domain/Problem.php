@@ -120,10 +120,12 @@ class Problem
 
     /**
      * @param Uuid $id
+     * @return Problem
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Problem
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -136,10 +138,12 @@ class Problem
 
     /**
      * @param Uuid $userId
+     * @return Problem
      */
-    public function setUserId(Uuid $userId): void
+    public function setUserId(Uuid $userId): Problem
     {
         $this->userId = $userId;
+        return $this;
     }
 
     /**
@@ -152,10 +156,12 @@ class Problem
 
     /**
      * @param Uuid $organisationId
+     * @return Problem
      */
-    public function setOrganisationId(Uuid $organisationId): void
+    public function setOrganisationId(Uuid $organisationId): Problem
     {
         $this->organisationId = $organisationId;
+        return $this;
     }
 
     /**
@@ -168,10 +174,12 @@ class Problem
 
     /**
      * @param string $title
+     * @return Problem
      */
-    public function setTitle(string $title): void
+    public function setTitle(string $title): Problem
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
@@ -184,10 +192,12 @@ class Problem
 
     /**
      * @param string $description
+     * @return Problem
      */
-    public function setDescription(string $description): void
+    public function setDescription(string $description): Problem
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -200,10 +210,12 @@ class Problem
 
     /**
      * @param string $specification
+     * @return Problem
      */
-    public function setSpecification(string $specification): void
+    public function setSpecification(string $specification): Problem
     {
         $this->specification = $specification;
+        return $this;
     }
 
     /**
@@ -216,10 +228,12 @@ class Problem
 
     /**
      * @param \DateTime $lastActive
+     * @return Problem
      */
-    public function setLastActive(\DateTime $lastActive): void
+    public function setLastActive(\DateTime $lastActive): Problem
     {
         $this->lastActive = $lastActive;
+        return $this;
     }
 
     /**
@@ -232,10 +246,12 @@ class Problem
 
     /**
      * @param \DateTime|null $deadline
+     * @return Problem
      */
-    public function setDeadline(?\DateTime $deadline): void
+    public function setDeadline(?\DateTime $deadline): Problem
     {
         $this->deadline = $deadline;
+        return $this;
     }
 
     /**
@@ -248,10 +264,12 @@ class Problem
 
     /**
      * @param Repo|null $repo
+     * @return Problem
      */
-    public function setRepo(?Repo $repo): void
+    public function setRepo(?Repo $repo): Problem
     {
         $this->repo = $repo;
+        return $this;
     }
 
     /**
@@ -264,10 +282,12 @@ class Problem
 
     /**
      * @param bool $deleted
+     * @return Problem
      */
-    public function setDeleted(bool $deleted): void
+    public function setDeleted(bool $deleted): Problem
     {
         $this->deleted = $deleted;
+        return $this;
     }
 
     /**
@@ -280,10 +300,12 @@ class Problem
 
     /**
      * @param \DateTime $createdAt
+     * @return Problem
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Problem
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -296,9 +318,11 @@ class Problem
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Problem
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Problem
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

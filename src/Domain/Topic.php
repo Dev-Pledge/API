@@ -59,10 +59,12 @@ class Topic
 
     /**
      * @param Uuid $id
+     * @return Topic
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): Topic
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -75,10 +77,12 @@ class Topic
 
     /**
      * @param string $name
+     * @return Topic
      */
-    public function setName(string $name): void
+    public function setName(string $name): Topic
     {
         $this->name = $name;
+        return $this;
     }
 
     /**
@@ -91,10 +95,12 @@ class Topic
 
     /**
      * @param string $description
+     * @return Topic
      */
-    public function setDescription(string $description): void
+    public function setDescription(string $description): Topic
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
@@ -107,10 +113,12 @@ class Topic
 
     /**
      * @param \DateTime $createdAt
+     * @return Topic
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): Topic
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -123,9 +131,11 @@ class Topic
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return Topic
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): Topic
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }

@@ -45,10 +45,12 @@ class User
 
     /**
      * @param Uuid $id
+     * @return User
      */
-    public function setId(Uuid $id): void
+    public function setId(Uuid $id): User
     {
         $this->id = $id;
+        return $this;
     }
 
     /**
@@ -61,10 +63,12 @@ class User
 
     /**
      * @param \DateTime $createdAt
+     * @return User
      */
-    public function setCreatedAt(\DateTime $createdAt): void
+    public function setCreatedAt(\DateTime $createdAt): User
     {
         $this->createdAt = $createdAt;
+        return $this;
     }
 
     /**
@@ -77,9 +81,11 @@ class User
 
     /**
      * @param \DateTime|null $updatedAt
+     * @return User
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): void
+    public function setUpdatedAt(?\DateTime $updatedAt): User
     {
         $this->updatedAt = $updatedAt;
+        return $this;
     }
 }
