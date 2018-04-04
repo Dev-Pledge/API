@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "80d0bbfb6ea354662f82a428c343f333",
+    "content-hash": "5c62939a5329afce7843b9eb5ea12e47",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -39,16 +39,16 @@
         },
         {
             "name": "dev-pledge/slim-integrations",
-            "version": "dev-master",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dev-Pledge/SlimIntegrations.git",
-                "reference": "f4be40b87bb6d24188baca1b6aea8fa16e841e3d"
+                "reference": "e58ad1dcd21630768251abf33f7aac9e5b03534e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/f4be40b87bb6d24188baca1b6aea8fa16e841e3d",
-                "reference": "f4be40b87bb6d24188baca1b6aea8fa16e841e3d",
+                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/e58ad1dcd21630768251abf33f7aac9e5b03534e",
+                "reference": "e58ad1dcd21630768251abf33f7aac9e5b03534e",
                 "shasum": ""
             },
             "require": {
@@ -84,20 +84,20 @@
                 "Dev Pledge",
                 "slim"
             ],
-            "time": "2018-04-02T21:18:14+00:00"
+            "time": "2018-04-04T20:39:51+00:00"
         },
         {
             "name": "dev-pledge/uuid",
-            "version": "1.0.0",
+            "version": "1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dev-Pledge/uuid.git",
-                "reference": "43e09b252006a5ced732e7bd3c54dd0ccd7f46ba"
+                "reference": "f77af7e4326116391066cdecdd08290d089aa797"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dev-Pledge/uuid/zipball/43e09b252006a5ced732e7bd3c54dd0ccd7f46ba",
-                "reference": "43e09b252006a5ced732e7bd3c54dd0ccd7f46ba",
+                "url": "https://api.github.com/repos/Dev-Pledge/uuid/zipball/f77af7e4326116391066cdecdd08290d089aa797",
+                "reference": "f77af7e4326116391066cdecdd08290d089aa797",
                 "shasum": ""
             },
             "require": {
@@ -123,7 +123,7 @@
                 }
             ],
             "description": "DevPledge UUID generator for specific entities.",
-            "time": "2018-03-05T10:03:42+00:00"
+            "time": "2018-04-04T17:55:39+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -391,20 +391,23 @@
         },
         {
             "name": "nikic/fast-route",
-            "version": "v1.2.0",
+            "version": "v1.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/FastRoute.git",
-                "reference": "b5f95749071c82a8e0f58586987627054400cdf6"
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/b5f95749071c82a8e0f58586987627054400cdf6",
-                "reference": "b5f95749071c82a8e0f58586987627054400cdf6",
+                "url": "https://api.github.com/repos/nikic/FastRoute/zipball/181d480e08d9476e61381e04a71b34dc0432e812",
+                "reference": "181d480e08d9476e61381e04a71b34dc0432e812",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8.35|~5.7"
             },
             "type": "library",
             "autoload": {
@@ -430,7 +433,7 @@
                 "router",
                 "routing"
             ],
-            "time": "2017-01-19T11:35:12+00:00"
+            "time": "2018-02-13T20:26:39+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -634,16 +637,16 @@
         },
         {
             "name": "phpspec/prophecy",
-            "version": "1.7.3",
+            "version": "1.7.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpspec/prophecy.git",
-                "reference": "e4ed002c67da8eceb0eb8ddb8b3847bb53c5c2bf"
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/e4ed002c67da8eceb0eb8ddb8b3847bb53c5c2bf",
-                "reference": "e4ed002c67da8eceb0eb8ddb8b3847bb53c5c2bf",
+                "url": "https://api.github.com/repos/phpspec/prophecy/zipball/dfd6be44111a7c41c2e884a336cc4f461b3b2401",
+                "reference": "dfd6be44111a7c41c2e884a336cc4f461b3b2401",
                 "shasum": ""
             },
             "require": {
@@ -655,7 +658,7 @@
             },
             "require-dev": {
                 "phpspec/phpspec": "^2.5|^3.2",
-                "phpunit/phpunit": "^4.8.35 || ^5.7"
+                "phpunit/phpunit": "^4.8.35 || ^5.7 || ^6.5"
             },
             "type": "library",
             "extra": {
@@ -693,7 +696,7 @@
                 "spy",
                 "stub"
             ],
-            "time": "2017-11-24T13:59:53+00:00"
+            "time": "2018-02-19T10:16:54+00:00"
         },
         {
             "name": "phpunit/php-code-coverage",
@@ -1876,16 +1879,16 @@
         },
         {
             "name": "sentry/sentry",
-            "version": "1.8.3",
+            "version": "1.8.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/getsentry/sentry-php.git",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95"
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/512661046e403dc5eb5ae192d5a6cda10e068a95",
-                "reference": "512661046e403dc5eb5ae192d5a6cda10e068a95",
+                "url": "https://api.github.com/repos/getsentry/sentry-php/zipball/643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
+                "reference": "643ec20d181ca55317d4ccda6ad658b9a8b4f06a",
                 "shasum": ""
             },
             "require": {
@@ -1936,7 +1939,7 @@
                 "log",
                 "logging"
             ],
-            "time": "2018-02-07T11:26:52+00:00"
+            "time": "2018-03-20T12:52:10+00:00"
         },
         {
             "name": "slim/php-view",
@@ -2112,16 +2115,16 @@
         },
         {
             "name": "symfony/yaml",
-            "version": "v4.0.4",
+            "version": "v4.0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/yaml.git",
-                "reference": "ffc60bda1d4a00ec0b32eeabf39dc017bf480028"
+                "reference": "8b34ebb5989df61cbd77eff29a02c4db9ac1069c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/yaml/zipball/ffc60bda1d4a00ec0b32eeabf39dc017bf480028",
-                "reference": "ffc60bda1d4a00ec0b32eeabf39dc017bf480028",
+                "url": "https://api.github.com/repos/symfony/yaml/zipball/8b34ebb5989df61cbd77eff29a02c4db9ac1069c",
+                "reference": "8b34ebb5989df61cbd77eff29a02c4db9ac1069c",
                 "shasum": ""
             },
             "require": {
@@ -2166,7 +2169,7 @@
             ],
             "description": "Symfony Yaml Component",
             "homepage": "https://symfony.com",
-            "time": "2018-01-21T19:06:11+00:00"
+            "time": "2018-04-03T05:24:00+00:00"
         },
         {
             "name": "tomwright/extended-pdo",
@@ -2376,12 +2379,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/eaglewu/swoole-ide-helper.git",
-                "reference": "2f9177b4694b90b64a244e09daadf89e5bf88ad0"
+                "reference": "683b6f8f301a6c13ba9ec89cb11d883405a18630"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eaglewu/swoole-ide-helper/zipball/2f9177b4694b90b64a244e09daadf89e5bf88ad0",
-                "reference": "2f9177b4694b90b64a244e09daadf89e5bf88ad0",
+                "url": "https://api.github.com/repos/eaglewu/swoole-ide-helper/zipball/683b6f8f301a6c13ba9ec89cb11d883405a18630",
+                "reference": "683b6f8f301a6c13ba9ec89cb11d883405a18630",
                 "shasum": ""
             },
             "type": "library",
@@ -2398,13 +2401,12 @@
                 }
             ],
             "description": "Swoole 在IDE下自动识别类、函数、宏，自动补全函数名",
-            "time": "2018-02-05T05:06:02+00:00"
+            "time": "2018-03-28T03:53:57+00:00"
         }
     ],
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "dev-pledge/slim-integrations": 20,
         "eaglewu/swoole-ide-helper": 20
     },
     "prefer-stable": false,
