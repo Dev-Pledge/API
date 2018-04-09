@@ -3,10 +3,10 @@
 namespace DevPledge\Application\Services;
 
 use DevPledge\Application\Factory\OrganisationFactory;
-use DevPledge\Application\Repository\OrganisationRepository;
+use DevPledge\Application\Repository\Organisation\OrganisationRepository;
 use DevPledge\Domain\Organisation;
-use DevPledge\Framework\RepositoryDependencies\OrganisationRepositoryDependency;
-use DevPledge\Integrations\ServiceProvider\AbstractService;
+
+
 
 
 /**
