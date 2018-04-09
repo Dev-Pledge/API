@@ -4,6 +4,7 @@ namespace DevPledge\Application\CommandHandlers;
 
 use DevPledge\Application\Commands\CreateOrganisationCommand;
 use DevPledge\Application\Services\OrganisationService;
+use DevPledge\Framework\ServiceProviders\OrganisationServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
 
 /**
@@ -28,6 +29,6 @@ class CreateOrganisationHandler extends AbstractCommandHandler {
 	 */
 	public function handle( $command ) {
 		// TODO: $this->organisationService->setOwner($command->getUser());
-		return OrganisationService::getService()->create( $command->getName() );
+		return OrganisationServiceProvider::getService()->create( $command->getName() );
 	}
 }
