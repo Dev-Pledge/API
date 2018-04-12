@@ -18,4 +18,6 @@
 
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteRule ^ index.php [QSA,L]
+  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Methods: "GET,POST,OPTIONS,DELETE,PUT"
 </IfModule>
