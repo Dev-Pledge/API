@@ -1,8 +1,8 @@
 MYSQL_HOST=mysql-db
-MYSQL_DB=devpledge
+MYSQL_DB=api
 MYSQL_USER=root
 MYSQL_PASSWORD=test_pass
 SWOOLE_PORT=9501
 API_DOMAIN=api
-SWT_SECRET=98ygvbnjhgvfr67ujh
+JWT_SECRET=98ygvbnjhgvfr67ujh
 SENTRY_DOMAIN=sentry
