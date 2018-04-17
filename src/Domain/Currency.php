@@ -90,7 +90,7 @@ class Currency
      */
     public function getAbbreviation(): string
     {
-        return $this->name;
+        return $this->abbreviation;
     }
 
     /**
