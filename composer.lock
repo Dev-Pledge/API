@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "99c9af97055205232f1f64402776d7fe",
+    "content-hash": "c3402b753360c5ce3498b3d0376b2227",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -39,22 +39,23 @@
         },
         {
             "name": "dev-pledge/slim-integrations",
-            "version": "v0.1.0",
+            "version": "v0.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dev-Pledge/SlimIntegrations.git",
-                "reference": "2ffcdd45351d8204ac88ef318e47259f8308aadb"
+                "reference": "8026a4913a3163c37d8262f3dee4547a52bc2295"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/2ffcdd45351d8204ac88ef318e47259f8308aadb",
-                "reference": "2ffcdd45351d8204ac88ef318e47259f8308aadb",
+                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/8026a4913a3163c37d8262f3dee4547a52bc2295",
+                "reference": "8026a4913a3163c37d8262f3dee4547a52bc2295",
                 "shasum": ""
             },
             "require": {
                 "jrsaunders/quickcache": "^1.0",
                 "monolog/monolog": "^1.23",
                 "php": ">=7.2.0",
+                "predis/predis": "^1.1",
                 "sentry/sentry": "^1.8",
                 "slim/php-view": "^2.2",
                 "slim/slim": "^3.1",
@@ -84,7 +85,7 @@
                 "Dev Pledge",
                 "slim"
             ],
-            "time": "2018-04-09T22:29:17+00:00"
+            "time": "2018-06-01T14:17:04+00:00"
         },
         {
             "name": "dev-pledge/uuid",
@@ -1137,6 +1138,56 @@
                 "dependency injection"
             ],
             "time": "2018-01-21T07:42:36+00:00"
+        },
+        {
+            "name": "predis/predis",
+            "version": "v1.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nrk/predis.git",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nrk/predis/zipball/f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "reference": "f0210e38881631afeafb56ab43405a92cafd9fd1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.8"
+            },
+            "suggest": {
+                "ext-curl": "Allows access to Webdis when paired with phpiredis",
+                "ext-phpiredis": "Allows faster serialization and deserialization of the Redis protocol"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Predis\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniele Alessandri",
+                    "email": "suppakilla@gmail.com",
+                    "homepage": "http://clorophilla.net"
+                }
+            ],
+            "description": "Flexible and feature-complete Redis client for PHP and HHVM",
+            "homepage": "http://github.com/nrk/predis",
+            "keywords": [
+                "nosql",
+                "predis",
+                "redis"
+            ],
+            "time": "2016-06-16T16:22:20+00:00"
         },
         {
             "name": "psr/container",
