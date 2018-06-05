@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c3402b753360c5ce3498b3d0376b2227",
+    "content-hash": "03b1ffe5e33f3718d0fb498c67352f70",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -39,16 +39,16 @@
         },
         {
             "name": "dev-pledge/slim-integrations",
-            "version": "v0.1.2",
+            "version": "v0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Dev-Pledge/SlimIntegrations.git",
-                "reference": "8026a4913a3163c37d8262f3dee4547a52bc2295"
+                "reference": "dfca49157866db1bd114e696b76e04aab41358ec"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/8026a4913a3163c37d8262f3dee4547a52bc2295",
-                "reference": "8026a4913a3163c37d8262f3dee4547a52bc2295",
+                "url": "https://api.github.com/repos/Dev-Pledge/SlimIntegrations/zipball/dfca49157866db1bd114e696b76e04aab41358ec",
+                "reference": "dfca49157866db1bd114e696b76e04aab41358ec",
                 "shasum": ""
             },
             "require": {
@@ -85,7 +85,7 @@
                 "Dev Pledge",
                 "slim"
             ],
-            "time": "2018-06-01T14:17:04+00:00"
+            "time": "2018-06-05T22:08:49+00:00"
         },
         {
             "name": "dev-pledge/uuid",
