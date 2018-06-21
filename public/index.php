@@ -8,9 +8,7 @@ use DevPledge\Integrations\Integrations;
 use DevPledge\Integrations\RepositoryDependency\ExtrapolateRepositoryDependencies;
 use DevPledge\Integrations\Route\ExtrapolateRouteGroups;
 use DevPledge\Integrations\ServiceProvider\ExtrapolateServiceProviders;
-use DevPledge\Integrations\ServiceProvider\ExtrapolateServices;
 use DevPledge\Integrations\Setting\ExtrapolateSettings;
-
 
 if ( PHP_SAPI == 'cli-server' ) {
 	// To help the built-in PHP dev server, check if the request was actually for
@@ -25,10 +23,6 @@ if ( PHP_SAPI == 'cli-server' ) {
 require __DIR__ . '/../vendor/autoload.php';
 
 session_start();
-
-require __DIR__ . '/../dotenv.php';
-
-
 Integrations::initSentry( getenv( 'SENTRY_DSN' ) );
 Integrations::initApplication( require __DIR__ . '/../src/settings.php' );
 Integrations::addCommonSettings();

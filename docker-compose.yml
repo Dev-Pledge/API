@@ -9,8 +9,11 @@ services:
       docker: "true"
       production: "false"
     env_file:
-    #create a .sentryenv with SENTRY_DSN=...
-      - .sentryenv
+    #create a .sentry-env use .sentry-example-env as template...
+      - .sentry-env
+    #create a .smtp-env use .smtp-example-env as template...
+      - .smtp-env
+      - .app-dev-env
     volumes:
       - .:/var/www:cached
       - ./logs:/var/log:cached
@@ -24,13 +27,12 @@ services:
 
   mysql-db:
     restart: always
-    image: mysql:latest
-    environment:
-      MYSQL_ROOT_PASSWORD: 'test_pass'
-      MYSQL_USER: 'test'
-      MYSQL_PASS: 'pass'
+    image: percona:5.7
+    env_file:
+      - .mysql-dev-env
     volumes:
      - ./data/mysql:/var/lib/mysql:cached
+     - ./sql:/docker-entrypoint-initdb.d:cached
     ports:
       - 3310:3306
 

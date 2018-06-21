@@ -4,4 +4,6 @@
 !/logs/README.md
 /.idea/*
 /data/*
-/.sentryenv
+/.sentry-env
+/.smtp-env
+/dev_vendor/
