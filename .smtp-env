@@ -1,0 +1,5 @@
+SMTP_ROOT=info@devpledge.com
+SMTP_PASSWORD=Isabella89
+SMTP_MAILHUB=auth.smtp.1and1.co.uk:587
+SMTP_EMAIL=info@devpledge.com
+SMTP_DOMAIN=devpledge.com
