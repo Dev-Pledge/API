@@ -5,41 +5,33 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Uuid\Uuid;
+use Predis\Client;
 
 /**
  * Class UserService
  * @package DevPledge\Application\Service
  */
 class UserService {
-	/**
-	 * @var UserRepository $repo
-	 */
-	protected $repo;
+
 	/**
 	 * @var UserFactory $factory
 	 */
 	private $factory;
-
-	public function __construct( UserRepository $repository, UserFactory $factory ) {
-
-		$this->repo    = $repository;
-		$this->factory = $factory;
-	}
+	/**
+	 * @var Client
+	 */
+	private $cacheClient;
 
 	/**
-	 * @param PreferredUserAuth $preferredUserAuth
+	 * UserService constructor.
 	 *
-	 * @return \DevPledge\Domain\User
-	 * @throws \Exception
+	 * @param UserFactory $factory
+	 * @param Client $cacheClient
 	 */
-	public function create( PreferredUserAuth $preferredUserAuth ) {
-		$uuid        = Uuid::make( 'user' )->toString();
-		$userIdArray = [ 'user_id' => $uuid ];
-		$data        = array_merge( $userIdArray, $preferredUserAuth->getAuthDataArray()->getArray() );
+	public function __construct( UserFactory $factory, Client $cacheClient ) {
 
-		$user = $this->factory->create( $data );
-
-		return $this->repo->create( $user );
+		$this->factory     = $factory;
+		$this->cacheClient = $cacheClient;
 	}
 
 	/**
@@ -48,16 +40,21 @@ class UserService {
 	 * @return \DevPledge\Domain\User
 	 */
 	public function getByUsername( string $username ) {
-		return $this->repo->readByUsername( $username );
+		$data = $this->cacheClient->get( 'usrn::' . $username );
+
+		return $this->factory->create( $data );
+
 	}
 
-	/**
-	 * @param int $gitHubId
-	 *
-	 * @return \DevPledge\Domain\User
-	 */
-	public function getByGitHubId( int $gitHubId ) {
-		return $this->repo->readByGitHubId( $gitHubId );
+	public function getByUserId( string $userId ) {
+		$uuid = new Uuid( $userId );
+		$data = [];
+		if ( $uuid->getPrefix() == 'usr' ) {
+			$data = $this->cacheClient->get( $uuid->toString() );
+		}
+
+		return $this->factory->create( $data );
+
 	}
 
 }

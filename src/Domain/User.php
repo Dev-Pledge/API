@@ -246,13 +246,12 @@ class User implements Mappable {
 	 * @return \stdClass
 	 */
 	function toMap(): \stdClass {
-		$now = new \DateTime();
 
 		return (object) [
 			'user_id'         => $this->getId()->toString(),
 			'name'            => $this->getName(),
 			'username'        => $this->getUsername(),
-			'modified'        => $now->format( 'Y-m-d H:i:s' ),
+			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
 			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' ),
 			'hashed_password' => $this->getHashedPassword()
 		];
