@@ -1,0 +1,9 @@
+/.production*
+/vendor/
+/logs/*
+!/logs/README.md
+/.idea/*
+/data/*
+/.sentry-env
+/.smtp-env
+/dev_vendor/
