@@ -1,0 +1,8 @@
+/.production*
+/vendor/
+/logs/*
+!/logs/README.md
+/.idea/*
+/data/*
+/.sentryenv
+/Makefile
