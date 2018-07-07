@@ -5,12 +5,17 @@ namespace DevPledge\Domain;
 
 use DevPledge\Uuid\Uuid;
 
-class Organisation
+class UserGroup
 {
     /**
      * @var Uuid
      */
     private $id;
+
+    /**
+     * @var Uuid|null
+     */
+    private $problemId;
 
     /**
      * @var string
@@ -28,15 +33,17 @@ class Organisation
     private $updatedAt;
 
     /**
-     * User constructor.
+     * ProblemSolutionGroup constructor.
      * @param Uuid $id
+     * @param Uuid|null $problemId
      * @param string $name
      * @param \DateTime $createdAt
-     * @param \DateTime $updatedAt
+     * @param \DateTime|null $updatedAt
      */
-    public function __construct(Uuid $id, string $name, \DateTime $createdAt, ?\DateTime $updatedAt)
+    public function __construct(Uuid $id, ?Uuid $problemId, string $name, \DateTime $createdAt, ?\DateTime $updatedAt)
     {
         $this->id = $id;
+        $this->problemId = $problemId;
         $this->name = $name;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
@@ -52,11 +59,47 @@ class Organisation
 
     /**
      * @param Uuid $id
-     * @return Organisation
+     * @return UserGroup
      */
-    public function setId(Uuid $id): Organisation
+    public function setId(Uuid $id): UserGroup
     {
         $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return Uuid|null
+     */
+    public function getProblemId(): Uuid
+    {
+        return $this->problemId;
+    }
+
+    /**
+     * @param Uuid|null $problemId
+     * @return UserGroup
+     */
+    public function setProblemId(?Uuid $problemId): UserGroup
+    {
+        $this->problemId = $problemId;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     * @return UserGroup
+     */
+    public function setName(string $name): UserGroup
+    {
+        $this->name = $name;
         return $this;
     }
 
@@ -70,9 +113,9 @@ class Organisation
 
     /**
      * @param \DateTime $createdAt
-     * @return Organisation
+     * @return UserGroup
      */
-    public function setCreatedAt(\DateTime $createdAt): Organisation
+    public function setCreatedAt(\DateTime $createdAt): UserGroup
     {
         $this->createdAt = $createdAt;
         return $this;
@@ -88,9 +131,9 @@ class Organisation
 
     /**
      * @param \DateTime|null $updatedAt
-     * @return Organisation
+     * @return UserGroup
      */
-    public function setUpdatedAt(?\DateTime $updatedAt): Organisation
+    public function setUpdatedAt(?\DateTime $updatedAt): UserGroup
     {
         $this->updatedAt = $updatedAt;
         return $this;

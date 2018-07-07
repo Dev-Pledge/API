@@ -1,12 +1,12 @@
 ENVIRONMENT=development
 
 MYSQL_HOST=mysql-db
-MYSQL_DB=api
+MYSQL_DB=auth
 MYSQL_USER=root
 MYSQL_PASSWORD=test_pass
 
 PHINX_DBHOST=mysql-db
-PHINX_DBNAME=api
+PHINX_DBNAME=auth
 PHINX_DBUSER=root
 PHINX_DBPASS=test_pass
 
@@ -14,5 +14,3 @@ SWOOLE_PORT=9501
 API_DOMAIN=api
 JWT_SECRET=98ygvbnjhgvfr67ujh
 SENTRY_DOMAIN=sentry
-
-

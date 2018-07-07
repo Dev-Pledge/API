@@ -34,7 +34,7 @@ services:
      - ./data/mysql:/var/lib/mysql:cached
      - ./sql:/docker-entrypoint-initdb.d:cached
     ports:
-      - 3311:3306
+      - 3310:3306
 
 networks:
   default:
@@ -47,4 +47,5 @@ networks:
   cache_network:
     external:
       name: devpledge_cache
+      
 
