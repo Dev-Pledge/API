@@ -1,0 +1,33 @@
+{
+  "name": "dev-pledge/slim-integrations",
+  "description": "Dev Pledge Slim Integrations",
+  "keywords": [
+    "Slim",
+    "Dev Pledge"
+  ],
+  "homepage": "https://github.com/Dev-Pledge/SlimIntegrations",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "John Saunders",
+      "email": "john@yettimedia.co.uk"
+    }
+  ],
+  "require": {
+    "php": ">=7.2.0",
+    "slim/slim": "^3.1",
+    "tomwright/json": "^1.0",
+    "spomky-labs/base64url": "^1.0",
+    "tomwright/extended-pdo": "^1.0",
+    "slim/php-view": "^2.2",
+    "monolog/monolog": "^1.23",
+    "sentry/sentry": "^1.8",
+    "jrsaunders/quickcache": "^1.0",
+    "predis/predis": "^1.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "DevPledge\\Integrations\\": "src/"
+    }
+  }
+}

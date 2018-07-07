@@ -3,12 +3,17 @@
 namespace DevPledge\Domain;
 
 
-use DevPledge\Uuid\Uuid;
+use DevPledge\Application\Mapper\Mappable;
 
-class Organisation
+/**
+ * Class Organisation
+ * @package DevPledge\Domain
+ */
+class Organisation implements Mappable
 {
+
     /**
-     * @var Uuid
+     * @var string
      */
     private $id;
 
@@ -18,81 +23,49 @@ class Organisation
     private $name;
 
     /**
-     * @var \DateTime
+     * @param string $id
+     * @return Organisation
      */
-    private $createdAt;
-
-    /**
-     * @var \DateTime|null
-     */
-    private $updatedAt;
-
-    /**
-     * User constructor.
-     * @param Uuid $id
-     * @param string $name
-     * @param \DateTime $createdAt
-     * @param \DateTime $updatedAt
-     */
-    public function __construct(Uuid $id, string $name, \DateTime $createdAt, ?\DateTime $updatedAt)
+    public function setId(string $id): Organisation
     {
         $this->id = $id;
-        $this->name = $name;
-        $this->createdAt = $createdAt;
-        $this->updatedAt = $updatedAt;
+        return $this;
     }
 
     /**
-     * @return Uuid
+     * @param string $name
+     * @return Organisation
      */
-    public function getId(): Uuid
+    public function setName(string $name): Organisation
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId(): ?string
     {
         return $this->id;
     }
 
     /**
-     * @param Uuid $id
-     * @return Organisation
+     * @return string
      */
-    public function setId(Uuid $id): Organisation
+    public function getName(): ?string
     {
-        $this->id = $id;
-        return $this;
+        return $this->name;
     }
 
     /**
-     * @return \DateTime
+     * @return \stdClass
      */
-    public function getCreatedAt(): \DateTime
+    function toMap(): \stdClass
     {
-        return $this->createdAt;
-    }
-
-    /**
-     * @param \DateTime $createdAt
-     * @return Organisation
-     */
-    public function setCreatedAt(\DateTime $createdAt): Organisation
-    {
-        $this->createdAt = $createdAt;
-        return $this;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getUpdatedAt(): ?\DateTime
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * @param \DateTime|null $updatedAt
-     * @return Organisation
-     */
-    public function setUpdatedAt(?\DateTime $updatedAt): Organisation
-    {
-        $this->updatedAt = $updatedAt;
-        return $this;
+        return (object)[
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+        ];
     }
 }
