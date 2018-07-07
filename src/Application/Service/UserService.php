@@ -55,8 +55,8 @@ class UserService {
 
 		$createdUser = $this->repo->create( $user );
 		if ( $createdUser ) {
-			$this->cacheClient->set( $uuid, $createdUser->getData() );
-			$this->cacheClient->set( 'usrn::' . $createdUser->getUsername(), $createdUser->getData() );
+			$this->cacheClient->set( $uuid, json_encode( $createdUser->getData() ) );
+			$this->cacheClient->set( 'usrn::' . $createdUser->getUsername(), json_encode( $createdUser->getData() ) );
 		}
 
 		return $createdUser;
@@ -72,7 +72,7 @@ class UserService {
 		$updatedUser = $this->repo->update( $user );
 		if ( $updatedUser ) {
 			$this->cacheClient->set( $updatedUser->getId(), $updatedUser->getData() );
-			$this->cacheClient->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->getData() );
+			$this->cacheClient->set( 'usrn::' . $updatedUser->getUsername(), json_encode( $updatedUser->getData() ) );
 		}
 
 		return $updatedUser;

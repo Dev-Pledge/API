@@ -8,6 +8,7 @@ use DevPledge\Application\Service\UserService;
 use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\UserRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\RedisServiceProvider;
 use Slim\Container;
 
 /**
@@ -28,7 +29,7 @@ class UserServiceProvider extends AbstractServiceProvider {
 	 */
 	public function __invoke( Container $container ) {
 
-		return new UserService( UserRepositoryDependency::getRepository(), UserFactoryDependency::getFactory() );
+		return new UserService( UserRepositoryDependency::getRepository(), UserFactoryDependency::getFactory(), RedisServiceProvider::getService() );
 	}
 
 	/**
