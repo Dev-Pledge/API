@@ -1,5 +1,0 @@
-SMTP_ROOT=server@devpledge.com
-SMTP_PASSWORD=0987ytgbnmmuygb
-SMTP_MAILHUB=smtp.devpledge.com:587
-SMTP_EMAIL=server@devpledge.com
-SMTP_DOMAIN=devpledge.com
