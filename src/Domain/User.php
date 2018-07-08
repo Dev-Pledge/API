@@ -256,4 +256,5 @@ class User implements Mappable {
 			'hashed_password' => $this->getHashedPassword()
 		];
 	}
+
 }

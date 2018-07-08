@@ -4,7 +4,7 @@ namespace DevPledge\Integrations\Curl;
 
 /**
  * Class CurlRequest
- * @package CurlModulus
+ * @package DevPledge\Integrations\Curl
  */
 class CurlRequest {
 	/**

@@ -6,8 +6,8 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Application\Repository\UserRepository;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
+use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Uuid\Uuid;
-use Predis\Client;
 
 /**
  * Class UserService
@@ -23,22 +23,22 @@ class UserService {
 	 */
 	private $factory;
 	/**
-	 * @var Client
+	 * @var Cache
 	 */
-	private $cacheClient;
+	private $cache;
 
 	/**
 	 * UserService constructor.
 	 *
 	 * @param UserRepository $repository
 	 * @param UserFactory $factory
-	 * @param Client $cacheClient
+	 * @param Cache $cache
 	 */
-	public function __construct( UserRepository $repository, UserFactory $factory, Client $cacheClient ) {
+	public function __construct( UserRepository $repository, UserFactory $factory, Cache $cache ) {
 
-		$this->repo        = $repository;
-		$this->factory     = $factory;
-		$this->cacheClient = $cacheClient;
+		$this->repo    = $repository;
+		$this->factory = $factory;
+		$this->cache   = $cache;
 	}
 
 	/**
@@ -55,8 +55,8 @@ class UserService {
 
 		$createdUser = $this->repo->create( $user );
 		if ( $createdUser ) {
-			$this->cacheClient->set( $uuid, json_encode( $createdUser->getData() ) );
-			$this->cacheClient->set( 'usrn::' . $createdUser->getUsername(), json_encode( $createdUser->getData() ) );
+			$this->cache->set( $uuid, $createdUser->toMap() )
+			            ->set( 'usrn::' . $createdUser->getUsername(), $createdUser->toMap() );
 		}
 
 		return $createdUser;
@@ -71,8 +71,8 @@ class UserService {
 	public function update( User $user ) {
 		$updatedUser = $this->repo->update( $user );
 		if ( $updatedUser ) {
-			$this->cacheClient->set( $updatedUser->getId(), $updatedUser->getData() );
-			$this->cacheClient->set( 'usrn::' . $updatedUser->getUsername(), json_encode( $updatedUser->getData() ) );
+			$this->cache->set( $updatedUser->getId(), $updatedUser->getData() )
+			            ->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->getData() );
 		}
 
 		return $updatedUser;

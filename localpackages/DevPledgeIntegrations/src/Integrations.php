@@ -14,7 +14,7 @@ use DevPledge\Integrations\ServiceProvider\Services\JSONServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\LoggerServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\PHPRendererServiceProvider;
-use DevPledge\Integrations\ServiceProvider\Services\RedisServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use DevPledge\Integrations\Setting\AddSetting;
 use DevPledge\Integrations\Setting\Settings;
 use DevPledge\Integrations\Setting\Settings\JWTSettings;
@@ -80,7 +80,7 @@ class Integrations extends AbstractAppAccess {
 		             ->addService( new JWTServiceProvider() )
 		             ->addService( new CommandBusServiceProvider() )
 		             ->addService( new EventBusServiceProvider() )
-		             ->addService( new RedisServiceProvider() );
+		             ->addService( new CacheServiceProvider() );
 	}
 
 	static public function addCommonHandlers(): void {
