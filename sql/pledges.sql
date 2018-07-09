@@ -1,7 +1,9 @@
-create table pledges
+USE api;
+
+CREATE TABLE pledges
 (
   pledge_id       VARCHAR(50)                              NOT NULL
-    primary key,
+    PRIMARY KEY,
   user_id         VARCHAR(50)                              NOT NULL,
   organisation_id VARCHAR(50)                              NULL,
   problem_id      VARCHAR(50)                              NOT NULL,
@@ -12,4 +14,12 @@ create table pledges
   data            JSON                                     NULL,
   created         DATETIME                                 NOT NULL,
   modified        DATETIME                                 NOT NULL
-);
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX pledges_problem_id_created_index
+  ON pledges (problem_id, created);
+
+CREATE INDEX pledges_problem_id_index
+  ON pledges (problem_id);
+

@@ -1,4 +1,4 @@
-use api;
+USE api;
 
 CREATE TABLE users
 (

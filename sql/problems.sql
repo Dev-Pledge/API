@@ -1,17 +1,28 @@
-use api;
+USE api;
 
-create table problems
+CREATE TABLE problems
 (
-  problem_id        varchar(50)            NOT NULL
-    primary key,
-  user_id           varchar(50)            NOT NULL,
-  title             varchar(67)            NOT NULL,
+  problem_id        VARCHAR(50)            NOT NULL
+    PRIMARY KEY,
+  user_id           VARCHAR(50)            NOT NULL,
+  title             VARCHAR(67)            NOT NULL,
   specification     TEXT                   NULL,
-  description       varchar(400)           NOT NULL,
+  description       VARCHAR(400)           NOT NULL,
   active_datetime   DATETIME               NULL,
   deadline_datetime DATETIME               NULL,
-  deleted           TINYINT(1) default '0' NULL,
+  deleted           TINYINT(1) DEFAULT '0' NULL,
   data              JSON                   NULL,
   created           DATETIME               NOT NULL,
   modified          DATETIME               NOT NULL
-);
+)
+  ENGINE = InnoDB;
+
+CREATE INDEX problems_user_id_problem_id_index
+  ON problems (user_id, problem_id);
+
+CREATE INDEX problems_created_index
+  ON problems (created);
+
+CREATE INDEX problems_modified_index
+  ON problems (modified);
+
