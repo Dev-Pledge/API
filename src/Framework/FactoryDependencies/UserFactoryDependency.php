@@ -26,7 +26,7 @@ class UserFactoryDependency extends AbstractFactoryDependency {
 	 * @return UserFactory
 	 */
 	public function __invoke( Container $container ) {
-		return new UserFactory( new User( 'user' ) );
+		return new UserFactory( User::class, 'user' );
 	}
 
 

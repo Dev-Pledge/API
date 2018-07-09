@@ -17,14 +17,24 @@ abstract class AbstractFactory {
 	 * @var AbstractDomain
 	 */
 	protected $productObject;
+	protected $productObjectClassString;
+	protected $entity;
 
 	/**
 	 * AbstractFactory constructor.
 	 *
-	 * @param AbstractDomain $productObject
+	 * @param $productObjectClassString
+	 * @param $entity
 	 */
-	public function __construct( AbstractDomain $productObject ) {
-		$this->productObject = $productObject;
+	public function __construct( $productObjectClassString, $entity ) {
+
+		$productObject = new $productObjectClassString( $entity );
+		if ( ! $productObject instanceof AbstractDomain ) {
+			throw new \DomainException( 'AbstractDomain must be used!' );
+		}
+		$this->productObject            = $productObject;
+		$this->productObjectClassString = $productObjectClassString;
+		$this->entity                   = $entity;
 	}
 
 	/**
@@ -32,6 +42,14 @@ abstract class AbstractFactory {
 	 */
 	public function getProductObject(): AbstractDomain {
 		return $this->productObject;
+	}
+
+	/**
+	 * @return $this
+	 */
+	public function newProductObject() {
+		return $this->setProductObject( new $this->productObjectClassString( $this->entity ) );
+
 	}
 
 	/**
@@ -91,6 +109,7 @@ abstract class AbstractFactory {
 	 */
 	public function create( \stdClass $rawData ) {
 		return $this->setRawData( $rawData )
+		            ->newProductObject()
 		            ->creationProcess()
 		            ->updateProcess()
 		            ->getProductObject();
