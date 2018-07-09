@@ -29,6 +29,7 @@ class MysqlAdapter implements Adapter {
 	 * @param string $column
 	 *
 	 * @return null|\stdClass
+	 * @throws \Exception
 	 */
 	public function read( string $resource, string $id, string $column = 'id' ): ?\stdClass {
 		$query = ( new Query( 'SELECT' ) )

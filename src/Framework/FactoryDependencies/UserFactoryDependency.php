@@ -4,6 +4,7 @@ namespace DevPledge\Framework\FactoryDependencies;
 
 
 use DevPledge\Application\Factory\UserFactory;
+use DevPledge\Domain\User;
 use DevPledge\Integrations\FactoryDependency\AbstractFactoryDependency;
 use Slim\Container;
 
@@ -25,7 +26,7 @@ class UserFactoryDependency extends AbstractFactoryDependency {
 	 * @return UserFactory
 	 */
 	public function __invoke( Container $container ) {
-		return new UserFactory();
+		return new UserFactory( new User( 'user' ) );
 	}
 
 

@@ -35,6 +35,7 @@ class TokenString {
 
 	/**
 	 * @return string
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function getTokenString() {
 
@@ -45,10 +46,13 @@ class TokenString {
 		$wildCardPermissions = new WildCardPermissions();
 		$user                = $this->user;
 		$token               = $this->jwt->generate( (object) [
-			'user_id'  => $user->getId()->toString(),
-			'name'     => $user->getName(),
-			'username' => $user->getUsername(),
-			'perms'    => $wildCardPermissions->getPerms()
+			'user_id'   => $user->getId(),
+			'name'      => $user->getName(),
+			'username'  => $user->getUsername(),
+			'data'      => $user->getData()->getData(),
+			'email'     => $user->getEmail(),
+			'github_id' => $user->getGitHubId(),
+			'perms'     => $wildCardPermissions->getPerms()
 		] );
 
 		return $this->token = $token;

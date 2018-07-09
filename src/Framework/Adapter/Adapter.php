@@ -45,6 +45,8 @@ interface Adapter {
 	 * @param \stdClass $data
 	 * @param string $column
 	 *
+	 *return affected rows
+	 *
 	 * @return int
 	 * @throws \Exception
 	 */

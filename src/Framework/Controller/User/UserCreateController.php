@@ -64,6 +64,7 @@ class UserCreateController {
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
 	 */
 	private function creationResponse( PreferredUserAuth $preferredUserAuth, Request $request, Response $response ) {
 
@@ -106,7 +107,7 @@ class UserCreateController {
 
 			return $response->withJson(
 				[
-					'user_id'  => $user->getId()->toString(),
+					'user_id'  => $user->getId(),
 					'username' => $user->getUsername(),
 					'token'    => $token->getTokenString()
 				]
@@ -124,6 +125,7 @@ class UserCreateController {
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
 	 */
 	public function createUserFromEmailPassword( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
@@ -149,6 +151,7 @@ class UserCreateController {
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
 	 */
 	public function createUserFromGitHub( Request $request, Response $response ) {
 		$data = $request->getParsedBody();

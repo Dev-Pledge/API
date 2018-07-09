@@ -10,7 +10,6 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\UserFactory;
-use DevPledge\Application\Mapper\Mapper;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
 use TomWright\Database\ExtendedPDO\Query;
@@ -22,11 +21,6 @@ class UserRepository {
 	private $adapter;
 
 	/**
-	 * @var Mapper
-	 */
-	private $mapper;
-
-	/**
 	 * @var OrganisationFactory
 	 */
 	private $factory;
@@ -35,12 +29,10 @@ class UserRepository {
 	 * UserRepository constructor.
 	 *
 	 * @param Adapter $adapter
-	 * @param Mapper $mapper
 	 * @param UserFactory $factory
 	 */
-	public function __construct( Adapter $adapter, Mapper $mapper, UserFactory $factory ) {
+	public function __construct( Adapter $adapter, UserFactory $factory ) {
 		$this->adapter = $adapter;
-		$this->mapper  = $mapper;
 		$this->factory = $factory;
 	}
 
@@ -51,11 +43,10 @@ class UserRepository {
 	 * @throws \Exception
 	 */
 	public function create( User $user ): User {
-		$user->setModified( new \DateTime() );
-		$data = $this->mapper->toMap( $user );
-		$this->adapter->create( 'users', $data );
 
-		return $this->read( $user->getId()->toString() );
+		$this->adapter->create( 'users', $user->toMap() );
+
+		return $this->read( $user->getId() );
 	}
 
 	/**
@@ -66,10 +57,9 @@ class UserRepository {
 	 */
 	public function update( User $user ): User {
 		$user->setModified( new \DateTime() );
-		$data = $this->mapper->toMap( $user );
-		$id   = $this->adapter->update( 'users', $user->getId(), $data, 'user_id' );
+		$this->adapter->update( 'users', $user->getId(), $user->toMap(), 'user_id' );
 
-		return $this->read( $id );
+		return $this->read( $user->getId() );
 	}
 
 	/**

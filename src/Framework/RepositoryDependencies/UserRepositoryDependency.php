@@ -29,9 +29,8 @@ class UserRepositoryDependency extends AbstractRepositoryDependency {
 	public function __invoke( Container $container ) {
 		$factory = UserFactoryDependency::getFactory();
 		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
-		$mapper  = new Mapper();
 
-		return new UserRepository( $adaptor, $mapper, $factory );
+		return new UserRepository( $adaptor, $factory );
 	}
 
 	/**

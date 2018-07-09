@@ -48,14 +48,13 @@ class UserService {
 	 * @throws \Exception
 	 */
 	public function create( PreferredUserAuth $preferredUserAuth ) {
-		$uuid        = Uuid::make( 'user' )->toString();
-		$userIdArray = [ 'user_id' => $uuid ];
-		$data        = array_merge( $userIdArray, $preferredUserAuth->getAuthDataArray()->getArray() );
+
+		$data        = (object) $preferredUserAuth->getAuthDataArray()->getArray();
 		$user        = $this->factory->create( $data );
 
 		$createdUser = $this->repo->create( $user );
 		if ( $createdUser ) {
-			$this->cache->set( $uuid, $createdUser->toMap() )
+			$this->cache->set( $user->getId(), $createdUser->toMap() )
 			            ->set( 'usrn::' . $createdUser->getUsername(), $createdUser->toMap() );
 		}
 
@@ -71,8 +70,8 @@ class UserService {
 	public function update( User $user ) {
 		$updatedUser = $this->repo->update( $user );
 		if ( $updatedUser ) {
-			$this->cache->set( $updatedUser->getId(), $updatedUser->getData() )
-			            ->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->getData() );
+			$this->cache->set( $updatedUser->getId(), $updatedUser->toMap() )
+			            ->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->toMap() );
 		}
 
 		return $updatedUser;

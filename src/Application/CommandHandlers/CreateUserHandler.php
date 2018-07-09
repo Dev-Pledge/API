@@ -18,12 +18,12 @@ class CreateUserHandler extends AbstractCommandHandler {
 	}
 
 	/**
-	 * @param $command
+	 * @param CreateUserCommand $command
 	 *
 	 * @return string
 	 * @throws \Exception
 	 */
-	protected function handle( $command ) {
+	protected function handle(  $command ) {
 		$auth = $command->getPreferredUserAuth();
 		$auth->validate();
 

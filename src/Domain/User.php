@@ -11,12 +11,9 @@ use DevPledge\Uuid\Uuid;
  * Class User
  * @package DevPledge\Domain
  */
-class User implements Mappable {
+class User extends AbstractDomain {
 
-	/**
-	 * @var Uuid
-	 */
-	private $id;
+
 	/**
 	 * @var string | null
 	 */
@@ -41,30 +38,7 @@ class User implements Mappable {
 	 * @var string
 	 */
 	private $name;
-	/**
-	 * @var \stdClass
-	 */
-	private $data;
-	/**
-	 * @var \DateTime
-	 */
-	private $created;
-	/**
-	 * @var \DateTime
-	 */
-	private $modified;
 
-
-	/**
-	 * @param Uuid $id
-	 *
-	 * @return User
-	 */
-	public function setId( Uuid $id ): User {
-		$this->id = $id;
-
-		return $this;
-	}
 
 	/**
 	 * @param string $email
@@ -88,12 +62,6 @@ class User implements Mappable {
 		return $this;
 	}
 
-	/**
-	 * @return null|Uuid
-	 */
-	public function getId(): ?Uuid {
-		return $this->id;
-	}
 
 	/**
 	 * @return null|string
@@ -170,59 +138,6 @@ class User implements Mappable {
 		return $this->username;
 	}
 
-	/**
-	 * @return \stdClass
-	 */
-	public function getData(): \stdClass {
-		return isset( $this->data ) ? $this->data : new \stdClass();
-	}
-
-	/**
-	 * @param \stdClass $data
-	 *
-	 * @return User
-	 */
-	public function setData( \stdClass $data ): User {
-		$this->data = $data;
-
-		return $this;
-	}
-
-	/**
-	 * @return \DateTime
-	 */
-	public function getCreated(): \DateTime {
-		return isset( $this->created ) ? $this->created : new \DateTime();
-	}
-
-	/**
-	 * @param \DateTime $created
-	 *
-	 * @return User
-	 */
-	public function setCreated( \DateTime $created ): User {
-		$this->created = $created;
-
-		return $this;
-	}
-
-	/**
-	 * @return \DateTime
-	 */
-	public function getModified(): \DateTime {
-		return isset( $this->modified ) ? $this->modified : new \DateTime();
-	}
-
-	/**
-	 * @param \DateTime $modified
-	 *
-	 * @return User
-	 */
-	public function setModified( \DateTime $modified ): User {
-		$this->modified = $modified;
-
-		return $this;
-	}
 
 	/**
 	 * @return int|null
@@ -248,8 +163,10 @@ class User implements Mappable {
 	function toMap(): \stdClass {
 
 		return (object) [
-			'user_id'         => $this->getId()->toString(),
+			'user_id'         => $this->getId(),
 			'name'            => $this->getName(),
+			'email'           => $this->getEmail(),
+			'data'            => $this->getData()->getJson(),
 			'username'        => $this->getUsername(),
 			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
 			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' ),
