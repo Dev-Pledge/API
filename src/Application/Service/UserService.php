@@ -53,7 +53,7 @@ class UserService {
 		$user        = $this->factory->create( $data );
 
 		$createdUser = $this->repo->create( $user );
-		if ( $createdUser ) {
+		if ( $createdUser->isPersistedDataFound() ) {
 			$this->cache->set( $user->getId(), $createdUser->toMap() )
 			            ->set( 'usrn::' . $createdUser->getUsername(), $createdUser->toMap() );
 		}
@@ -69,7 +69,7 @@ class UserService {
 	 */
 	public function update( User $user ) {
 		$updatedUser = $this->repo->update( $user );
-		if ( $updatedUser ) {
+		if ( $updatedUser->isPersistedDataFound() ) {
 			$this->cache->set( $updatedUser->getId(), $updatedUser->toMap() )
 			            ->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->toMap() );
 		}

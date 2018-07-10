@@ -4,6 +4,7 @@ namespace DevPledge\Application\Factory;
 
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Data;
+use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\Uuid;
 
 /**
@@ -131,16 +132,21 @@ abstract class AbstractFactory {
 	 * @param \stdClass $rawData
 	 *
 	 * @return AbstractDomain
-	 * @throws FactoryException
 	 */
 	public function create( \stdClass $rawData ) {
-		return $this->setRawData( $rawData )
-		            ->newProductObject()
-		            ->setUuid()
-		            ->setData()
-		            ->setMethodsToProductObject()
-		            ->setCreatedModified()
-		            ->getProductObject();
+		try {
+			return $this->setRawData( $rawData )
+			            ->newProductObject()
+			            ->setUuid()
+			            ->setData()
+			            ->setMethodsToProductObject()
+			            ->setCreatedModified()
+			            ->getProductObject();
+		} catch ( FactoryException $exception ) {
+			Sentry::get()->captureException( $exception );
+		}
+
+		return $this->getProductObject();
 	}
 
 	/**
@@ -151,14 +157,19 @@ abstract class AbstractFactory {
 	 * @throws FactoryException
 	 */
 	public function update( AbstractDomain $productObject, \stdClass $rawUpdateData ) {
-		return $this->setProductObject( $productObject )
-		            ->setRawData( $rawUpdateData )
-		            ->setUuid()
-		            ->setData()
-		            ->setMethodsToProductObject()
-		            ->setCreatedModified()
-		            ->getProductObject();
+		try {
+			return $this->setProductObject( $productObject )
+			            ->setRawData( $rawUpdateData )
+			            ->setUuid()
+			            ->setData()
+			            ->setMethodsToProductObject()
+			            ->setCreatedModified()
+			            ->getProductObject();
+		} catch ( FactoryException $exception ) {
+			Sentry::get()->captureException( $exception );
+		}
 
+		return $this->getProductObject();
 	}
 
 	/**
