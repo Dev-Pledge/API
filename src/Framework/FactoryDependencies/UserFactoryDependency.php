@@ -23,10 +23,11 @@ class UserFactoryDependency extends AbstractFactoryDependency {
 	/**
 	 * @param Container $container
 	 *
-	 * @return UserFactory
+	 * @return UserFactory|mixed
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function __invoke( Container $container ) {
-		return new UserFactory( User::class, 'user' );
+		return new UserFactory( User::class, 'user' ,'user_id');
 	}
 
 

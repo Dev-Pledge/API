@@ -3,6 +3,8 @@
 namespace DevPledge\Application\Factory;
 
 use DevPledge\Domain\AbstractDomain;
+use DevPledge\Domain\Data;
+use DevPledge\Uuid\Uuid;
 
 /**
  * Class AbstractFactory
@@ -17,37 +19,51 @@ abstract class AbstractFactory {
 	 * @var AbstractDomain
 	 */
 	protected $productObject;
+	/**
+	 * @var string
+	 */
 	protected $productObjectClassString;
+	/**
+	 * @var string
+	 */
 	protected $entity;
+	/**
+	 * @var string
+	 */
+	protected $primaryIdColumn;
 
 	/**
 	 * AbstractFactory constructor.
 	 *
 	 * @param $productObjectClassString
-	 * @param $entity
+	 * @param $uuidEntity
+	 * @param $primaryIdColumn
+	 *
+	 * @throws FactoryException
 	 */
-	public function __construct( $productObjectClassString, $entity ) {
+	public function __construct( $productObjectClassString, $uuidEntity, $primaryIdColumn ) {
 
-		$productObject = new $productObjectClassString( $entity );
+		$productObject = new $productObjectClassString( $uuidEntity );
 		if ( ! $productObject instanceof AbstractDomain ) {
-			throw new \DomainException( 'AbstractDomain must be used!' );
+			throw new FactoryException( 'AbstractDomain must be used!' );
 		}
 		$this->productObject            = $productObject;
 		$this->productObjectClassString = $productObjectClassString;
-		$this->entity                   = $entity;
+		$this->entity                   = $uuidEntity;
+		$this->primaryIdColumn          = $primaryIdColumn;
 	}
 
 	/**
 	 * @return AbstractDomain
 	 */
-	public function getProductObject(): AbstractDomain {
+	protected function getProductObject(): AbstractDomain {
 		return $this->productObject;
 	}
 
 	/**
 	 * @return $this
 	 */
-	public function newProductObject() {
+	protected function newProductObject() {
 		return $this->setProductObject( new $this->productObjectClassString( $this->entity ) );
 
 	}
@@ -55,7 +71,7 @@ abstract class AbstractFactory {
 	/**
 	 * @return \stdClass
 	 */
-	public function getRawData(): \stdClass {
+	protected function getRawData(): \stdClass {
 		return $this->rawData;
 	}
 
@@ -64,7 +80,7 @@ abstract class AbstractFactory {
 	 *
 	 * @return $this
 	 */
-	public function setRawData( \stdClass $rawData ) {
+	protected function setRawData( \stdClass $rawData ) {
 		$this->rawData = $rawData;
 
 		return $this;
@@ -75,7 +91,7 @@ abstract class AbstractFactory {
 	 *
 	 * @return AbstractFactory
 	 */
-	public function setProductObject( AbstractDomain $productObject ): AbstractFactory {
+	protected function setProductObject( AbstractDomain $productObject ): AbstractFactory {
 		$this->productObject = $productObject;
 
 		return $this;
@@ -85,16 +101,25 @@ abstract class AbstractFactory {
 	 * @param $key
 	 * @param $setMethod
 	 * @param null $useClass
+	 * @param \Closure|null $onSetCallback
 	 *
 	 * @return $this
+	 * @throws FactoryException
 	 */
-	protected function setMethodToProductObject( $key, $setMethod, $useClass = null ) {
+	protected function setMethodToProductObject( $key, $setMethod, $useClass = null, \Closure $onSetCallback = null ) {
 		if ( isset( $this->rawData->{$key} ) ) {
 			if ( is_callable( array( $this->productObject, $setMethod ) ) ) {
-				if ( ! is_null( $useClass ) ) {
-					$this->productObject->{$setMethod}( new $useClass( $this->rawData->{$key} ) );
-				} else {
-					$this->productObject->{$setMethod}( $this->rawData->{$key} );
+				try {
+					if ( ! is_null( $useClass ) ) {
+						$this->productObject->{$setMethod}( new $useClass( $this->rawData->{$key} ) );
+					} else {
+						$this->productObject->{$setMethod}( $this->rawData->{$key} );
+					}
+				} catch ( \Error $error ) {
+					throw new FactoryException( $error->getMessage() );
+				}
+				if ( ! is_null( $onSetCallback ) ) {
+					call_user_func_array( $onSetCallback, [ $this->productObject ] );
 				}
 			}
 		}
@@ -106,12 +131,15 @@ abstract class AbstractFactory {
 	 * @param \stdClass $rawData
 	 *
 	 * @return AbstractDomain
+	 * @throws FactoryException
 	 */
 	public function create( \stdClass $rawData ) {
 		return $this->setRawData( $rawData )
 		            ->newProductObject()
-		            ->creationProcess()
-		            ->updateProcess()
+		            ->setUuid()
+		            ->setData()
+		            ->setMethodsToProductObject()
+		            ->setCreatedModified()
 		            ->getProductObject();
 	}
 
@@ -120,22 +148,66 @@ abstract class AbstractFactory {
 	 * @param \stdClass $rawUpdateData
 	 *
 	 * @return AbstractDomain
+	 * @throws FactoryException
 	 */
 	public function update( AbstractDomain $productObject, \stdClass $rawUpdateData ) {
 		return $this->setProductObject( $productObject )
 		            ->setRawData( $rawUpdateData )
-		            ->updateProcess()
+		            ->setUuid()
+		            ->setData()
+		            ->setMethodsToProductObject()
+		            ->setCreatedModified()
 		            ->getProductObject();
 
 	}
 
 	/**
+	 * @param $key
+	 *
 	 * @return $this
+	 * @throws FactoryException
 	 */
-	abstract function creationProcess();
+	protected function setUuid() {
+		try {
+			$this->setMethodToProductObject( $this->primaryIdColumn, 'setUuid', Uuid::class, function ( AbstractDomain $productObject ) {
+				if ( $this->getRawData() instanceof \stdClass ) {
+					$productObject->setPersistedDataFound( true );
+				}
+			} );
+		} catch ( \InvalidArgumentException $exception ) {
+			throw new FactoryException( $exception->getMessage() );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param $key
+	 *
+	 * @return $this
+	 * @throws FactoryException
+	 */
+	protected function setData() {
+
+		return $this
+			->setMethodToProductObject( 'data', 'setData', Data::class );
+
+	}
+
+	/**
+	 * @return $this
+	 * @throws FactoryException
+	 */
+	protected function setCreatedModified() {
+		return $this
+			->setMethodToProductObject( 'created', 'setCreated', \DateTime::class )
+			->setMethodToProductObject( 'modified', 'setModified', \DateTime::class );
+	}
 
 	/**
 	 * @return $this
 	 */
-	abstract function updateProcess();
+	abstract function setMethodsToProductObject();
+
+
 }

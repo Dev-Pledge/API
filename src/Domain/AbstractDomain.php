@@ -27,7 +27,10 @@ abstract class AbstractDomain implements Mappable {
 	 * @var \DateTime
 	 */
 	protected $modified;
-
+	/**
+	 * @var bool
+	 */
+	protected $persistedDataFound = false;
 
 	public function __construct( string $entity ) {
 		$this->entity = $entity;
@@ -46,6 +49,7 @@ abstract class AbstractDomain implements Mappable {
 	 * @return $this
 	 */
 	public function setUuid( Uuid $uuid ) {
+
 		$this->uuid = $uuid;
 
 		return $this;
@@ -111,4 +115,23 @@ abstract class AbstractDomain implements Mappable {
 
 		return $this;
 	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPersistedDataFound(): bool {
+		return $this->persistedDataFound;
+	}
+
+	/**
+	 * @param bool $dataFound
+	 *
+	 * @return $this
+	 */
+	public function setPersistedDataFound( bool $dataFound ) {
+		$this->persistedDataFound = $dataFound;
+		return $this;
+	}
+
+
 }
