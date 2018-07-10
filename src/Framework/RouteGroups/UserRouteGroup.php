@@ -11,6 +11,7 @@ use DevPledge\Integrations\Route\AbstractRouteGroup;
  * @package DevPledge\Framework\RouteGroups
  */
 class UserRouteGroup extends AbstractRouteGroup {
+	
 	public function __construct() {
 		parent::__construct( '/user' );
 	}

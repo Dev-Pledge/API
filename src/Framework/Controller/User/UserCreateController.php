@@ -11,6 +11,7 @@ use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
 use DevPledge\Domain\PreferredUserAuth\UsernamePassword;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
+use DevPledge\Framework\Adapter\MysqlPDODuplicationException;
 use DevPledge\Framework\ControllerDependencies\AuthControllerDependency;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
@@ -65,6 +66,7 @@ class UserCreateController {
 	 *
 	 * @return Response
 	 * @throws \DevPledge\Integrations\Command\CommandException
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	private function creationResponse( PreferredUserAuth $preferredUserAuth, Request $request, Response $response ) {
 
@@ -80,21 +82,25 @@ class UserCreateController {
 				}
 			} catch ( \PDOException $PDoException ) {
 
-				if ( strpos( strtolower( $PDoException->getMessage() ), 'duplicate' ) !== false || $PDoException->getCode() == 23000 ) {
-					if ( $preferredUserAuth instanceof UsernameEmailPassword ) {
-						throw new PreferredUserAuthValidationException(
-							'User with ' . $preferredUserAuth->getEmail() . ' may already exist!', 'email'
-						);
-					}
-					if ( $preferredUserAuth instanceof UsernameGitHub ) {
-						return AuthControllerDependency::getController()->gitHubLogin( $request, $response );
-					}
 
-				} else {
-					throw new PreferredUserAuthValidationException(
-						'Unable to create new user'
-					);
+				if ( $preferredUserAuth instanceof UsernameEmailPassword ) {
+					new MysqlPDODuplicationException( $PDoException, $request->getParsedBody(), function ( MysqlPDODuplicationException $ex ) {
+
+						throw new PreferredUserAuthValidationException(
+							'User with ' . $ex->getValue() . ' may already exist!', $ex->getKey()
+						);
+
+					} );
 				}
+				if ( $preferredUserAuth instanceof UsernameGitHub ) {
+					return AuthControllerDependency::getController()->gitHubLogin( $request, $response );
+				}
+
+
+				throw new PreferredUserAuthValidationException(
+					'Unable to create new user'
+				);
+
 
 			}
 		} catch ( PreferredUserAuthValidationException $exception ) {
@@ -102,7 +108,7 @@ class UserCreateController {
 				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
 				, 401 );
 		}
-		if ( $user instanceof User ) {
+		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
 			$token = new TokenString( $user, $this->jwt );
 
 			return $response->withJson(
@@ -126,6 +132,7 @@ class UserCreateController {
 	 *
 	 * @return Response
 	 * @throws \DevPledge\Integrations\Command\CommandException
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function createUserFromEmailPassword( Request $request, Response $response ) {
 		$data = $request->getParsedBody();

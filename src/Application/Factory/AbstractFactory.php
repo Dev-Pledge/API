@@ -128,6 +128,22 @@ abstract class AbstractFactory {
 		return $this;
 	}
 
+	public function createFromPersistedData( \stdClass $rawData ) {
+		try {
+			return $this->setRawData( $rawData )
+			            ->newProductObject()
+			            ->setUuid( true )
+			            ->setData()
+			            ->setMethodsToProductObject()
+			            ->setCreatedModified()
+			            ->getProductObject();
+		} catch ( FactoryException $exception ) {
+			Sentry::get()->captureException( $exception );
+		}
+
+		return $this->getProductObject();
+	}
+
 	/**
 	 * @param \stdClass $rawData
 	 *
@@ -173,16 +189,16 @@ abstract class AbstractFactory {
 	}
 
 	/**
-	 * @param $key
+	 * @param bool $fromPersistedData
 	 *
 	 * @return $this
 	 * @throws FactoryException
 	 */
-	protected function setUuid() {
+	protected function setUuid( $fromPersistedData = false ) {
 		try {
-			$this->setMethodToProductObject( $this->primaryIdColumn, 'setUuid', Uuid::class, function ( AbstractDomain $productObject ) {
-				if ( $this->getRawData() instanceof \stdClass ) {
-					$productObject->setPersistedDataFound( true );
+			$this->setMethodToProductObject( $this->primaryIdColumn, 'setUuid', Uuid::class, function ( AbstractDomain $domain ) use ( $fromPersistedData ) {
+				if ( $fromPersistedData ) {
+					$domain->setPersistedDataFound( true );
 				}
 			} );
 		} catch ( \InvalidArgumentException $exception ) {

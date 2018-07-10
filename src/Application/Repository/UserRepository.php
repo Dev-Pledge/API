@@ -70,7 +70,7 @@ class UserRepository {
 	public function read( string $id ): User {
 		$data = $this->adapter->read( 'users', $id, 'user_id' );
 
-		return $this->factory->create( $data );
+		return $this->factory->createFromPersistedData( $data );
 	}
 
 	/**
@@ -81,7 +81,7 @@ class UserRepository {
 	public function readByUsername( string $username ): User {
 		$data = $this->adapter->read( 'users', $username, 'username' );
 
-		return $this->factory->create( $data );
+		return $this->factory->createFromPersistedData( $data );
 	}
 
 	/**
@@ -92,7 +92,7 @@ class UserRepository {
 	public function readByGitHubId( int $gitHubId ): User {
 		$data = $this->adapter->read( 'users', $gitHubId, 'github_id' );
 
-		return $this->factory->create( $data );
+		return $this->factory->createFromPersistedData( $data );
 	}
 
 	/**
