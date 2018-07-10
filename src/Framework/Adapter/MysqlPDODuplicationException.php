@@ -20,6 +20,7 @@ class MysqlPDODuplicationException extends \Exception {
 	 *
 	 * @param \PDOException $PDOException
 	 * @param array|null $map
+	 * @param \Closure|null $closure
 	 */
 	public function __construct( \PDOException $PDOException, array $map = null, \Closure $closure = null ) {
 
@@ -52,8 +53,7 @@ class MysqlPDODuplicationException extends \Exception {
 				$this->value = trim( $matches[0], "'" );
 
 				if ( ( $this->key = array_search( $this->value, $this->map ) ) && is_callable( $this->closure ) ) {
-					call_user_func_array( $this->closure, [ $this ] );
-
+					return call_user_func_array( $this->closure, [ $this ] );
 				}
 
 			}
