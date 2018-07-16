@@ -26,11 +26,14 @@ class UserServiceProvider extends AbstractServiceProvider {
 	/**
 	 * @param Container $container
 	 *
-	 * @return mixed
+	 * @return UserService
 	 */
 	public function __invoke( Container $container ) {
-
-		return new UserService( UserRepositoryDependency::getRepository(), UserFactoryDependency::getFactory(), CacheServiceProvider::getService() );
+		return new UserService(
+			UserRepositoryDependency::getRepository(),
+			UserFactoryDependency::getFactory(),
+			CacheServiceProvider::getService()
+		);
 	}
 
 	/**

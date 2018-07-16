@@ -4,6 +4,7 @@ namespace DevPledge\Application\Factory;
 
 
 use DevPledge\Domain\User;
+use Slim\Http\Request;
 
 /**
  * Class UserFactory
@@ -11,7 +12,19 @@ use DevPledge\Domain\User;
  * @method User create( \stdClass $rawData )
  */
 class UserFactory extends AbstractFactory {
-
+	/**
+	 * @param Request $request
+	 *
+	 * @return User
+	 * @throws FactoryException
+	 */
+	function createFromRequest( Request $request ) {
+		try {
+			return $this->create( $request->getAttribute( Token::class )->getPayload() );
+		} catch ( \Error $error ) {
+			throw new FactoryException( $error->getMessage() );
+		}
+	}
 
 	/**
 	 * @return AbstractFactory|UserFactory

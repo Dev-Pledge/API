@@ -128,6 +128,11 @@ abstract class AbstractFactory {
 		return $this;
 	}
 
+	/**
+	 * @param \stdClass $rawData
+	 *
+	 * @return AbstractDomain
+	 */
 	public function createFromPersistedData( \stdClass $rawData ) {
 		try {
 			return $this->setRawData( $rawData )
@@ -217,7 +222,11 @@ abstract class AbstractFactory {
 	protected function setData() {
 
 		return $this
-			->setMethodToProductObject( 'data', 'setData', Data::class );
+			->setMethodToProductObject(
+				'data',
+				'setData',
+				Data::class
+			);
 
 	}
 
@@ -227,8 +236,16 @@ abstract class AbstractFactory {
 	 */
 	protected function setCreatedModified() {
 		return $this
-			->setMethodToProductObject( 'created', 'setCreated', \DateTime::class )
-			->setMethodToProductObject( 'modified', 'setModified', \DateTime::class );
+			->setMethodToProductObject(
+				'created',
+				'setCreated',
+				\DateTime::class
+			)
+			->setMethodToProductObject(
+				'modified',
+				'setModified',
+				\DateTime::class
+			);
 	}
 
 	/**

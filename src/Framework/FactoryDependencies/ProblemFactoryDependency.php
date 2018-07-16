@@ -1,38 +1,42 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: johnsaunders
+ * Date: 16/07/2018
+ * Time: 22:29
+ */
 
 namespace DevPledge\Framework\FactoryDependencies;
 
 
-use DevPledge\Application\Factory\UserFactory;
-use DevPledge\Domain\User;
+use DevPledge\Application\Factory\ProblemFactory;
+use DevPledge\Domain\Problem;
 use DevPledge\Integrations\FactoryDependency\AbstractFactoryDependency;
 use Slim\Container;
 
 /**
- * Class UserFactoryDependency
+ * Class ProblemFactoryDependency
  * @package DevPledge\Framework\FactoryDependencies
  */
-class UserFactoryDependency extends AbstractFactoryDependency {
-	/**
-	 * UserFactoryDependency constructor.
-	 */
+class ProblemFactoryDependency extends AbstractFactoryDependency {
+
 	public function __construct() {
-		parent::__construct( UserFactory::class );
+		parent::__construct( ProblemFactory::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return UserFactory
+	 * @return ProblemFactory
 	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function __invoke( Container $container ) {
-		return new UserFactory( User::class, 'user' ,'user_id');
+		return new ProblemFactory( Problem::class, 'problem' ,'problem_id');
 	}
 
-
 	/**
-	 * @return UserFactory
+	 * usually return static::getFromContainer();
+	 * @return mixed
 	 */
 	static public function getFactory() {
 		return static::getFromContainer();

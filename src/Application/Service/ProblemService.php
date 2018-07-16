@@ -11,6 +11,8 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Application\Repository\ProblemRepository;
+use DevPledge\Domain\Problem;
+use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 
 class ProblemService {
 	/**
@@ -31,5 +33,14 @@ class ProblemService {
 	public function __construct( ProblemRepository $repo, ProblemFactory $factory ) {
 		$this->repo    = $repo;
 		$this->factory = $factory;
+	}
+
+	public function create( \stdClass $data ) {
+		$problem = $this->factory->create( $data );
+		return $this->repo->create( $problem );
+	}
+
+	public function update(Problem $problem){
+		return $this->repo->update( $problem);
 	}
 }

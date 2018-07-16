@@ -1,16 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 16/07/2018
- * Time: 20:09
- */
 
 namespace DevPledge\Application\Repository;
 
-use DevPledge\Application\Factory\AbstractFactory;
 use DevPledge\Application\Factory\ProblemFactory;
-use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Problem;
 use DevPledge\Framework\Adapter\Adapter;
 
@@ -35,7 +27,7 @@ class ProblemRepository extends AbstractRepository {
 	 * @return Problem
 	 * @throws \Exception
 	 */
-	public function create( Problem $problem ): AbstractDomain {
+	public function create( Problem $problem ): Problem {
 		return parent::create( $problem, 'problems', 'problem_id' );
 
 	}
@@ -46,7 +38,7 @@ class ProblemRepository extends AbstractRepository {
 	 * @return Problem
 	 * @throws \Exception
 	 */
-	public function update( Problem $domain ) {
+	public function update( Problem $domain ): Problem {
 		return parent::update( $domain, 'problems', 'problem_id' );
 	}
 
@@ -55,8 +47,8 @@ class ProblemRepository extends AbstractRepository {
 	 *
 	 * @return Problem
 	 */
-	public function read( $id ) {
-		return parent::read( $id, 'users', 'user_id' );
+	public function read( $id ): Problem {
+		return parent::read( $id, 'problems', 'problem_id' );
 	}
 
 

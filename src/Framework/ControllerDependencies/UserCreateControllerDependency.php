@@ -3,17 +3,17 @@
 namespace DevPledge\Framework\ControllerDependencies;
 
 
-use DevPledge\Domain\User;
+
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Integrations\ControllerDependency\AbstractControllerDependency;
 use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 use Slim\Container;
 
 /**
- * Class UserControllerDependency
+ * Class UserCreateControllerDependency
  * @package DevPledge\Framework\ControllerDependencies
  */
-class UserControllerDependency extends AbstractControllerDependency {
+class UserCreateControllerDependency extends AbstractControllerDependency {
 	public function __construct() {
 		parent::__construct( UserCreateController::class );
 	}
