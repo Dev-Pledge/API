@@ -38,8 +38,7 @@ class UserRepository extends AbstractRepository {
 	 * @throws \Exception
 	 */
 	public function create( User $user ): User {
-
-		return parent::create( $user, 'users');
+		return parent::create( $user, 'users' );
 	}
 
 	/**
@@ -49,10 +48,7 @@ class UserRepository extends AbstractRepository {
 	 * @throws \Exception
 	 */
 	public function update( User $user ): User {
-		$user->setModified( new \DateTime() );
-		$this->adapter->update( 'users', $user->getId(), $user->toMap(), 'user_id' );
-
-		return $this->read( $user->getId() );
+		return parent::update( $user, 'users', 'user_id' );
 	}
 
 	/**
@@ -61,9 +57,7 @@ class UserRepository extends AbstractRepository {
 	 * @return User
 	 */
 	public function read( string $id ): User {
-		$data = $this->adapter->read( 'users', $id, 'user_id' );
-
-		return $this->factory->createFromPersistedData( $data );
+		return parent::read( $id, 'users', 'user_id' );
 	}
 
 	/**

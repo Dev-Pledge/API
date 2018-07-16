@@ -50,5 +50,14 @@ class ProblemRepository extends AbstractRepository {
 		return parent::update( $domain, 'problems', 'problem_id' );
 	}
 
+	/**
+	 * @param $id
+	 *
+	 * @return Problem
+	 */
+	public function read( $id ) {
+		return parent::read( $id, 'users', 'user_id' );
+	}
+
 
 }

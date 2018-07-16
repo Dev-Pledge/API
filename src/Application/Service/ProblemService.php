@@ -10,6 +10,7 @@ namespace DevPledge\Application\Service;
 
 
 use DevPledge\Application\Factory\ProblemFactory;
+use DevPledge\Application\Repository\ProblemRepository;
 
 class ProblemService {
 	/**
@@ -19,5 +20,16 @@ class ProblemService {
 	/**
 	 * @var ProblemFactory $factory
 	 */
-	private $factory;
+	protected $factory;
+
+	/**
+	 * ProblemService constructor.
+	 *
+	 * @param ProblemRepository $repo
+	 * @param ProblemFactory $factory
+	 */
+	public function __construct( ProblemRepository $repo, ProblemFactory $factory ) {
+		$this->repo    = $repo;
+		$this->factory = $factory;
+	}
 }
