@@ -159,6 +159,7 @@ class UserCreateController {
 	 *
 	 * @return Response
 	 * @throws \DevPledge\Integrations\Command\CommandException
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function createUserFromGitHub( Request $request, Response $response ) {
 		$data = $request->getParsedBody();

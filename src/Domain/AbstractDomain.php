@@ -6,6 +6,10 @@ namespace DevPledge\Domain;
 use DevPledge\Application\Mapper\Mappable;
 use DevPledge\Uuid\Uuid;
 
+/**
+ * Class AbstractDomain
+ * @package DevPledge\Domain
+ */
 abstract class AbstractDomain implements Mappable {
 	/**
 	 * @var Uuid

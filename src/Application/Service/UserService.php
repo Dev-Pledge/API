@@ -49,8 +49,8 @@ class UserService {
 	 */
 	public function create( PreferredUserAuth $preferredUserAuth ) {
 
-		$data        = (object) $preferredUserAuth->getAuthDataArray()->getArray();
-		$user        = $this->factory->create( $data );
+		$data = (object) $preferredUserAuth->getAuthDataArray()->getArray();
+		$user = $this->factory->create( $data );
 
 		$createdUser = $this->repo->create( $user );
 		if ( $createdUser->isPersistedDataFound() ) {
@@ -93,6 +93,15 @@ class UserService {
 	 */
 	public function getByGitHubId( int $gitHubId ) {
 		return $this->repo->readByGitHubId( $gitHubId );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return \DevPledge\Domain\User
+	 */
+	public function getByUserId( string $userId ) {
+		return $this->repo->read( $userId );
 	}
 
 }
