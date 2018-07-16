@@ -42,16 +42,22 @@ class Problem extends AbstractDomain {
 	 */
 	protected $deleted = false;
 
+	/**
+	 * @return \stdClass
+	 */
 	function toMap(): \stdClass {
 		return (object) [
-			'problem_id'    => $this->getId(),
-			'user_id'       => $this->getUserId(),
-			'title'         => $this->getTitle(),
-			'description'   => $this->getDescription(),
-			'specification' => $this->getSpecification(),
-			'data'          => $this->getData()->getJson(),
-			'modified'      => $this->getModified()->format( 'Y-m-d H:i:s' ),
-			'created'       => $this->getCreated()->format( 'Y-m-d H:i:s' ),
+			'problem_id'        => $this->getId(),
+			'user_id'           => $this->getUserId(),
+			'title'             => $this->getTitle(),
+			'description'       => $this->getDescription(),
+			'specification'     => $this->getSpecification(),
+			'data'              => $this->getData()->getJson(),
+			'active_datetime'   => $this->dateTimeStringOrNull( $this->getActiveDatetime() ),
+			'deadline_datetime' => $this->dateTimeStringOrNull( $this->getDeadlineDatetime() ),
+			'deleted'           => $this->boolAsTinyInt( $this->isDeleted() ),
+			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
+			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
 	}
 
@@ -94,21 +100,25 @@ class Problem extends AbstractDomain {
 	/**
 	 * @return string
 	 */
-	public function getDescription(): string {
+	public function getDescription(): ?string {
 		return $this->description;
 	}
 
 	/**
 	 * @param string $description
+	 *
+	 * @return $this
 	 */
-	public function setDescription( string $description ): void {
+	public function setDescription( string $description ) {
 		$this->description = $description;
+
+		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return null|string
 	 */
-	public function getSpecification(): string {
+	public function getSpecification(): ?string {
 		return $this->specification;
 	}
 
@@ -124,36 +134,36 @@ class Problem extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return \DateTime | null
 	 */
-	public function getActiveDatetime(): string {
+	public function getActiveDatetime(): ?\DateTime {
 		return $this->activeDatetime;
 	}
 
 	/**
-	 * @param string $activeDatetime
+	 * @param \DateTime $activeDatetime
 	 *
 	 * @return $this
 	 */
-	public function setActiveDatetime( string $activeDatetime ) {
+	public function setActiveDatetime( \DateTime $activeDatetime ) {
 		$this->activeDatetime = $activeDatetime;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return \DateTime | null
 	 */
-	public function getDeadlineDatetime(): string {
+	public function getDeadlineDatetime(): ?\DateTime {
 		return $this->deadlineDatetime;
 	}
 
 	/**
-	 * @param string $deadlineDatetime
+	 * @param \DateTime $deadlineDatetime
 	 *
 	 * @return $this
 	 */
-	public function setDeadlineDatetime( string $deadlineDatetime ) {
+	public function setDeadlineDatetime( \DateTime $deadlineDatetime ) {
 		$this->deadlineDatetime = $deadlineDatetime;
 
 		return $this;
@@ -168,8 +178,10 @@ class Problem extends AbstractDomain {
 
 	/**
 	 * @param bool $deleted
+	 *
+	 * @return Problem
 	 */
-	public function setDeleted( bool $deleted ): void {
+	public function setDeleted( bool $deleted ): Problem {
 		$this->deleted = $deleted;
 
 		return $this;

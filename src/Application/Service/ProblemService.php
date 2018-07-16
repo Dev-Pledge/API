@@ -9,6 +9,15 @@
 namespace DevPledge\Application\Service;
 
 
-class ProblemService {
+use DevPledge\Application\Factory\ProblemFactory;
 
+class ProblemService {
+	/**
+	 * @var  $repo
+	 */
+	protected $repo;
+	/**
+	 * @var ProblemFactory $factory
+	 */
+	private $factory;
 }

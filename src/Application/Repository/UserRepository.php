@@ -14,16 +14,11 @@ use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
 use TomWright\Database\ExtendedPDO\Query;
 
-class UserRepository {
-	/**
-	 * @var Adapter
-	 */
-	private $adapter;
-
-	/**
-	 * @var OrganisationFactory
-	 */
-	private $factory;
+/**
+ * Class UserRepository
+ * @package DevPledge\Application\Repository
+ */
+class UserRepository extends AbstractRepository {
 
 	/**
 	 * UserRepository constructor.
@@ -44,9 +39,7 @@ class UserRepository {
 	 */
 	public function create( User $user ): User {
 
-		$this->adapter->create( 'users', $user->toMap() );
-
-		return $this->read( $user->getId() );
+		return parent::create( $user, 'users');
 	}
 
 	/**

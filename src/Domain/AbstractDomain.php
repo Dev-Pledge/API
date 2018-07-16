@@ -134,8 +134,26 @@ abstract class AbstractDomain implements Mappable {
 	 */
 	public function setPersistedDataFound( bool $dataFound ) {
 		$this->persistedDataFound = $dataFound;
+
 		return $this;
 	}
 
+	/**
+	 * @param \DateTime|null $dateTime
+	 * @param string $format
+	 *
+	 * @return null|string
+	 */
+	protected function dateTimeStringOrNull( \DateTime $dateTime = null, $format = 'Y-m-d H:i:s' ) {
+		if ( ! isset( $dateTime ) ) {
+			return null;
+		}
+
+		return $dateTime->format( $format );
+	}
+
+	protected function boolAsTinyInt( $bool ) {
+		return $bool ? 1 : 0;
+	}
 
 }

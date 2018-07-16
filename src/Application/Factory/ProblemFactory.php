@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 15/07/2018
- * Time: 22:54
- */
 
 namespace DevPledge\Application\Factory;
 
@@ -12,12 +6,17 @@ namespace DevPledge\Application\Factory;
 class ProblemFactory extends AbstractFactory {
 
 	/**
-	 * @return $this
+	 * @return AbstractFactory|void
+	 * @throws FactoryException
 	 */
 	function setMethodsToProductObject() {
 		$this
 			->setMethodToProductObject( 'user_id', 'setUserId' )
 			->setMethodToProductObject( 'title', 'setTitle' )
+			->setMethodToProductObject( 'active_datetime', 'setActiveDatetime', \DateTime::class )
+			->setMethodToProductObject( 'deadline_datetime', 'setDeadlineDatetime', \DateTime::class )
+			->setMethodToProductObject( 'deleted', 'setDeleted' )
+			->setMethodToProductObject( 'specification', 'setSpecification' )
 			->setMethodToProductObject( 'description', 'setDescription' );
 	}
 }
