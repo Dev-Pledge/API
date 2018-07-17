@@ -160,7 +160,7 @@ class User extends AbstractDomain {
 	/**
 	 * @return \stdClass
 	 */
-	function toMap(): \stdClass {
+	function toPersistMap(): \stdClass {
 
 		return (object) [
 			'user_id'         => $this->getId(),

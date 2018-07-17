@@ -61,7 +61,7 @@ class Organisation implements Mappable
     /**
      * @return \stdClass
      */
-    function toMap(): \stdClass
+    function toPersistMap(): \stdClass
     {
         return (object)[
             'id' => $this->getId(),

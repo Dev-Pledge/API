@@ -45,9 +45,10 @@ class TokenString {
 
 		$wildCardPermissions = new WildCardPermissions();
 		$user                = $this->user;
-		$data                = $user->toMap();
-		$data->perms         = $wildCardPermissions->getPerms();
-		$token               = $this->jwt->generate(
+		$data                = $user->toPersistMap();
+		unset( $data->hashed_password );
+		$data->perms = $wildCardPermissions->getPerms();
+		$token       = $this->jwt->generate(
 			$data
 		);
 

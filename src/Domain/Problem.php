@@ -45,7 +45,7 @@ class Problem extends AbstractDomain {
 	/**
 	 * @return \stdClass
 	 */
-	function toMap(): \stdClass {
+	function toPersistMap(): \stdClass {
 		return (object) [
 			'problem_id'        => $this->getId(),
 			'user_id'           => $this->getUserId(),

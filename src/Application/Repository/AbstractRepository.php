@@ -43,7 +43,7 @@ abstract class AbstractRepository {
 	 * @throws \Exception
 	 */
 	public function create( Mappable $domain ): AbstractDomain {
-		$this->adapter->create( $this->getResource(), $domain->toMap() );
+		$this->adapter->create( $this->getResource(), $domain->toPersistMap() );
 
 		return $this->read( $domain->getId() );
 	}
@@ -58,7 +58,7 @@ abstract class AbstractRepository {
 	 */
 	public function update( Mappable $domain ): AbstractDomain {
 		$domain->setModified( new \DateTime() );
-		$this->adapter->update( $this->getResource(), $domain->getId(), $domain->toMap(), $this->getColumn() );
+		$this->adapter->update( $this->getResource(), $domain->getId(), $domain->toPersistMap(), $this->getColumn() );
 
 		return $this->read( $domain->getId(), $this->getResource(), $this->getColumn() );
 	}

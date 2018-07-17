@@ -151,3 +151,15 @@ You will need to use GitHubs Oauth to get the access token and github_id (github
 The /user/create... endpoints will give a new JWT Token or send back an error message.
 
 It will also give state what `field` the error relates to.
+
+# Create A Problem
+
+### `POST`  `/problem/create`
+```
+{
+    "title": "Python Package to reduce cabbage",
+    "description": "I have some massive Cabages that need a script to reduce them!",
+    "active_datetime": "2018-09-01 00:00:00",
+    "deadline_datetime": "2018-09-15 00:00:00",
+    "specification": "I need it to work with the malestrom frame work"
+}
