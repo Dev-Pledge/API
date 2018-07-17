@@ -35,6 +35,12 @@ class ProblemService {
 		$this->factory = $factory;
 	}
 
+	/**
+	 * @param \stdClass $data
+	 *
+	 * @return Problem
+	 * @throws \Exception
+	 */
 	public function create( \stdClass $data ) {
 		$problem = $this->factory->create( $data );
 		return $this->repo->create( $problem );

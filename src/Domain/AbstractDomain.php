@@ -76,9 +76,9 @@ abstract class AbstractDomain implements Mappable {
 	/**
 	 * @param Data $data
 	 *
-	 * @return User
+	 * @return $this
 	 */
-	public function setData( Data $data ): User {
+	public function setData( Data $data ): AbstractDomain {
 		$this->data = $data;
 
 		return $this;
@@ -94,9 +94,9 @@ abstract class AbstractDomain implements Mappable {
 	/**
 	 * @param \DateTime $created
 	 *
-	 * @return User
+	 * @return $this
 	 */
-	public function setCreated( \DateTime $created ): User {
+	public function setCreated( \DateTime $created ): AbstractDomain {
 		$this->created = $created;
 
 		return $this;
@@ -112,9 +112,9 @@ abstract class AbstractDomain implements Mappable {
 	/**
 	 * @param \DateTime $modified
 	 *
-	 * @return User
+	 * @return $this
 	 */
-	public function setModified( \DateTime $modified ): User {
+	public function setModified( \DateTime $modified ): AbstractDomain {
 		$this->modified = $modified;
 
 		return $this;
@@ -144,7 +144,7 @@ abstract class AbstractDomain implements Mappable {
 	 *
 	 * @return null|string
 	 */
-	protected function dateTimeStringOrNull( \DateTime $dateTime = null, $format = 'Y-m-d H:i:s' ) {
+	protected function dateTimeStringOrNull( \DateTime $dateTime = null, $format = 'Y-m-d H:i:s' ): ?string {
 		if ( ! isset( $dateTime ) ) {
 			return null;
 		}
@@ -152,7 +152,7 @@ abstract class AbstractDomain implements Mappable {
 		return $dateTime->format( $format );
 	}
 
-	protected function boolAsTinyInt( $bool ) {
+	protected function boolAsTinyInt( $bool ):?int {
 		return $bool ? 1 : 0;
 	}
 

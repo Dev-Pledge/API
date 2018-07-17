@@ -3,7 +3,6 @@
 namespace DevPledge\Application\Repository;
 
 use DevPledge\Application\Factory\ProblemFactory;
-use DevPledge\Domain\Problem;
 use DevPledge\Framework\Adapter\Adapter;
 
 /**
@@ -21,35 +20,18 @@ class ProblemRepository extends AbstractRepository {
 		parent::__construct( $adapter, $factory );
 	}
 
-	/**
-	 * @param Problem $problem
-	 *
-	 * @return Problem
-	 * @throws \Exception
-	 */
-	public function create( Problem $problem ): Problem {
-		return parent::create( $problem, 'problems', 'problem_id' );
 
+	/**
+	 * @return string
+	 */
+	protected function getResource(): string {
+		return 'problems';
 	}
 
 	/**
-	 * @param Problem $domain
-	 *
-	 * @return Problem
-	 * @throws \Exception
+	 * @return string
 	 */
-	public function update( Problem $domain ): Problem {
-		return parent::update( $domain, 'problems', 'problem_id' );
+	protected function getColumn(): string {
+		return 'problem_id';
 	}
-
-	/**
-	 * @param $id
-	 *
-	 * @return Problem
-	 */
-	public function read( $id ): Problem {
-		return parent::read( $id, 'problems', 'problem_id' );
-	}
-
-
 }

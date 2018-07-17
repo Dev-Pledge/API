@@ -31,34 +31,6 @@ class UserRepository extends AbstractRepository {
 		$this->factory = $factory;
 	}
 
-	/**
-	 * @param User $user
-	 *
-	 * @return User
-	 * @throws \Exception
-	 */
-	public function create( User $user ): User {
-		return parent::create( $user, 'users' );
-	}
-
-	/**
-	 * @param User $user
-	 *
-	 * @return User
-	 * @throws \Exception
-	 */
-	public function update( User $user ): User {
-		return parent::update( $user, 'users', 'user_id' );
-	}
-
-	/**
-	 * @param string $id
-	 *
-	 * @return User
-	 */
-	public function read( string $id ): User {
-		return parent::read( $id, 'users', 'user_id' );
-	}
 
 	/**
 	 * @param string $username
@@ -98,5 +70,19 @@ class UserRepository extends AbstractRepository {
 		return $this->adapter->readAll( 'user' );
 
 
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getResource(): string {
+		return 'users';
+	}
+
+	/**
+	 * @return string
+	 */
+	protected function getColumn(): string {
+		return 'user_id';
 	}
 }

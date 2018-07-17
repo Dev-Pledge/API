@@ -9,7 +9,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
-use DevPledge\Framework\Controller\User\ProblemController;
+use DevPledge\Framework\Controller\Problem\ProblemController;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
@@ -21,7 +21,7 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 	protected function callableInGroup() {
 		$this->getApp()->post( '/create', ProblemController::class . ':createProblem' )->add( new Authorise() );
 
-		$this->getApp()->get( '/{id}', ProblemController::class . ':getProblem' );
+		$this->getApp()->get( '/get/{id}', ProblemController::class . ':getProblem' );
 
 
 	}

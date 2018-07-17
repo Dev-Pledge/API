@@ -1,15 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 16/07/2018
- * Time: 23:12
- */
 
 namespace DevPledge\Framework\ControllerDependencies;
 
 
-use DevPledge\Framework\Controller\User\ProblemController;
+use DevPledge\Framework\Controller\Problem\ProblemController;
 use DevPledge\Integrations\ControllerDependency\AbstractControllerDependency;
 use Slim\Container;
 
@@ -18,6 +12,10 @@ use Slim\Container;
  * @package DevPledge\Framework\ControllerDependencies
  */
 class ProblemControllerDependency extends AbstractControllerDependency {
+
+	public function __construct() {
+		parent::__construct( ProblemController::class );
+	}
 
 	/**
 	 * @param Container $container

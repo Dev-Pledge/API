@@ -45,14 +45,10 @@ class TokenString {
 
 		$wildCardPermissions = new WildCardPermissions();
 		$user                = $this->user;
+		$data                = $user->toMap();
+		$data->perms         = $wildCardPermissions->getPerms();
 		$token               = $this->jwt->generate(
-			(object)
-			(
-			array_merge(
-				$user->toMap(),
-				[ 'perms' => $wildCardPermissions->getPerms() ]
-			)
-			)
+			$data
 		);
 
 		return $this->token = $token;

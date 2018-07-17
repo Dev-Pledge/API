@@ -36,7 +36,7 @@ class ProblemFactoryDependency extends AbstractFactoryDependency {
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return mixed
+	 * @return ProblemFactory
 	 */
 	static public function getFactory() {
 		return static::getFromContainer();

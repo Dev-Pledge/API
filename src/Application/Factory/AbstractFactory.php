@@ -58,6 +58,7 @@ abstract class AbstractFactory {
 	 * @return AbstractDomain
 	 */
 	protected function getProductObject(): AbstractDomain {
+
 		return $this->productObject;
 	}
 
@@ -65,6 +66,7 @@ abstract class AbstractFactory {
 	 * @return $this
 	 */
 	protected function newProductObject() {
+
 		return $this->setProductObject( new $this->productObjectClassString( $this->entity ) );
 
 	}
@@ -108,6 +110,7 @@ abstract class AbstractFactory {
 	 * @throws FactoryException
 	 */
 	protected function setMethodToProductObject( $key, $setMethod, $useClass = null, \Closure $onSetCallback = null ) {
+
 		if ( isset( $this->rawData->{$key} ) ) {
 			if ( is_callable( array( $this->productObject, $setMethod ) ) ) {
 				try {

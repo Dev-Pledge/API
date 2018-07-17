@@ -41,7 +41,7 @@ class CreateProblemHandler extends AbstractCommandHandler {
 
 
 		return ProblemServiceProvider::getService()->create(
-			$command->getData()
+			$data
 		);
 	}
 }

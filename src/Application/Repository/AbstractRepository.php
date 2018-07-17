@@ -4,6 +4,7 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\AbstractFactory;
+use DevPledge\Application\Mapper\Mappable;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Framework\Adapter\Adapter;
 
@@ -41,8 +42,8 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function create( AbstractDomain $domain, $resource ) {
-		$this->adapter->create( $resource, $domain->toMap() );
+	public function create( Mappable $domain ): AbstractDomain {
+		$this->adapter->create( $this->getResource(), $domain->toMap() );
 
 		return $this->read( $domain->getId() );
 	}
@@ -55,11 +56,11 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function update( AbstractDomain $domain, $resource, $column ) {
+	public function update( Mappable $domain ): AbstractDomain {
 		$domain->setModified( new \DateTime() );
-		$this->adapter->update( $resource, $domain->getId(), $domain->toMap(), $column );
+		$this->adapter->update( $this->getResource(), $domain->getId(), $domain->toMap(), $this->getColumn() );
 
-		return $this->read( $domain->getId(), $resource, $column );
+		return $this->read( $domain->getId(), $this->getResource(), $this->getColumn() );
 	}
 
 	/**
@@ -69,10 +70,19 @@ abstract class AbstractRepository {
 	 *
 	 * @return AbstractDomain
 	 */
-	public function read( $id, $resource, $column ) {
-		$data = $this->adapter->read( $resource, $id, $column );
+	public function read( string $id ): AbstractDomain {
 
+		$data = $this->adapter->read( $this->getResource(), $id, $this->getColumn() );
 		return $this->factory->createFromPersistedData( $data );
 	}
 
+	/**
+	 * @return string
+	 */
+	abstract protected function getResource(): string;
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getColumn(): string;
 }

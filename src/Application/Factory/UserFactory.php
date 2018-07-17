@@ -4,6 +4,7 @@ namespace DevPledge\Application\Factory;
 
 
 use DevPledge\Domain\User;
+use DevPledge\Integrations\Security\JWT\Token;
 use Slim\Http\Request;
 
 /**
@@ -13,14 +14,15 @@ use Slim\Http\Request;
  */
 class UserFactory extends AbstractFactory {
 	/**
-	 * @param Request $request
+	 * @param Token $token
 	 *
 	 * @return User
 	 * @throws FactoryException
 	 */
-	function createFromRequest( Request $request ) {
+	function createFromToken( Token $token ) {
 		try {
-			return $this->create( $request->getAttribute( Token::class )->getPayload() );
+
+			return $this->create( $token->getData() );
 		} catch ( \Error $error ) {
 			throw new FactoryException( $error->getMessage() );
 		}

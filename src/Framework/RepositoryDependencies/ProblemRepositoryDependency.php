@@ -7,6 +7,7 @@ use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
+use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
 
 /**
