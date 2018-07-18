@@ -49,7 +49,9 @@ class ProblemService {
 	 */
 	public function create( \stdClass $data ) {
 		$problem = $this->factory->create( $data );
-
+		/**
+		 * TODO fix mapTopicToProblem
+		 */
 		$problem = $this->repo->create( $problem );
 		$this->topic->mapTopicToProblem( $problem);
 	}
