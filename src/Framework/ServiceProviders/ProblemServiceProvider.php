@@ -28,7 +28,11 @@ class ProblemServiceProvider extends AbstractServiceProvider {
 	 * @return ProblemService
 	 */
 	public function __invoke( Container $container ) {
-		return new ProblemService( ProblemRepositoryDependency::getRepository(), ProblemFactoryDependency::getFactory() );
+		return new ProblemService(
+			ProblemRepositoryDependency::getRepository(),
+			ProblemFactoryDependency::getFactory(),
+			TopicServiceProvider::getService()
+		);
 	}
 
 	/**

@@ -26,6 +26,7 @@ class CreateProblemHandler extends AbstractCommandHandler {
 	/**
 	 * @param $command CreateProblemCommand
 	 *
+	 * @throws \Exception
 	 * @return \DevPledge\Domain\Problem
 	 */
 	protected function handle( $command ) {
@@ -37,6 +38,10 @@ class CreateProblemHandler extends AbstractCommandHandler {
 			if ( ! ( isset( $data->{$validate} ) && strlen( $data->{$validate} ) > 3 ) ) {
 				throw new InvalidArgumentException( $validate . ' does not have required information', $validate );
 			}
+		}
+
+		if ( ! ( isset( $data->topics ) && is_array( $data->topics ) && count( $data->topics ) ) ) {
+			throw new InvalidArgumentException( 'Atleast one topic is required', 'topics' );
 		}
 
 

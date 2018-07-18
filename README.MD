@@ -152,7 +152,7 @@ The /user/create... endpoints will give a new JWT Token or send back an error me
 
 It will also give state what `field` the error relates to.
 
-# Create A Problem
+## Create A Problem
 
 ### `POST`  `/problem/create`
 ```

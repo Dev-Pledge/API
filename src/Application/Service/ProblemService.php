@@ -23,16 +23,22 @@ class ProblemService {
 	 * @var ProblemFactory $factory
 	 */
 	protected $factory;
+	/**
+	 * @var TopicService
+	 */
+	protected $topic;
 
 	/**
 	 * ProblemService constructor.
 	 *
 	 * @param ProblemRepository $repo
 	 * @param ProblemFactory $factory
+	 * @param TopicService $topic
 	 */
-	public function __construct( ProblemRepository $repo, ProblemFactory $factory ) {
+	public function __construct( ProblemRepository $repo, ProblemFactory $factory, TopicService $topic ) {
 		$this->repo    = $repo;
 		$this->factory = $factory;
+		$this->topic   = $topic;
 	}
 
 	/**
@@ -43,10 +49,12 @@ class ProblemService {
 	 */
 	public function create( \stdClass $data ) {
 		$problem = $this->factory->create( $data );
-		return $this->repo->create( $problem );
+
+		$problem = $this->repo->create( $problem );
+		$this->topic->mapTopicToProblem( $problem);
 	}
 
-	public function update(Problem $problem){
-		return $this->repo->update( $problem);
+	public function update( Problem $problem ) {
+		return $this->repo->update( $problem );
 	}
 }
