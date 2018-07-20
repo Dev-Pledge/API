@@ -67,7 +67,7 @@ class ProblemController extends AbstractController {
 		}
 
 
-		return $response->withJson( $problem->toPersistMap() );
+		return $response->withJson( $problem->toAPIMap() );
 	}
 
 }

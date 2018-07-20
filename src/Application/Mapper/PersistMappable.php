@@ -4,7 +4,7 @@
 namespace DevPledge\Application\Mapper;
 
 
-interface Mappable
+interface PersistMappable
 {
 
     function toPersistMap(): \stdClass;

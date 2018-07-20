@@ -43,8 +43,11 @@ class JWTSettings extends AbstractSetting {
 
 		$this->algorithm     = 'SHA256';
 		$this->secret        = getenv( 'JWT_SECRET' );
-		$this->timeToLive    = 3600;
-		$this->timeToRefresh = 7200;
+		/**
+		 * TODO set this back to 3600 7200
+		 */
+		$this->timeToLive    = 100000;
+		$this->timeToRefresh = 1000000;
 
 		return $this;
 	}

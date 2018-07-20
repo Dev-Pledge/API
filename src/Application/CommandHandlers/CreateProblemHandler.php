@@ -41,7 +41,7 @@ class CreateProblemHandler extends AbstractCommandHandler {
 		}
 
 		if ( ! ( isset( $data->topics ) && is_array( $data->topics ) && count( $data->topics ) ) ) {
-			throw new InvalidArgumentException( 'Atleast one topic is required', 'topics' );
+			throw new InvalidArgumentException( 'At least one topic is required', 'topics' );
 		}
 
 

@@ -4,9 +4,10 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\AbstractFactory;
-use DevPledge\Application\Mapper\Mappable;
+use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Framework\Adapter\Adapter;
+use DevPledge\Framework\Adapter\Wheres;
 
 /**
  * Class AbstractRepository
@@ -42,8 +43,12 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function create( Mappable $domain ): AbstractDomain {
+	public function createPersist( PersistMappable $domain ): AbstractDomain {
 		$this->adapter->create( $this->getResource(), $domain->toPersistMap() );
+
+		if ( $this->getMapRepository() !== null ) {
+			$this->getMapRepository()->createPersist( $domain );
+		}
 
 		return $this->read( $domain->getId() );
 	}
@@ -56,24 +61,66 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function update( Mappable $domain ): AbstractDomain {
+	public function update( PersistMappable $domain ): AbstractDomain {
 		$domain->setModified( new \DateTime() );
 		$this->adapter->update( $this->getResource(), $domain->getId(), $domain->toPersistMap(), $this->getColumn() );
+		if ( $this->getMapRepository() !== null ) {
+			$this->getMapRepository()->update( $domain );
+		}
 
 		return $this->read( $domain->getId(), $this->getResource(), $this->getColumn() );
 	}
 
 	/**
-	 * @param $id
-	 * @param $resource
-	 * @param $column
+	 * @param string $id
+	 * @param \stdClass|null $data
 	 *
 	 * @return AbstractDomain
 	 */
-	public function read( string $id ): AbstractDomain {
+	public function read( string $id, \stdClass $data = null ): AbstractDomain {
 
-		$data = $this->adapter->read( $this->getResource(), $id, $this->getColumn() );
+		$data = isset( $data ) ? $data : $this->adapter->read( $this->getResource(), $id, $this->getColumn() );
+		if ( $this->getMapRepository() !== null ) {
+			return $this->getMapRepository()->read( $id, $data );
+		}
+
 		return $this->factory->createFromPersistedData( $data );
+	}
+
+	/**
+	 * @param string $idForAll
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 *
+	 * @return array|null
+	 */
+	public function readAll( string $idForAll, ?int $limit = null, ?int $offset = null ): ?array {
+		$dataArray = $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $limit, $offset );
+		if ( is_array( $dataArray ) ) {
+			foreach ( $dataArray as &$data ) {
+				$data = $this->factory->createFromPersistedData( $data );
+			}
+		}
+
+		return $dataArray;
+	}
+
+	/**
+	 * @param Wheres $wheres
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 *
+	 * @return array|null
+	 */
+	public function readAllWhere( Wheres $wheres, ?int $limit = null, ?int $offset = null ): ?array {
+		$dataArray = $this->adapter->readAllWhere( $this->getResource(), $wheres, $limit, $offset, $offset );
+		if ( is_array( $dataArray ) ) {
+			foreach ( $dataArray as &$data ) {
+				$data = $this->factory->createFromPersistedData( $data );
+			}
+		}
+
+		return $dataArray;
 	}
 
 	/**
@@ -85,4 +132,15 @@ abstract class AbstractRepository {
 	 * @return string
 	 */
 	abstract protected function getColumn(): string;
+
+	/**
+	 * @return string
+	 */
+	abstract protected function getAllColumn(): string;
+
+	/**
+	 * @return AbstractRepository|null
+	 */
+	abstract protected function getMapRepository(): ?AbstractRepository;
+
 }

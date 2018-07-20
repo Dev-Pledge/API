@@ -54,23 +54,6 @@ class UserRepository extends AbstractRepository {
 		return $this->factory->createFromPersistedData( $data );
 	}
 
-	/**
-	 * @param array $filters
-	 *
-	 * @return array
-	 * @throws \Exception
-	 */
-	public function readAll( array $filters ): array {
-
-//		$query = new Query();
-//		$query->
-		/**
-		 * TODO add filters into Query
-		 */
-		return $this->adapter->readAll( 'user' );
-
-
-	}
 
 	/**
 	 * @return string
@@ -84,5 +67,16 @@ class UserRepository extends AbstractRepository {
 	 */
 	protected function getColumn(): string {
 		return 'user_id';
+	}
+
+	protected function getAllColumn(): string {
+		return 'user_id';
+	}
+
+	/**
+	 * @return AbstractRepository|null
+	 */
+	protected function getMapRepository(): ?AbstractRepository {
+		return null;
 	}
 }

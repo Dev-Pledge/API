@@ -48,15 +48,17 @@ class ProblemService {
 	 * @throws \Exception
 	 */
 	public function create( \stdClass $data ) {
+
 		$problem = $this->factory->create( $data );
-		/**
-		 * TODO fix mapTopicToProblem
-		 */
-		$problem = $this->repo->create( $problem );
-		$this->topic->mapTopicToProblem( $problem);
+
+		$problem = $this->repo->createPersist( $problem );
+
+		return $problem;
 	}
 
 	public function update( Problem $problem ) {
 		return $this->repo->update( $problem );
 	}
+
+
 }

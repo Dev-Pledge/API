@@ -3,6 +3,8 @@
 namespace DevPledge\Application\Factory;
 
 
+use DevPledge\Domain\Topics;
+
 class ProblemFactory extends AbstractFactory {
 
 	/**
@@ -17,6 +19,7 @@ class ProblemFactory extends AbstractFactory {
 			->setMethodToProductObject( 'deadline_datetime', 'setDeadlineDatetime', \DateTime::class )
 			->setMethodToProductObject( 'deleted', 'setDeleted' )
 			->setMethodToProductObject( 'specification', 'setSpecification' )
-			->setMethodToProductObject( 'description', 'setDescription' );
+			->setMethodToProductObject( 'description', 'setDescription' )
+			->setMethodToProductObject( 'topics', 'setTopics', Topics::class );
 	}
 }

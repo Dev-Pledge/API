@@ -4,6 +4,7 @@ namespace DevPledge\Application\Repository;
 
 use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Framework\Adapter\Adapter;
+use DevPledge\Framework\RepositoryDependencies\TopicsProblemRepoDependency;
 
 /**
  * Class ProblemRepository
@@ -33,5 +34,17 @@ class ProblemRepository extends AbstractRepository {
 	 */
 	protected function getColumn(): string {
 		return 'problem_id';
+	}
+
+	protected function getAllColumn(): string {
+		return 'user_id';
+	}
+
+	/**
+	 * @return TopicsProblemRepository
+	 */
+	protected function getMapRepository(): ?AbstractRepository {
+
+		return TopicsProblemRepoDependency::getRepository();
 	}
 }

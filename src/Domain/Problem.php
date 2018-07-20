@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 15/07/2018
- * Time: 20:36
- */
 
 namespace DevPledge\Domain;
 
@@ -41,6 +35,10 @@ class Problem extends AbstractDomain {
 	 * @var bool
 	 */
 	protected $deleted = false;
+	/**
+	 * @var Topics
+	 */
+	protected $topics;
 
 	/**
 	 * @return \stdClass
@@ -185,5 +183,35 @@ class Problem extends AbstractDomain {
 		$this->deleted = $deleted;
 
 		return $this;
+	}
+
+	/**
+	 * @param Topics $topics
+	 *
+	 * @return Problem
+	 */
+	public function setTopics( Topics $topics ): Problem {
+		$this->topics = $topics;
+
+		return $this;
+	}
+
+	/**
+	 * @return Topics
+	 */
+	public function getTopics(): Topics {
+		return $this->topics;
+
+		return isset( $this->topics ) ? $this->topics : new Topics( [] );
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	public function toAPIMap(): \stdClass {
+		$data        = parent::toAPIMap();
+		$data->topics = $this->getTopics()->toArray();
+
+		return $data;
 	}
 }

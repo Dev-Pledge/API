@@ -29,12 +29,12 @@ class TopicService {
 		if ( isset( static::$topics ) ) {
 			return static::$topics;
 		}
-		$this->setUpTopics();
+		static::setUpTopics();
 
 		return static::$topics;
 	}
 
-	protected function setUpTopics() {
+	static protected function setUpTopics() {
 		$parentTopics   = [
 			new Topic( 'Framework' ),
 			new Topic( 'Language' ),
@@ -59,8 +59,13 @@ class TopicService {
 		static::$topics = array_merge( $parentTopics, $languageTopics );
 	}
 
-	public function mapTopicToProblem(Problem $problem, array $topics){
 
+	public static function getTopic( $name ) {
+		foreach ( static::getTopics() as &$topic ) {
+			if ( $topic->getName() == $name ) {
+				return $topic;
+			}
+		}
 	}
 
 }

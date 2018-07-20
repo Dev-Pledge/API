@@ -52,7 +52,7 @@ class UserService {
 		$data = (object) $preferredUserAuth->getAuthDataArray()->getArray();
 		$user = $this->factory->create( $data );
 
-		$createdUser = $this->repo->create( $user );
+		$createdUser = $this->repo->createPersist( $user );
 		if ( $createdUser->isPersistedDataFound() ) {
 			$this->cache->set( $user->getId(), $createdUser->toPersistMap() )
 			            ->set( 'usrn::' . $createdUser->getUsername(), $createdUser->toPersistMap() );

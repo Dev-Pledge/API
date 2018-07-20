@@ -3,14 +3,14 @@
 namespace DevPledge\Domain;
 
 
-use DevPledge\Application\Mapper\Mappable;
+use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Uuid\Uuid;
 
 /**
  * Class AbstractDomain
  * @package DevPledge\Domain
  */
-abstract class AbstractDomain implements Mappable {
+abstract class AbstractDomain implements PersistMappable {
 	/**
 	 * @var Uuid
 	 */
@@ -152,8 +152,15 @@ abstract class AbstractDomain implements Mappable {
 		return $dateTime->format( $format );
 	}
 
-	protected function boolAsTinyInt( $bool ):?int {
+	protected function boolAsTinyInt( $bool ): ?int {
 		return $bool ? 1 : 0;
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	public function toAPIMap(): \stdClass {
+		return $this->toPersistMap();
 	}
 
 }

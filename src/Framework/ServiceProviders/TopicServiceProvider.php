@@ -9,6 +9,10 @@ use Slim\Container;
 
 class TopicServiceProvider extends AbstractServiceProvider {
 
+	public function __construct() {
+		parent::__construct( TopicService::class );
+	}
+
 	/**
 	 * @param Container $container
 	 *

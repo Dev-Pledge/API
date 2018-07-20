@@ -3,13 +3,13 @@
 namespace DevPledge\Domain;
 
 
-use DevPledge\Application\Mapper\Mappable;
+use DevPledge\Application\Mapper\PersistMappable;
 
 /**
  * Class Topic
  * @package DevPledge\Domain
  */
-class Topic implements Mappable {
+class Topic implements PersistMappable {
 
 	protected $name;
 	protected $parentName;
@@ -34,12 +34,26 @@ class Topic implements Mappable {
 	/**
 	 * @return \stdClass
 	 */
-	function toPersistMap(): \stdClass {
+	public function toPersistMap(): \stdClass {
 		return (object) [
 			'name'        => $this->name,
 			'parent_name' => $this->parentName,
 			'description' => $this->description,
 			'example'     => $this->example
 		];
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function getName():?string {
+		return $this->name;
+	}
+
+	/**
+	 * @return null | string
+	 */
+	public function getParentName():?string {
+		return $this->parentName;
 	}
 }

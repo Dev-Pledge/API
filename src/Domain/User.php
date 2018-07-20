@@ -2,7 +2,7 @@
 
 namespace DevPledge\Domain;
 
-use DevPledge\Application\Mapper\Mappable;
+use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\PreferredUserAuth\UsernameEmailPassword;
 use DevPledge\Uuid\Uuid;
 
@@ -174,4 +174,14 @@ class User extends AbstractDomain {
 		];
 	}
 
+	/**
+	 * @return \stdClass
+	 */
+	public function toAPIMap(): \stdClass {
+		$data = parent::toAPIMap();
+
+		unset( $data->hashed_password );
+
+		return $data;
+	}
 }

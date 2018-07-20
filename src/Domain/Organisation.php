@@ -3,13 +3,13 @@
 namespace DevPledge\Domain;
 
 
-use DevPledge\Application\Mapper\Mappable;
+use DevPledge\Application\Mapper\PersistMappable;
 
 /**
  * Class Organisation
  * @package DevPledge\Domain
  */
-class Organisation implements Mappable
+class Organisation implements PersistMappable
 {
 
     /**

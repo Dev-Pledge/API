@@ -1,10 +1,7 @@
 <?php
 
-
 namespace DevPledge\Framework\Adapter;
 
-
-use TomWright\Database\ExtendedPDO\Query;
 
 /**
  * Interface Adapter
@@ -23,12 +20,24 @@ interface Adapter {
 
 	/**
 	 * @param string $resource
-	 * @param null|Query $query
+	 * @param string $id
+	 * @param string $column
+	 * @param int|null $limit
+	 * @param int|null $offset
 	 *
-	 * @return \stdClass[]
-	 * @throws \Exception
+	 * @return array|null
 	 */
-	public function readAll( string $resource, ?Query $query = null ): array;
+	public function readAll( string $resource, string $id, string $column = 'id', ?int $limit = null, ?int $offset = null ): ?array;
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 *
+	 * @return array|null
+	 */
+	public function readAllWhere( string $resource, Wheres $wheres , ?int $limit = null, ?int $offset = null ): ?array;
 
 	/**
 	 * @param string $resource
@@ -51,5 +60,13 @@ interface Adapter {
 	 * @throws \Exception
 	 */
 	public function update( string $resource, string $id, \stdClass $data, string $column = 'id' ): int;
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 *
+	 * @return int
+	 */
+	public function count(string $resource,Wheres $wheres): int;
 
 }

@@ -5,6 +5,7 @@ namespace DevPledge\Framework\Adapter;
 
 
 use TomWright\Database\ExtendedPDO\ExtendedPDO;
+use TomWright\Database\ExtendedPDO\Like;
 use TomWright\Database\ExtendedPDO\Query;
 
 class MysqlAdapter implements Adapter {
@@ -42,19 +43,23 @@ class MysqlAdapter implements Adapter {
 		return $this->db->queryRow( $query->getSql(), $query->getBinds() );
 	}
 
+
 	/**
 	 * @param string $resource
-	 * @param null|Query $query
+	 * @param string $id
+	 * @param string $column
+	 * @param int|null $limit
+	 * @param int $offset
 	 *
-	 * @return \stdClass[]
+	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function readAll( string $resource, ?Query $query = null ): array {
-		if ( $query === null ) {
-			$query = new Query( 'SELECT' );
-		}
-		$query
+	public function readAll( string $resource, string $id, string $column = 'id', ?int $limit = null, ?int $offset = null ): ?array {
+		$query = ( new Query( 'SELECT' ) )
 			->setTable( $this->getResourceTable( $resource ) )
+			->addWhere( $column, $id )
+			->setLimit( $limit )
+			->setOffset( $offset )
 			->buildQuery();
 
 		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
@@ -116,4 +121,90 @@ class MysqlAdapter implements Adapter {
 		return $resource;
 	}
 
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 *
+	 * @return array|null
+	 * @throws \Exception
+	 */
+	public function readAllWhere( string $resource, Wheres $wheres, ?int $limit = null, ?int $offset = null ): ?array {
+		$query = ( new Query( 'SELECT' ) )
+			->setTable( $this->getResourceTable( $resource ) )
+			->setLimit( $limit )
+			->setOffset( $offset );
+
+		$this->wheres( $query, $wheres )->buildQuery();
+
+		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
+	}
+
+	/**
+	 * @param Query $query
+	 * @param Wheres $wheres
+	 *
+	 * @return Query
+	 */
+	protected function wheres( Query $query, Wheres $wheres ): Query {
+		if ( $wheres->getWheres() ) {
+			foreach ( $wheres->getWheres() as $where ) {
+				$column     = $where->getColumn();
+				$value      = $where->getValue();
+				$cleanValue = str_replace( "'", "\'", $value );
+				switch ( $where->getType() ) {
+					case 'equals':
+						$query->addWhere( $column, $value );
+						break;
+					case 'like':
+						$likeValue = new Like( 'contains', $value );
+						$query->addWhere( $column, $likeValue );
+						break;
+					case 'like at start':
+						$likeValue = new Like( 'starts_with', $value );
+						$query->addWhere( $column, $likeValue );
+						break;
+					case 'like at end':
+						$likeValue = new Like( 'ends_with', $value );
+						$query->addWhere( $column, $likeValue );
+						break;
+					case 'more than':
+						$query->addRawWhere( " `{$column}` > '{$cleanValue}' " );
+						break;
+					case 'more than equals':
+						$query->addRawWhere( " `{$column}` >= '{$cleanValue}' " );
+						break;
+					case 'less than':
+						$query->addRawWhere( " `{$column}` < '{$cleanValue}' " );
+						break;
+					case 'less than equals':
+						$query->addRawWhere( " `{$column}` <= '{$cleanValue}' " );
+						break;
+				}
+			}
+		}
+
+		return $query;
+	}
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function count( string $resource, Wheres $wheres ): int {
+		$query = new Query( 'SELECT' );
+		$query->setTable( $this->getResourceTable( $resource ) )->setFields( 'COUNT(*) as total' );
+		$this->wheres( $query, $wheres )->buildQuery();
+		$data = $this->db->queryRow( $query->getSql(), $query->getBinds() );
+		if ( isset( $data->total ) ) {
+			return $data->total;
+		}
+
+		return 0;
+	}
 }
