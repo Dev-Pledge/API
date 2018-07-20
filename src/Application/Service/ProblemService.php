@@ -12,8 +12,15 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Domain\Problem;
-use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
+use DevPledge\Domain\Problems;
+use DevPledge\Domain\User;
+use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
+use DevPledge\Integrations\Cache\Cache;
 
+/**
+ * Class ProblemService
+ * @package DevPledge\Application\Service
+ */
 class ProblemService {
 	/**
 	 * @var  $repo
@@ -24,21 +31,26 @@ class ProblemService {
 	 */
 	protected $factory;
 	/**
-	 * @var TopicService
+	 * @var UserService 
 	 */
-	protected $topic;
+	protected $userService;
+	/**
+	 * @var Cached
+	 */
+	protected $cache;
 
 	/**
 	 * ProblemService constructor.
 	 *
 	 * @param ProblemRepository $repo
 	 * @param ProblemFactory $factory
-	 * @param TopicService $topic
+	 * @param Cache $cache
 	 */
-	public function __construct( ProblemRepository $repo, ProblemFactory $factory, TopicService $topic ) {
+	public function __construct( ProblemRepository $repo, ProblemFactory $factory,  UserService $userService, Cache $cache  ) {
 		$this->repo    = $repo;
 		$this->factory = $factory;
-		$this->topic   = $topic;
+		$this->userService = $userService;
+		$this->cache   = $cache;
 	}
 
 	/**
@@ -56,9 +68,38 @@ class ProblemService {
 		return $problem;
 	}
 
+	/**
+	 * @param Problem $problem
+	 *
+	 * @return \DevPledge\Domain\Problem
+	 * @throws \Exception
+	 */
 	public function update( Problem $problem ) {
 		return $this->repo->update( $problem );
 	}
 
+	/**
+	 * @param string $problemId
+	 *
+	 * @return Problem
+	 */
+	public function read( string $problemId ) {
+		return $this->repo->read( $problemId );
+	}
+
+	/**
+	 * @param $userId
+	 *
+	 * @return Problems|null
+	 * @throws \Exception
+	 */
+	public function readAll( string $userId ): ?Problems {
+		$problems = $this->repo->readAll( $userId );
+		if ( $problems ) {
+			return new Problems( $problems , $this->userService->getUserFromCache( $userId));
+		}
+
+		return null;
+	}
 
 }

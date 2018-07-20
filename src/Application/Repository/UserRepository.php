@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 13/06/2018
- * Time: 13:49
- */
 
 namespace DevPledge\Application\Repository;
 
@@ -12,7 +6,6 @@ namespace DevPledge\Application\Repository;
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
-use TomWright\Database\ExtendedPDO\Query;
 
 /**
  * Class UserRepository

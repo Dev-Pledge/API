@@ -5,7 +5,7 @@ namespace DevPledge\Application\Repository;
 use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Problem;
-use DevPledge\Domain\Topics;
+use DevPledge\Framework\RepositoryDependencies\UserProblemRepoDependency;
 
 /**
  * Class TopicsProblemRepository
@@ -13,40 +13,59 @@ use DevPledge\Domain\Topics;
  */
 class TopicsProblemRepository extends AbstractRepository {
 	/**
-	 * @param Problem $problem
+	 * @param PersistMappable $domain
 	 *
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function createPersist( Problem $problem ): AbstractDomain {
-
-		if ( $topicsArray = $problem->getTopics()->toArray() ) {
-			foreach ( $topicsArray as $topic ) {
-				$this->adapter->create( $this->getResource(), (object) [
-					'topic'      => $topic,
-					'problem_id' => $problem->getId(),
-					'created'    => $problem->getCreated()->format( 'Y-m-d H:i:s' )
-				] );
+	public function createPersist( PersistMappable $domain ): AbstractDomain {
+		if ( $domain instanceof Problem ) {
+			if ( $topicsArray = $domain->getTopics()->toArray() ) {
+				foreach ( $topicsArray as $topic ) {
+					$this->adapter->create( $this->getResource(), (object) [
+						'topic'      => $topic,
+						'problem_id' => $domain->getId(),
+						'created'    => $domain->getCreated()->format( 'Y-m-d H:i:s' )
+					] );
+				}
 			}
+		} else {
+			throw new \Exception( 'Problem object expected!' );
 		}
 
-		return $problem;
+		return $domain;
 	}
 
-	public function update( Problem $problem ): AbstractDomain {
-		if ( $topicsArray = $problem->getTopics()->toArray() ) {
-			foreach ( $topicsArray as $topic ) {
-				$this->adapter->create( $this->getResource(), (object) [
-					'topic'      => $topic,
-					'problem_id' => $problem->getId(),
-					'created'    => $problem->getCreated()->format( 'Y-m-d H:i:s' )
-				] );
+	/**
+	 * @param PersistMappable $domain
+	 *
+	 * @return AbstractDomain
+	 * @throws \Exception
+	 */
+	public function update( PersistMappable $domain ): AbstractDomain {
+		if ( $domain instanceof Problem ) {
+			if ( $topicsArray = $domain->getTopics()->toArray() ) {
+				foreach ( $topicsArray as $topic ) {
+					$this->adapter->create( $this->getResource(), (object) [
+						'topic'      => $topic,
+						'problem_id' => $domain->getId(),
+						'created'    => $domain->getCreated()->format( 'Y-m-d H:i:s' )
+					] );
+				}
 			}
+		} else {
+			throw new \Exception( 'Problem object expected!' );
 		}
 
-		return $problem;
+		return $domain;
 	}
 
+	/**
+	 * @param string $id
+	 * @param \stdClass|null $data
+	 *
+	 * @return AbstractDomain
+	 */
 	public function read( string $id, \stdClass $data = null ): AbstractDomain {
 		$topicData = $this->adapter->readAll( $this->getResource(), $id, $this->getAllColumn() );
 
@@ -58,6 +77,28 @@ class TopicsProblemRepository extends AbstractRepository {
 		}
 
 		return $this->factory->createFromPersistedData( $data );
+	}
+
+	/**
+	 * @param string $id
+	 * @param int|null $limit
+	 * @param int|null $offset
+	 * @param array|null $dataArray
+	 *
+	 * @return array|null
+	 */
+	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null  ): ?array {
+
+		$dataArray = isset( $dataArray ) ? $dataArray : parent::readAll( $idForAll, $limit, $offset, $dataArray );
+		if ( $dataArray ) {
+			foreach ( $dataArray as &$problemData ) {
+				if(isset($problemData->problem_id)) {
+					$problemData = $this->read( $problemData->problem_id, $problemData );
+				}
+			}
+		}
+
+		return $dataArray;
 	}
 
 	/**

@@ -8,6 +8,10 @@ use TomWright\Database\ExtendedPDO\ExtendedPDO;
 use TomWright\Database\ExtendedPDO\Like;
 use TomWright\Database\ExtendedPDO\Query;
 
+/**
+ * Class MysqlAdapter
+ * @package DevPledge\Framework\Adapter
+ */
 class MysqlAdapter implements Adapter {
 
 	/**
@@ -48,19 +52,23 @@ class MysqlAdapter implements Adapter {
 	 * @param string $resource
 	 * @param string $id
 	 * @param string $column
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
-	 * @param int $offset
+	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function readAll( string $resource, string $id, string $column = 'id', ?int $limit = null, ?int $offset = null ): ?array {
+	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array {
 		$query = ( new Query( 'SELECT' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->addWhere( $column, $id )
 			->setLimit( $limit )
-			->setOffset( $offset )
-			->buildQuery();
+			->setOffset( $offset );
+		if ( isset( $orderByColumn ) ) {
+			$query->addOrderBy( $orderByColumn );
+		}
+		$query->buildQuery();
 
 		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
 	}
@@ -125,18 +133,22 @@ class MysqlAdapter implements Adapter {
 	/**
 	 * @param string $resource
 	 * @param Wheres $wheres
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function readAllWhere( string $resource, Wheres $wheres, ?int $limit = null, ?int $offset = null ): ?array {
+	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array {
 		$query = ( new Query( 'SELECT' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->setLimit( $limit )
 			->setOffset( $offset );
-
+		if ( isset( $orderByColumn ) ) {
+			$query->addOrderBy( $orderByColumn );
+		}
+		$query->buildQuery();
 		$this->wheres( $query, $wheres )->buildQuery();
 
 		return $this->db->queryAll( $query->getSql(), $query->getBinds() );

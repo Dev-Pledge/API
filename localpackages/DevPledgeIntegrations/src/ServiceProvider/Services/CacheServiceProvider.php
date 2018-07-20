@@ -37,7 +37,7 @@ class CacheServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return Client
+	 * @return Cache
 	 */
 	static public function getService() {
 		return static::getFromContainer();

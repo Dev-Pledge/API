@@ -22,22 +22,24 @@ interface Adapter {
 	 * @param string $resource
 	 * @param string $id
 	 * @param string $column
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $resource, string $id, string $column = 'id', ?int $limit = null, ?int $offset = null ): ?array;
+	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array;
 
 	/**
 	 * @param string $resource
 	 * @param Wheres $wheres
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 */
-	public function readAllWhere( string $resource, Wheres $wheres , ?int $limit = null, ?int $offset = null ): ?array;
+	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array;
 
 	/**
 	 * @param string $resource
@@ -67,6 +69,6 @@ interface Adapter {
 	 *
 	 * @return int
 	 */
-	public function count(string $resource,Wheres $wheres): int;
+	public function count( string $resource, Wheres $wheres ): int;
 
 }

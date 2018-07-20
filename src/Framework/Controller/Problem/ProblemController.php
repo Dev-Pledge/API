@@ -10,6 +10,7 @@ use DevPledge\Domain\Problem;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\ProblemRepositoryDependency;
+use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -27,15 +28,15 @@ class ProblemController extends AbstractController {
 	 */
 	public function getProblem( Request $request, Response $response ) {
 		$id      = $request->getAttribute( 'id' );
-		$repo    = ProblemRepositoryDependency::getRepository();
-		$problem = $this->readFromRepo( $repo, $id );
+		$problemService    = ProblemServiceProvider::getService();
+		$problem = $problemService->read( $id);
 		if ( is_null( $problem ) ) {
 			return $response->withJson(
 				[ 'error' => 'Problem not found!' ]
 				, 401 );
 		}
 
-		return $response->withJson( $problem->toPersistMap() );
+		return $response->withJson( $problem->toAPIMap() );
 	}
 
 	/**
@@ -70,4 +71,16 @@ class ProblemController extends AbstractController {
 		return $response->withJson( $problem->toAPIMap() );
 	}
 
+	public function getUserProblems(Request $request, Response $response ) {
+		$userId      = $request->getAttribute( 'id' );
+		$problemService    = ProblemServiceProvider::getService();
+		$problems = $problemService->readAll( $userId);
+		if ( is_null( $problems ) ) {
+			return $response->withJson(
+				[ 'error' => 'Problems not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $problems->toAPIMap() );
+	}
 }

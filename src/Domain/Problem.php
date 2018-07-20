@@ -200,7 +200,6 @@ class Problem extends AbstractDomain {
 	 * @return Topics
 	 */
 	public function getTopics(): Topics {
-		return $this->topics;
 
 		return isset( $this->topics ) ? $this->topics : new Topics( [] );
 	}

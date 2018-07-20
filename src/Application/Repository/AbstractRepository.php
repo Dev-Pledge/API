@@ -89,13 +89,20 @@ abstract class AbstractRepository {
 
 	/**
 	 * @param string $idForAll
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
 	 * @param int|null $offset
+	 * @param array|null $dataArray
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $idForAll, ?int $limit = null, ?int $offset = null ): ?array {
-		$dataArray = $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $limit, $offset );
+	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
+		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $orderByColumn, $limit, $offset );
+		if ( $this->getMapRepository() !== null && is_array( $dataArray ) ) {
+			return $this->getMapRepository()->readAll( $idForAll, $orderByColumn, $limit, $offset, $dataArray );
+		}
+
+
 		if ( is_array( $dataArray ) ) {
 			foreach ( $dataArray as &$data ) {
 				$data = $this->factory->createFromPersistedData( $data );
@@ -107,13 +114,20 @@ abstract class AbstractRepository {
 
 	/**
 	 * @param Wheres $wheres
+	 * @param null|string $orderByColumn
 	 * @param int|null $limit
 	 * @param int|null $offset
+	 * @param array|null $dataArray
 	 *
 	 * @return array|null
 	 */
-	public function readAllWhere( Wheres $wheres, ?int $limit = null, ?int $offset = null ): ?array {
-		$dataArray = $this->adapter->readAllWhere( $this->getResource(), $wheres, $limit, $offset, $offset );
+	public function readAllWhere( Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
+		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAllWhere( $this->getResource(), $wheres, $orderByColumn, $limit, $offset, $offset );
+		if ( $this->getMapRepository() !== null && is_array( $dataArray ) ) {
+			return $this->getMapRepository()->readAllWhere( $wheres, $orderByColumn, $limit, $offset, $dataArray );
+		}
+
+
 		if ( is_array( $dataArray ) ) {
 			foreach ( $dataArray as &$data ) {
 				$data = $this->factory->createFromPersistedData( $data );

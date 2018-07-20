@@ -3,11 +3,11 @@
 namespace DevPledge\Framework\ServiceProviders;
 
 
-use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Application\Service\ProblemService;
 use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\ProblemRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Container;
 
 /**
@@ -31,7 +31,8 @@ class ProblemServiceProvider extends AbstractServiceProvider {
 		return new ProblemService(
 			ProblemRepositoryDependency::getRepository(),
 			ProblemFactoryDependency::getFactory(),
-			TopicServiceProvider::getService()
+			UserServiceProvider::getService(),
+			CacheServiceProvider::getService()
 		);
 	}
 

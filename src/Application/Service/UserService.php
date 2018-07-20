@@ -6,6 +6,7 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Application\Repository\UserRepository;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
+use DevPledge\Domain\User;
 use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Uuid\Uuid;
 
@@ -47,7 +48,7 @@ class UserService {
 	 * @return \DevPledge\Domain\User
 	 * @throws \Exception
 	 */
-	public function create( PreferredUserAuth $preferredUserAuth ) {
+	public function create( PreferredUserAuth $preferredUserAuth ): User {
 
 		$data = (object) $preferredUserAuth->getAuthDataArray()->getArray();
 		$user = $this->factory->create( $data );
@@ -67,7 +68,7 @@ class UserService {
 	 * @return \DevPledge\Domain\User
 	 * @throws \Exception
 	 */
-	public function update( User $user ) {
+	public function update( User $user ): User {
 		$updatedUser = $this->repo->update( $user );
 		if ( $updatedUser->isPersistedDataFound() ) {
 			$this->cache->set( $updatedUser->getId(), $updatedUser->toPersistMap() )
@@ -82,7 +83,7 @@ class UserService {
 	 *
 	 * @return \DevPledge\Domain\User
 	 */
-	public function getByUsername( string $username ) {
+	public function getByUsername( string $username ): User {
 		return $this->repo->readByUsername( $username );
 	}
 
@@ -91,7 +92,7 @@ class UserService {
 	 *
 	 * @return \DevPledge\Domain\User
 	 */
-	public function getByGitHubId( int $gitHubId ) {
+	public function getByGitHubId( int $gitHubId ): User {
 		return $this->repo->readByGitHubId( $gitHubId );
 	}
 
@@ -100,8 +101,18 @@ class UserService {
 	 *
 	 * @return \DevPledge\Domain\User
 	 */
-	public function getByUserId( string $userId ) {
+	public function getByUserId( string $userId ): User {
 		return $this->repo->read( $userId );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return User
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function getUserFromCache( string $userId ):User {
+		return $this->factory->create( $this->cache->get( $userId ) );
 	}
 
 }
