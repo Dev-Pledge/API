@@ -115,4 +115,11 @@ class UserService {
 		return $this->factory->create( $this->cache->get( $userId ) );
 	}
 
+	/**
+	 * @return UserFactory
+	 */
+	public function getFactory(){
+		return $this->factory;
+	}
+
 }

@@ -71,6 +71,31 @@ class ProblemController extends AbstractController {
 		return $response->withJson( $problem->toAPIMap() );
 	}
 
+	public function updateProblem( Request $request, Response $response ) {
+
+		$user = $this->getUserFromRequest( $request );
+		$data = $this->getStdClassFromRequest( $request );
+
+		if ( is_null( $user ) ) {
+			return $response->withJson(
+				[ 'error' => 'No User Found' ]
+				, 401 );
+		}
+		try {
+			/**
+			 * @var $problem Problem
+			 */
+			$problem = Dispatch::command( new CreateProblemCommand( $data, $user ) );
+		} catch ( InvalidArgumentException $exception ) {
+			return $response->withJson(
+				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
+				, 401 );
+		}
+
+
+		return $response->withJson( $problem->toAPIMap() );
+	}
+
 	public function getUserProblems(Request $request, Response $response ) {
 		$userId      = $request->getAttribute( 'id' );
 		$problemService    = ProblemServiceProvider::getService();

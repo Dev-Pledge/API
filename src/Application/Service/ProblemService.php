@@ -70,11 +70,13 @@ class ProblemService {
 
 	/**
 	 * @param Problem $problem
+	 * @param \stdClass $rawUpdateData
 	 *
-	 * @return \DevPledge\Domain\Problem
-	 * @throws \Exception
+	 * @return Problem
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
-	public function update( Problem $problem ): Problem {
+	public function update( Problem $problem ,\stdClass $rawUpdateData): Problem {
+		$problem = $this->factory->update( $problem, $rawUpdateData);
 		return $this->repo->update( $problem );
 	}
 
@@ -101,5 +103,6 @@ class ProblemService {
 
 		return null;
 	}
+
 
 }
