@@ -1,11 +1,14 @@
 <?php
 
-
 namespace DevPledge\Integrations\Security\Permissions;
 
 
 use JsonSerializable;
 
+/**
+ * Class Resource
+ * @package DevPledge\Integrations\Security\Permissions
+ */
 class Resource implements JsonSerializable
 {
 

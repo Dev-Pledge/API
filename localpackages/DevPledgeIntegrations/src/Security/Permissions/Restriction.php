@@ -6,6 +6,10 @@ namespace DevPledge\Integrations\Security\Permissions;
 
 use JsonSerializable;
 
+/**
+ * Class Restriction
+ * @package DevPledge\Integrations\Security\Permissions
+ */
 class Restriction implements JsonSerializable
 {
 

@@ -6,6 +6,10 @@ namespace DevPledge\Integrations\Security\Permissions;
 
 use JsonSerializable;
 
+/**
+ * Class Action
+ * @package DevPledge\Integrations\Security\Permissions
+ */
 class Action implements JsonSerializable
 {
 

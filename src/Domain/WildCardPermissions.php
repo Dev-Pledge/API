@@ -2,13 +2,20 @@
 
 namespace DevPledge\Domain;
 
-
 use DevPledge\Integrations\Security\Permissions\Action;
 use DevPledge\Integrations\Security\Permissions\Permissions;
 use DevPledge\Integrations\Security\Permissions\Resource;
 
+
+/**
+ * Class WildCardPermissions
+ * @package DevPledge\Domain
+ */
 class WildCardPermissions {
+
+
 	public function getPerms() {
+
 		$perms = new Permissions();
 		$perms
 			->addResource( ( new Resource() )
