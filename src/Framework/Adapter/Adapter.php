@@ -65,6 +65,23 @@ interface Adapter {
 
 	/**
 	 * @param string $resource
+	 * @param string $id
+	 * @param string $column
+	 *
+	 * @return int|null
+	 */
+	public function delete( string $resource, string $id, string $column = 'id' ): ?int;
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 *
+	 * @return int|null
+	 */
+	public function deleteWhere( string $resource, Wheres $wheres ): ?int;
+
+	/**
+	 * @param string $resource
 	 * @param Wheres $wheres
 	 *
 	 * @return int

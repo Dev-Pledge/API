@@ -39,7 +39,10 @@ class Problem extends AbstractDomain {
 	 * @var Topics
 	 */
 	protected $topics;
-
+	/**
+	 * @var string
+	 */
+	protected $userName;
 	/**
 	 * @return \stdClass
 	 */

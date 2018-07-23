@@ -44,6 +44,7 @@ class TopicsProblemRepository extends AbstractRepository {
 	 */
 	public function update( PersistMappable $domain ): AbstractDomain {
 		if ( $domain instanceof Problem ) {
+			$this->adapter->delete( $this->getResource(), $this->getAllColumn(), $domain->getId() );
 			if ( $topicsArray = $domain->getTopics()->toArray() ) {
 				foreach ( $topicsArray as $topic ) {
 					$this->adapter->create( $this->getResource(), (object) [
@@ -87,12 +88,12 @@ class TopicsProblemRepository extends AbstractRepository {
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null  ): ?array {
+	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
 
 		$dataArray = isset( $dataArray ) ? $dataArray : parent::readAll( $idForAll, $limit, $offset, $dataArray );
 		if ( $dataArray ) {
 			foreach ( $dataArray as &$problemData ) {
-				if(isset($problemData->problem_id)) {
+				if ( isset( $problemData->problem_id ) ) {
 					$problemData = $this->read( $problemData->problem_id, $problemData );
 				}
 			}

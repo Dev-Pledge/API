@@ -115,9 +115,8 @@ class MysqlAdapter implements Adapter {
 
 		$query->buildQuery();
 
-		$affectedRows = $this->db->dbQuery( $query->getSql(), $query->getBinds() );
+		return $this->db->dbQuery( $query->getSql(), $query->getBinds() );
 
-		return $affectedRows;
 	}
 
 	/**
@@ -148,7 +147,6 @@ class MysqlAdapter implements Adapter {
 		if ( isset( $orderByColumn ) ) {
 			$query->addOrderBy( $orderByColumn );
 		}
-		$query->buildQuery();
 		$this->wheres( $query, $wheres )->buildQuery();
 
 		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
@@ -218,5 +216,37 @@ class MysqlAdapter implements Adapter {
 		}
 
 		return 0;
+	}
+
+	/**
+	 * @param string $resource
+	 * @param string $id
+	 * @param string $column
+	 *
+	 * @return int|null
+	 * @throws \Exception
+	 */
+	public function delete( string $resource, string $id, string $column = 'id' ): ?int {
+		$query = ( new Query( 'UPDATE' ) )
+			->setTable( $this->getResourceTable( $resource ) )
+			->addWhere( $column, $id )->buildQuery();
+
+		return $this->db->dbQuery( $query->getSql(), $query->getBinds() );
+	}
+
+	/**
+	 * @param string $resource
+	 * @param Wheres $wheres
+	 *
+	 * @return int|null
+	 * @throws \Exception
+	 */
+	public function deleteWhere( string $resource, Wheres $wheres ): ?int {
+		$query = ( new Query( 'DELETE' ) )
+			->setTable( $this->getResourceTable( $resource ) );
+
+		$this->wheres( $query, $wheres )->buildQuery();
+
+		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
 	}
 }

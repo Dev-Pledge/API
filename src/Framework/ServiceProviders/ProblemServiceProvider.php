@@ -31,8 +31,7 @@ class ProblemServiceProvider extends AbstractServiceProvider {
 		return new ProblemService(
 			ProblemRepositoryDependency::getRepository(),
 			ProblemFactoryDependency::getFactory(),
-			UserServiceProvider::getService(),
-			CacheServiceProvider::getService()
+			UserServiceProvider::getService()
 		);
 	}
 

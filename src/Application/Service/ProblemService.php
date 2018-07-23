@@ -31,7 +31,7 @@ class ProblemService {
 	 */
 	protected $factory;
 	/**
-	 * @var UserService 
+	 * @var UserService
 	 */
 	protected $userService;
 	/**
@@ -44,13 +44,13 @@ class ProblemService {
 	 *
 	 * @param ProblemRepository $repo
 	 * @param ProblemFactory $factory
+	 * @param UserService $userService
 	 * @param Cache $cache
 	 */
-	public function __construct( ProblemRepository $repo, ProblemFactory $factory,  UserService $userService, Cache $cache  ) {
-		$this->repo    = $repo;
-		$this->factory = $factory;
+	public function __construct( ProblemRepository $repo, ProblemFactory $factory, UserService $userService ) {
+		$this->repo        = $repo;
+		$this->factory     = $factory;
 		$this->userService = $userService;
-		$this->cache   = $cache;
 	}
 
 	/**
@@ -59,7 +59,7 @@ class ProblemService {
 	 * @return Problem
 	 * @throws \Exception
 	 */
-	public function create( \stdClass $data ) {
+	public function create( \stdClass $data ): Problem {
 
 		$problem = $this->factory->create( $data );
 
@@ -74,7 +74,7 @@ class ProblemService {
 	 * @return \DevPledge\Domain\Problem
 	 * @throws \Exception
 	 */
-	public function update( Problem $problem ) {
+	public function update( Problem $problem ): Problem {
 		return $this->repo->update( $problem );
 	}
 
@@ -83,7 +83,7 @@ class ProblemService {
 	 *
 	 * @return Problem
 	 */
-	public function read( string $problemId ) {
+	public function read( string $problemId ): Problem {
 		return $this->repo->read( $problemId );
 	}
 
@@ -96,7 +96,7 @@ class ProblemService {
 	public function readAll( string $userId ): ?Problems {
 		$problems = $this->repo->readAll( $userId );
 		if ( $problems ) {
-			return new Problems( $problems , $this->userService->getUserFromCache( $userId));
+			return new Problems( $problems, $this->userService->getUserFromCache( $userId ) );
 		}
 
 		return null;
