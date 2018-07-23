@@ -13,7 +13,9 @@ use DevPledge\Integrations\Security\Permissions\Resource;
  */
 class WildCardPermissions {
 
-
+	/**
+	 * @return Permissions
+	 */
 	public function getPerms() {
 
 		$perms = new Permissions();

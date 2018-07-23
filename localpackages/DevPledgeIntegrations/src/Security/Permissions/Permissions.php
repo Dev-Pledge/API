@@ -1,14 +1,11 @@
 <?php
 
+
 namespace DevPledge\Integrations\Security\Permissions;
 
 
 use JsonSerializable;
 
-/**
- * Class Permissions
- * @package DevPledge\Integrations\Security\Permissions
- */
 class Permissions implements JsonSerializable
 {
 
@@ -35,23 +32,20 @@ class Permissions implements JsonSerializable
         return $this;
     }
 
-
-	/**
-	 * @param Resource $resource
-	 *
-	 * @return Permissions
-	 */
+    /**
+     * @param Resource $resource
+     * @return Permissions
+     */
     public function addResource(Resource $resource): Permissions
     {
         $this->resources[] = $resource;
         return $this;
     }
 
-	/**
-	 * @param string $name
-	 *
-	 * @return Resource
-	 */
+    /**
+     * @param string $name
+     * @return Resource
+     */
     public function getResource(string $name): Resource
     {
         foreach ($this->getResources() as $r) {
@@ -72,9 +66,9 @@ class Permissions implements JsonSerializable
         return $this->getResource($name) !== null;
     }
 
-	/**
-	 * @return Resource[]
-	 */
+    /**
+     * @return Resource[]
+     */
     public function getResources(): array
     {
         return $this->resources;

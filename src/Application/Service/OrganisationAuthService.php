@@ -66,12 +66,12 @@ class OrganisationAuthService
      */
     private function checkInternal(Organisation $organisation, Permissions $permissions, string $action)
     {
-        $p = $this->ensureResourceExists('organisation', $permissions);
+        $p = $this->ensureResourceExists('organisations', $permissions);
         $action = $this->ensureActionExists($action, $p);
 
         foreach ($action->getRestrictions() as $restriction) {
             switch ($restriction->getName()) {
-                case 'organisationId':
+                case 'organisation':
                     if ($action === 'create') {
                         // create actions shouldn't check against organisationId
                         continue;

@@ -10,12 +10,12 @@ use DevPledge\Domain\User;
 use DevPledge\Integrations\Command\Dispatch;
 use DevPledge\Integrations\Security\JWT\Token;
 use DevPledge\Integrations\Security\Permissions\Permissions;
-use DevPledge\Integrations\Service\AuthException;
+use DevPledge\Integrations\Auth\AuthException;
 use DevPledge\Uuid\Uuid;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class OrganisationController
+class OrganisationController extends AbstractController
 {
 
     /**

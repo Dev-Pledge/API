@@ -73,6 +73,24 @@ abstract class AbstractRepository {
 
 	/**
 	 * @param string $id
+	 *
+	 * @return int|null
+	 */
+	public function delete( string $id ): ?int {
+		return $this->adapter->delete( $this->getResource(), $id, $this->getColumn() );
+	}
+
+	/**
+	 * @param Wheres $wheres
+	 *
+	 * @return int|null
+	 */
+	public function deleteWhere( Wheres $wheres ) :?int{
+		return $this->adapter->deleteWhere( $this->getResource(), $wheres );
+	}
+
+	/**
+	 * @param string $id
 	 * @param \stdClass|null $data
 	 *
 	 * @return AbstractDomain

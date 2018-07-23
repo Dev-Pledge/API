@@ -13,8 +13,6 @@ use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Domain\Problem;
 use DevPledge\Domain\Problems;
-use DevPledge\Domain\User;
-use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Integrations\Cache\Cache;
 
 /**
