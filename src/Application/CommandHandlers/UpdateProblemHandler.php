@@ -14,6 +14,13 @@ use DevPledge\Integrations\Command\AbstractCommandHandler;
  */
 class UpdateProblemHandler extends AbstractCommandHandler {
 	/**
+	 * UpdateProblemHandler constructor.
+	 */
+	public function __construct() {
+		parent::__construct( UpdateProblemCommand::class );
+	}
+
+	/**
 	 * @param $command UpdateProblemCommand
 	 *
 	 * @return \DevPledge\Domain\Problem
@@ -22,13 +29,12 @@ class UpdateProblemHandler extends AbstractCommandHandler {
 	protected function handle( $command ) {
 
 
-
 		$problemService = ProblemServiceProvider::getService();
 
 		$problem = $problemService->read( $command->getProblemId() );
 
-		if($problem)
-
-		return $problemService->update( $problem, $command->getData() );
+		if ( $problem ) {
+			return $problemService->update( $problem, $command->getData() );
+		}
 	}
 }
