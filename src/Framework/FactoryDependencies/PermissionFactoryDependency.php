@@ -1,19 +1,18 @@
 <?php
 
-
 namespace DevPledge\Framework\FactoryDependencies;
 
 
 use DevPledge\Application\Factory\PermissionFactory;
 use DevPledge\Domain\Permission;
-use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
+use DevPledge\Integrations\FactoryDependency\AbstractFactoryDependency;
 use Slim\Container;
 
 /**
  * Class PermissionFactoryDependency
  * @package DevPledge\Framework\FactoryDependencies
  */
-class PermissionFactoryDependency extends AbstractRepositoryDependency {
+class PermissionFactoryDependency extends AbstractFactoryDependency {
 	/**
 	 * PermissionFactoryDependency constructor.
 	 */
@@ -31,11 +30,13 @@ class PermissionFactoryDependency extends AbstractRepositoryDependency {
 		return new PermissionFactory( Permission::class, 'permission', 'permission_id' );
 	}
 
+
+
 	/**
 	 * usually return static::getFromContainer();
-	 * @return PermissionFactory
+	 * @return mixed
 	 */
-	static public function getRepository() {
+	static public function getFactory() {
 		return static::getFromContainer();
 	}
 }
