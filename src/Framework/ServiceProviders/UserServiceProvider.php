@@ -5,6 +5,7 @@ namespace DevPledge\Framework\ServiceProviders;
 
 
 use DevPledge\Application\Service\UserService;
+use DevPledge\Domain\Role\Member;
 use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\User\UserRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
@@ -32,7 +33,8 @@ class UserServiceProvider extends AbstractServiceProvider {
 		return new UserService(
 			UserRepositoryDependency::getRepository(),
 			UserFactoryDependency::getFactory(),
-			CacheServiceProvider::getService()
+			CacheServiceProvider::getService(),
+			new Member()
 		);
 	}
 

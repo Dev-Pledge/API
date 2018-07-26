@@ -43,7 +43,7 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function createPersist( PersistMappable $domain ): AbstractDomain {
+	public function createPersist( AbstractDomain $domain ): AbstractDomain {
 		$this->adapter->create( $this->getResource(), $domain->toPersistMap() );
 
 		if ( $this->getMapRepository() !== null ) {
@@ -61,7 +61,7 @@ abstract class AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function update( PersistMappable $domain ): AbstractDomain {
+	public function update( AbstractDomain $domain ): AbstractDomain {
 		$domain->setModified( new \DateTime() );
 		$this->adapter->update( $this->getResource(), $domain->getId(), $domain->toPersistMap(), $this->getColumn() );
 		if ( $this->getMapRepository() !== null ) {

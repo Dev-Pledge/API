@@ -56,4 +56,11 @@ class Permissions extends AbstractDomain implements \JsonSerializable {
 	function toPersistMap(): \stdClass {
 		return $this->jsonSerialize();
 	}
+
+	/**
+	 * @return Permission[]
+	 */
+	public function getPermissions(): array {
+		return $this->permissions;
+	}
 }

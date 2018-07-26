@@ -13,12 +13,12 @@ use DevPledge\Framework\RepositoryDependencies\UserProblemRepoDependency;
  */
 class TopicsProblemRepository extends AbstractRepository {
 	/**
-	 * @param PersistMappable $domain
+	 * @param AbstractDomain $domain
 	 *
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function createPersist( PersistMappable $domain ): AbstractDomain {
+	public function createPersist( AbstractDomain $domain ): AbstractDomain {
 		if ( $domain instanceof Problem ) {
 			if ( $topicsArray = $domain->getTopics()->toArray() ) {
 				foreach ( $topicsArray as $topic ) {

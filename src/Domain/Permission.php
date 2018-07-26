@@ -13,7 +13,7 @@ class Permission extends AbstractDomain {
 	 *
 	 * @param string $entity
 	 */
-	public function __construct( string $entity = 'permission') {
+	public function __construct( string $entity = 'permission' ) {
 		parent::__construct( $entity );
 	}
 
@@ -44,10 +44,11 @@ class Permission extends AbstractDomain {
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'user_id'     => $this->getUserId(),
-			'resource'    => $this->getResource(),
-			'resource_id' => $this->getResourceId(),
-			'action'      => $this->getAction()
+			'permission_id' => $this->getId(),
+			'user_id'       => $this->getUserId(),
+			'resource'      => $this->getResource(),
+			'resource_id'   => $this->getResourceId(),
+			'action'        => $this->getAction()
 		];
 	}
 

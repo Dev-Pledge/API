@@ -6,9 +6,9 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Application\Repository\UserRepository;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
+use DevPledge\Domain\Role\Role;
 use DevPledge\Domain\User;
 use DevPledge\Integrations\Cache\Cache;
-use DevPledge\Uuid\Uuid;
 
 /**
  * Class UserService
@@ -27,6 +27,10 @@ class UserService {
 	 * @var Cache
 	 */
 	private $cache;
+	/**
+	 * @var Role
+	 */
+	private $role;
 
 	/**
 	 * UserService constructor.
@@ -34,12 +38,14 @@ class UserService {
 	 * @param UserRepository $repository
 	 * @param UserFactory $factory
 	 * @param Cache $cache
+	 * @param Role $role
 	 */
-	public function __construct( UserRepository $repository, UserFactory $factory, Cache $cache ) {
+	public function __construct( UserRepository $repository, UserFactory $factory, Cache $cache, Role $role ) {
 
 		$this->repo    = $repository;
 		$this->factory = $factory;
 		$this->cache   = $cache;
+		$this->role    = $role;
 	}
 
 	/**
@@ -51,6 +57,7 @@ class UserService {
 	public function create( PreferredUserAuth $preferredUserAuth ): User {
 
 		$data = (object) $preferredUserAuth->getAuthDataArray()->getArray();
+		$data->permissions = $this->role->getDefaultPermissions()->toPersistMap();
 		$user = $this->factory->create( $data );
 
 		$createdUser = $this->repo->createPersist( $user );
@@ -111,14 +118,14 @@ class UserService {
 	 * @return User
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
-	public function getUserFromCache( string $userId ):User {
+	public function getUserFromCache( string $userId ): User {
 		return $this->factory->create( $this->cache->get( $userId ) );
 	}
 
 	/**
 	 * @return UserFactory
 	 */
-	public function getFactory(){
+	public function getFactory() {
 		return $this->factory;
 	}
 

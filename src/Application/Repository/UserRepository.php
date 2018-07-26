@@ -6,6 +6,7 @@ namespace DevPledge\Application\Repository;
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
+use DevPledge\Framework\RepositoryDependencies\Permission\PermissionRepositoryDependency;
 
 /**
  * Class UserRepository
@@ -70,6 +71,6 @@ class UserRepository extends AbstractRepository {
 	 * @return AbstractRepository|null
 	 */
 	protected function getMapRepository(): ?AbstractRepository {
-		return null;
+		return PermissionRepositoryDependency::getRepository();
 	}
 }
