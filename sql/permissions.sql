@@ -7,7 +7,7 @@ CREATE TABLE permissions
   user_id       VARCHAR(50)                                     NOT NULL,
   resource      VARCHAR(200)                                    NOT NULL,
   resource_id   VARCHAR(50)                                     NULL,
-  action        ENUM ('read', 'write', 'delete') DEFAULT 'read' NULL,
+  action        ENUM ('create','read', 'update', 'delete') DEFAULT 'read' NULL,
   CONSTRAINT permissions_user_id_resource_resource_id_uindex
   UNIQUE (user_id, resource, resource_id)
 )

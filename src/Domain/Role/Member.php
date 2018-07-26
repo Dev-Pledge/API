@@ -3,12 +3,24 @@
 namespace DevPledge\Domain\Role;
 
 
-class Member implements Role
-{
+use DevPledge\Domain\Permission;
+use DevPledge\Domain\Permissions;
 
-    public function __toString(): string
-    {
-        return 'member';
-    }
+/**
+ * Class Member
+ * @package DevPledge\Domain\Role
+ */
+class Member implements Role {
 
+	public function toString(): string {
+		return 'member';
+	}
+
+	public function getDefaultPermissions(): Permissions {
+		return new Permissions( [
+			( new Permission() )->setResource( 'problems' )->setAction( 'create' ),
+			( new Permission() )->setResource( 'organisations' )->setAction( 'create' ),
+			( new Permission() )->setResource( 'solutions' )->setAction( 'create' ),
+		] );
+	}
 }

@@ -20,6 +20,7 @@ class PermissionFactory extends AbstractFactory {
 			->setMethodToProductObject( 'permission_id', 'setUuid', Uuid::class )
 			->setMethodToProductObject( 'user_id', 'setUserId' )
 			->setMethodToProductObject( 'resource', 'setResource' )
-			->setMethodToProductObject( 'resource_id', 'setResourceId' );
+			->setMethodToProductObject( 'resource_id', 'setResourceId' )
+			->setMethodToProductObject( 'action', 'setAction' );
 	}
 }

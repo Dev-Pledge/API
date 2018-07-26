@@ -1,6 +1,5 @@
 <?php
 
-
 namespace DevPledge\Framework\RepositoryDependencies\Permission;
 
 
@@ -9,6 +8,10 @@ use DevPledge\Framework\FactoryDependencies\PermissionFactoryDependency;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use Slim\Container;
 
+/**
+ * Class PermissionRepositoryDependency
+ * @package DevPledge\Framework\RepositoryDependencies\Permission
+ */
 class PermissionRepositoryDependency extends AbstractRepositoryDependency {
 
 	public function __construct() {

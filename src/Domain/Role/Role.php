@@ -3,11 +3,14 @@
 namespace DevPledge\Domain\Role;
 
 
-interface Role
-{
+use DevPledge\Domain\Permissions;
+
+interface Role {
 	/**
 	 * @return string
 	 */
-    public function __toString(): string;
+	public function toString(): string;
+
+	public function getDefaultPermissions(): Permissions;
 
 }
