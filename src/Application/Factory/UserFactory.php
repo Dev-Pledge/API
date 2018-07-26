@@ -3,6 +3,7 @@
 namespace DevPledge\Application\Factory;
 
 
+use DevPledge\Domain\Permissions;
 use DevPledge\Domain\User;
 use DevPledge\Integrations\Security\JWT\Token;
 use Slim\Http\Request;
@@ -38,6 +39,7 @@ class UserFactory extends AbstractFactory {
 			->setMethodToProductObject( 'name', 'setName' )
 			->setMethodToProductObject( 'email', 'setEmail' )
 			->setMethodToProductObject( 'hashed_password', 'setHashedPassword' )
-			->setMethodToProductObject( 'github_id', 'setGitHubId' );
+			->setMethodToProductObject( 'github_id', 'setGitHubId' )
+			->setMethodToProductObject( 'permissions', 'setPermissions', Permissions::class );
 	}
 }

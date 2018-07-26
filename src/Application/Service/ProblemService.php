@@ -32,10 +32,7 @@ class ProblemService {
 	 * @var UserService
 	 */
 	protected $userService;
-	/**
-	 * @var Cached
-	 */
-	protected $cache;
+
 
 	/**
 	 * ProblemService constructor.

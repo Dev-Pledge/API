@@ -38,7 +38,10 @@ class User extends AbstractDomain {
 	 * @var string
 	 */
 	private $name;
-
+	/**
+	 * @var Permissions
+	 */
+	private $permissions;
 
 	/**
 	 * @param string $email
@@ -184,4 +187,23 @@ class User extends AbstractDomain {
 
 		return $data;
 	}
+
+	/**
+	 * @return Permissions
+	 */
+	public function getPermissions(): array {
+		return isset( $this->permissions ) ? $this->permissions : new Permissions();
+	}
+
+	/**
+	 * @param Permissions $permissions
+	 *
+	 * @return User
+	 */
+	public function setPermissions( Permissions $permissions ): User {
+		$this->permissions = $permissions;
+
+		return $this;
+	}
+
 }
