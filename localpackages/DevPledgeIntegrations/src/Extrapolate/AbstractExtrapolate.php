@@ -90,9 +90,19 @@ abstract class AbstractExtrapolate {
 	public function __invoke() {
 		$phpFiles = $this->getPhpFilesFromCache();
 		if ( is_dir( $this->path ) ) {
-			$phpFiles = ( isset( $phpFiles ) && $phpFiles ) ? $phpFiles : glob( $this->path . '/*.php' );
+			$phpFiles = ( isset( $phpFiles ) && $phpFiles ) ? $phpFiles : glob( $this->path . '/*' );
 			if ( count( $phpFiles ) && $phpFiles ) {
 				foreach ( $phpFiles as $filename ) {
+					if ( strpos( $filename, '.php' ) === false ) {
+						if ( is_dir( $filename ) ) {
+							$split                    = explode( '/', $filename );
+							$className                = end( $split );
+							$newNameSpace             = $this->nameSpace . '\\' . $className;
+							$internalDirExtrapolation = new static( $filename, $newNameSpace, $this->adapterClass );
+							$internalDirExtrapolation();
+						}
+						continue;
+					}
 					$split     = explode( '/', $filename );
 					$className = str_replace( '.php', '', end( $split ) );
 					$class     = $this->nameSpace . '\\' . $className;

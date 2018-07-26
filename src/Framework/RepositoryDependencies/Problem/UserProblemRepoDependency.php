@@ -1,40 +1,41 @@
 <?php
 
-namespace DevPledge\Framework\RepositoryDependencies;
+
+namespace DevPledge\Framework\RepositoryDependencies\Problem;
 
 
-use DevPledge\Application\Repository\ProblemRepository;
+use DevPledge\Application\Repository\UserProblemRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
-use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
+use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
 
 /**
- * Class ProblemRepositoryDependency
+ * Class UserProblemRepoDependency
  * @package DevPledge\Framework\RepositoryDependencies
  */
-class ProblemRepositoryDependency extends AbstractRepositoryDependency {
+class UserProblemRepoDependency extends AbstractRepositoryDependency {
 
 	public function __construct() {
-		parent::__construct( ProblemRepository::class );
+		parent::__construct( UserProblemRepository::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return ProblemRepository
+	 * @return mixed
 	 */
 	public function __invoke( Container $container ) {
-		$factory = ProblemFactoryDependency::getFactory();
+		$factory = UserFactoryDependency::getFactory();
 		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
 
-		return new ProblemRepository( $adaptor, $factory );
+		return new UserProblemRepository( $adaptor, $factory );
 	}
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return ProblemRepository
+	 * @return mixed
 	 */
 	static public function getRepository() {
 		return static::getFromContainer();

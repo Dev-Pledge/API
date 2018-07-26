@@ -1,16 +1,9 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 19/07/2018
- * Time: 23:25
- */
 
-namespace DevPledge\Framework\RepositoryDependencies;
+namespace DevPledge\Framework\RepositoryDependencies\Problem;
 
 
 use DevPledge\Application\Repository\ProblemRepository;
-use DevPledge\Application\Repository\TopicsProblemRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
@@ -18,12 +11,13 @@ use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
 
 /**
- * Class TopicsProblemRepoDependency
+ * Class ProblemRepositoryDependency
  * @package DevPledge\Framework\RepositoryDependencies
  */
-class TopicsProblemRepoDependency extends AbstractRepositoryDependency {
+class ProblemRepositoryDependency extends AbstractRepositoryDependency {
+
 	public function __construct() {
-		parent::__construct( TopicsProblemRepository::class );
+		parent::__construct( ProblemRepository::class );
 	}
 
 	/**
@@ -34,7 +28,8 @@ class TopicsProblemRepoDependency extends AbstractRepositoryDependency {
 	public function __invoke( Container $container ) {
 		$factory = ProblemFactoryDependency::getFactory();
 		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
-		return new TopicsProblemRepository( $adaptor, $factory);
+
+		return new ProblemRepository( $adaptor, $factory );
 	}
 
 	/**

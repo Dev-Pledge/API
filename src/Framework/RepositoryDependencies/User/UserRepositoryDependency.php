@@ -1,6 +1,6 @@
 <?php
 
-namespace DevPledge\Framework\RepositoryDependencies;
+namespace DevPledge\Framework\RepositoryDependencies\User;
 
 
 use DevPledge\Application\Mapper\Mapper;

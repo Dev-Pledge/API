@@ -1,12 +1,7 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 26/07/2018
- * Time: 00:20
- */
 
-namespace DevPledge\Framework\RepositoryDependencies;
+
+namespace DevPledge\Framework\RepositoryDependencies\Permission;
 
 
 use DevPledge\Application\Repository\PermissionRepository;

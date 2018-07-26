@@ -5,7 +5,7 @@ namespace DevPledge\Framework\ServiceProviders;
 
 use DevPledge\Application\Service\ProblemService;
 use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
-use DevPledge\Framework\RepositoryDependencies\ProblemRepositoryDependency;
+use DevPledge\Framework\RepositoryDependencies\Problem\ProblemRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Container;

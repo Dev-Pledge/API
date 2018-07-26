@@ -4,7 +4,7 @@ namespace DevPledge\Application\Repository;
 
 use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Framework\Adapter\Adapter;
-use DevPledge\Framework\RepositoryDependencies\TopicsProblemRepoDependency;
+use DevPledge\Framework\RepositoryDependencies\Problem\TopicsProblemRepoDependency;
 
 /**
  * Class ProblemRepository
