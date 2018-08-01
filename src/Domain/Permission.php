@@ -52,6 +52,15 @@ class Permission extends AbstractDomain {
 		];
 	}
 
+	function toAPIMap(): \stdClass {
+		return (object) [
+			'permission_id' => $this->getId(),
+			'resource'      => $this->getResource(),
+			'resource_id'   => $this->getResourceId(),
+			'action'        => $this->getAction()
+		];
+	}
+
 	/**
 	 * @return string
 	 */

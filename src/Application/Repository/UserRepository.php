@@ -4,9 +4,9 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\UserFactory;
+use DevPledge\Domain\Permissions;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
-use DevPledge\Framework\RepositoryDependencies\Permission\PermissionRepositoryDependency;
 
 /**
  * Class UserRepository
@@ -23,6 +23,7 @@ class UserRepository extends AbstractRepository {
 	public function __construct( Adapter $adapter, UserFactory $factory ) {
 		$this->adapter = $adapter;
 		$this->factory = $factory;
+
 	}
 
 
@@ -71,6 +72,37 @@ class UserRepository extends AbstractRepository {
 	 * @return AbstractRepository|null
 	 */
 	protected function getMapRepository(): ?AbstractRepository {
-		return PermissionRepositoryDependency::getRepository();
+		return null;//PermissionRepositoryDependency::getRepository();
+	}
+
+	/**
+	 * @param $userId
+	 *
+	 * @return Permissions
+	 */
+	protected function getUserPermissions( $userId ): Permissions {
+		$data = $this->adapter->readAll( 'permissions', $userId ,'user_id');
+
+		return new Permissions( $data );
+	}
+
+	/**
+	 * @param User $user
+	 * @param Permissions $permissions
+	 *
+	 * @return User
+	 * @throws \Exception
+	 */
+	public function createNewPermissions( User $user, Permissions $permissions ): User {
+		$perms = $permissions->getPermissions();
+		if ( count( $perms ) ) {
+			foreach ( $perms as $perm ) {
+				$perm->setUserId( $user->getId() );
+				$this->adapter->create( 'permissions', $perm->toPersistMap() );
+			}
+		}
+
+		return $user->setPermissions( $this->getUserPermissions( $user->getId() ) );
+
 	}
 }

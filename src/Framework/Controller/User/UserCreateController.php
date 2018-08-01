@@ -8,7 +8,6 @@ use DevPledge\Domain\PreferredUserAuth\UsernameEmailPassword;
 use DevPledge\Domain\PreferredUserAuth\UsernameGitHub;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
-use DevPledge\Domain\PreferredUserAuth\UsernamePassword;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\MysqlPDODuplicationException;
@@ -46,6 +45,7 @@ class UserCreateController {
 	 * @return Response
 	 */
 	public function checkUsernameAvailability( Request $request, Response $response ) {
+
 		$data     = $request->getParsedBody();
 		$username = $data['username'] ?? null;
 		if ( isset( $username ) ) {
@@ -135,6 +135,7 @@ class UserCreateController {
 	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function createUserFromEmailPassword( Request $request, Response $response ) {
+
 		$data = $request->getParsedBody();
 
 		$email    = $data['email'] ?? null;

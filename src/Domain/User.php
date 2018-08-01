@@ -190,8 +190,9 @@ class User extends AbstractDomain {
 
 	/**
 	 * @return Permissions
+	 * @throws \Exception
 	 */
-	public function getPermissions(): array {
+	public function getPermissions(): Permissions {
 		return isset( $this->permissions ) ? $this->permissions : new Permissions();
 	}
 

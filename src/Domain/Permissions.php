@@ -2,6 +2,8 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Framework\FactoryDependencies\PermissionFactoryDependency;
+
 /**
  * Class Permissions
  * @package DevPledge\Domain
@@ -17,17 +19,11 @@ class Permissions extends AbstractDomain implements \JsonSerializable {
 	 *
 	 * @param array|null $permissions
 	 *
-	 * @throws \Exception
 	 */
 	public function __construct( array $permissions = null ) {
 		parent::__construct( 'permission' );
-		if ( ! is_null( $permissions ) ) {
-			foreach ( $permissions as $permission ) {
-				if ( ! ( $permission instanceof Permission ) ) {
-					throw new \Exception( 'Not Permission' );
-				}
-			}
-			$this->permissions = $permissions;
+		if ( is_array( $permissions ) ) {
+			$this->setPermissions( $permissions );
 		}
 	}
 
@@ -43,7 +39,7 @@ class Permissions extends AbstractDomain implements \JsonSerializable {
 
 		if ( $this->permissions ) {
 			foreach ( $this->permissions as $permission ) {
-				$returnArray[] = $permission->toAPIMap();
+				$returnArray[] = $permission->toPersistMap();
 			}
 		}
 
@@ -54,13 +50,52 @@ class Permissions extends AbstractDomain implements \JsonSerializable {
 	 * @return \stdClass
 	 */
 	function toPersistMap(): \stdClass {
-		return $this->jsonSerialize();
+		return (object) $this->jsonSerialize();
+	}
+
+	/**
+	 * @return array
+	 */
+	function toAPIMapArray(): array {
+		$returnArray = [];
+
+		if ( $this->permissions ) {
+			foreach ( $this->permissions as $permission ) {
+				$returnArray[] = $permission->toAPIMap();
+			}
+		}
+
+		return $returnArray;
+	}
+
+	/**
+	 * @param array $permissions
+	 *
+	 * @return Permissions
+	 */
+	public function setPermissions( array $permissions ): Permissions {
+		$permissionFactory = PermissionFactoryDependency::getFactory();
+		$this->permissions = [];
+		if ( count( $permissions ) ) {
+			foreach ( $permissions as $rawData ) {
+				if ( ! ( $rawData instanceof Permission ) ) {
+					$this->permissions[] = $permissionFactory->create( $rawData );
+				} else {
+					$this->permissions[] = $rawData;
+				}
+			}
+		}
+
+		return $this;
 	}
 
 	/**
 	 * @return Permission[]
 	 */
 	public function getPermissions(): array {
+
 		return $this->permissions;
 	}
+
+
 }

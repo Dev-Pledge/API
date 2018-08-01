@@ -4,8 +4,10 @@ namespace DevPledge\Framework\RepositoryDependencies\Permission;
 
 
 use DevPledge\Application\Repository\PermissionRepository;
+use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\PermissionFactoryDependency;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
+use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
 
 /**

@@ -44,9 +44,10 @@ class TokenString {
 		}
 
 
-		$user                = $this->user;
-		$data                = $user->toAPIMap();
-		$token               = $this->jwt->generate(
+		$user              = $this->user;
+		$data              = $user->toAPIMap();
+		$data->permissions = $user->getPermissions()->toAPIMapArray();
+		$token             = $this->jwt->generate(
 			$data
 		);
 

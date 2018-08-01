@@ -3,11 +3,29 @@
 
 namespace DevPledge\Application\Mapper;
 
+/**
+ * Interface PersistMappable
+ * @package DevPledge\Application\Mapper
+ */
+interface PersistMappable {
+	/**
+	 * @return \stdClass
+	 */
+	function toPersistMap(): \stdClass;
 
-interface PersistMappable
-{
+	/**
+	 * @return array
+	 */
+	function toPersistMapArray(): array;
 
-    function toPersistMap(): \stdClass;
+	/**
+	 * @return \stdClass
+	 */
+	function toAPIMap(): \stdClass;
 
+	/**
+	 * @return array
+	 */
+	function toAPIMapArray(): array;
 
 }

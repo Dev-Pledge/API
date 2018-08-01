@@ -34,7 +34,7 @@ class PermissionFactoryDependency extends AbstractFactoryDependency {
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return mixed
+	 * @return PermissionFactory
 	 */
 	static public function getFactory() {
 		return static::getFromContainer();

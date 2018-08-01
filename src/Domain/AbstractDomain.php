@@ -163,4 +163,18 @@ abstract class AbstractDomain implements PersistMappable {
 		return $this->toPersistMap();
 	}
 
+	/**
+	 * @return array
+	 */
+	public function toAPIMapArray(): array {
+		return (array) $this->toPersistMap();
+	}
+
+	/**
+	 * @return array
+	 */
+	public function toPersistMapArray(): array {
+		return (array) $this->toPersistMap();
+	}
+
 }

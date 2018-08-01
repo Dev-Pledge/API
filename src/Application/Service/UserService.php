@@ -56,14 +56,15 @@ class UserService {
 	 */
 	public function create( PreferredUserAuth $preferredUserAuth ): User {
 
-		$data = (object) $preferredUserAuth->getAuthDataArray()->getArray();
-		$data->permissions = $this->role->getDefaultPermissions()->toPersistMap();
-		$user = $this->factory->create( $data );
-
-		$createdUser = $this->repo->createPersist( $user );
+		$data               = (object) $preferredUserAuth->getAuthDataArray()->getArray();
+		$defaultPermissions = $this->role->getDefaultPermissions();
+		$user               = $this->factory->create( $data );
+		$createdUser        = $this->repo->createPersist( $user );
+		$createdUser        = $this->repo->createNewPermissions( $createdUser, $defaultPermissions );
 		if ( $createdUser->isPersistedDataFound() ) {
-			$this->cache->set( $user->getId(), $createdUser->toPersistMap() )
-			            ->set( 'usrn::' . $createdUser->getUsername(), $createdUser->toPersistMap() );
+			$rawData = $this->getRawDataFromUser( $createdUser );
+			$this->cache->set( $createdUser->getId(), $rawData )
+			            ->set( 'usrn::' . $createdUser->getUsername(), $rawData );
 		}
 
 		return $createdUser;
@@ -76,13 +77,24 @@ class UserService {
 	 * @throws \Exception
 	 */
 	public function update( User $user ): User {
+		/**
+		 * @var $updatedUser User
+		 */
 		$updatedUser = $this->repo->update( $user );
 		if ( $updatedUser->isPersistedDataFound() ) {
-			$this->cache->set( $updatedUser->getId(), $updatedUser->toPersistMap() )
-			            ->set( 'usrn::' . $updatedUser->getUsername(), $updatedUser->toPersistMap() );
+			$rawData = $this->getRawDataFromUser( $updatedUser );
+			$this->cache->set( $updatedUser->getId(), $rawData )
+			            ->set( 'usrn::' . $updatedUser->getUsername(), $rawData );
 		}
 
 		return $updatedUser;
+	}
+
+	protected function getRawDataFromUser( User $user ) {
+		$rawData              = $user->toPersistMap();
+		$rawData->permissions = $user->getPermissions()->toPersistMapArray();
+
+		return $rawData;
 	}
 
 	/**
