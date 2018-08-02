@@ -42,7 +42,7 @@ class TopicsProblemRepository extends AbstractRepository {
 	 * @return AbstractDomain
 	 * @throws \Exception
 	 */
-	public function update( PersistMappable $domain ): AbstractDomain {
+	public function update( AbstractDomain $domain ): AbstractDomain {
 		if ( $domain instanceof Problem ) {
 			$this->adapter->delete( $this->getResource(), $this->getAllColumn(), $domain->getId() );
 			if ( $topicsArray = $domain->getTopics()->toArray() ) {

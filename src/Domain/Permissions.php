@@ -97,5 +97,37 @@ class Permissions extends AbstractDomain implements \JsonSerializable {
 		return $this->permissions;
 	}
 
+	/**
+	 * @param string $resource
+	 * @param string $action
+	 * @param null $resourceId
+	 *
+	 * @return Permission|null
+	 */
+	public function getPermission( string $resource, string $action, $resourceId = null ): ?Permission {
+		$permissions = $this->getPermissions();
+
+		if ( count( $permissions ) ) {
+			foreach ( $permissions as $permission ) {
+				if ( $permission->getResource() == $resource && $permission->getResourceId() == $resourceId && $permission->getAction() == $action ) {
+					return $permission;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param string $resource
+	 * @param string $action
+	 * @param null $resourceId
+	 *
+	 * @return bool
+	 */
+	public function has( string $resource, string $action, $resourceId = null ): bool {
+		return ! is_null( $this->getPermission( $resource, $action, $resourceId ) );
+	}
+
 
 }

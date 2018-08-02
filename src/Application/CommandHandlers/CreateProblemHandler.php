@@ -19,6 +19,9 @@ use DevPledge\Integrations\Command\AbstractCommandHandler;
  * @package DevPledge\Application\CommandHandlers
  */
 class CreateProblemHandler extends AbstractCommandHandler {
+	/**
+	 * CreateProblemHandler constructor.
+	 */
 	public function __construct() {
 		parent::__construct( CreateProblemCommand::class );
 	}

@@ -8,6 +8,7 @@ use DevPledge\Integrations\Security\JWT\Token;
 use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 use Slim\Http\Request;
 use Slim\Http\Response;
+
 /**
  * Class Authorise
  * @package DevPledge\Integrations\JWT
@@ -53,7 +54,6 @@ class Authorise extends AbstractMiddleware {
 		}
 
 		$request = $request->withAttribute( Token::class, $token );
-
 		$response = $next( $request, $response );
 
 		return $response;
