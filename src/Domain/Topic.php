@@ -56,4 +56,25 @@ class Topic implements PersistMappable {
 	public function getParentName():?string {
 		return $this->parentName;
 	}
+
+	/**
+	 * @return array
+	 */
+	function toPersistMapArray(): array {
+		return (array)$this->toPersistMap();
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	function toAPIMap(): \stdClass {
+		return $this->toPersistMap();
+	}
+
+	/**
+	 * @return array
+	 */
+	function toAPIMapArray(): array {
+		return (array)$this->toPersistMap();
+	}
 }
