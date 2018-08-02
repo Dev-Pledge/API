@@ -49,28 +49,32 @@ class AuthController {
 		$password = $data['password'] ?? null;
 
 		if ( isset( $username ) && isset( $password ) ) {
-			$user           = UserServiceProvider::getService()->getByUsername( $username );
-			$hashedPassword = $user->getHashedPassword();
-			if ( ! isset( $hashedPassword ) ) {
-				return $response->withJson( [ 'error' => 'Password Authorisation is not acceptable' ], 401 );
-			}
-			$userAuth = new UsernamePassword( $username, $password, $user->getHashedPassword() );
 			try {
-				$userAuth->validate();
-			} catch ( PreferredUserAuthValidationException $authException ) {
-				return $response->withJson( [
-					'error' => $authException->getMessage(),
-					'field' => $authException->getField()
-				], 401 );
+				$user           = UserServiceProvider::getService()->getByUsername( $username );
+				$hashedPassword = $user->getHashedPassword();
+				if ( ! isset( $hashedPassword ) ) {
+					return $response->withJson( [ 'error' => 'Password Authorisation is not acceptable' ], 401 );
+				}
+				$userAuth = new UsernamePassword( $username, $password, $user->getHashedPassword() );
+				try {
+					$userAuth->validate();
+				} catch ( PreferredUserAuthValidationException $authException ) {
+					return $response->withJson( [
+						'error' => $authException->getMessage(),
+						'field' => $authException->getField()
+					], 401 );
+				}
+
+				$token = new TokenString( $user, $this->jwt );
+
+				return $response->withJson( [ 'token' => $token->getTokenString() ] );
+			} catch ( \TypeError $error ) {
+				return $response->withJson( [ 'error' => 'User Not Found' ], 401 );
 			}
-
-			$token = new TokenString( $user, $this->jwt );
-
-			return $response->withJson( [ 'token' => $token->getTokenString() ] );
-
-		} else {
-			return $response->withJson( [ 'error' => 'Invalid username or password' ], 401 );
 		}
+
+		return $response->withJson( [ 'error' => 'Invalid username or password' ], 401 );
+
 	}
 
 	/**

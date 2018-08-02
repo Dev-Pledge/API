@@ -11,6 +11,7 @@ use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\MysqlPDODuplicationException;
+use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ControllerDependencies\AuthControllerDependency;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
@@ -23,7 +24,7 @@ use Slim\Http\Response;
  * Class UserController
  * @package DevPledge\Framework\Controller\User
  */
-class UserCreateController {
+class UserCreateController extends AbstractController {
 	/**
 	 * @var JWT
 	 */
