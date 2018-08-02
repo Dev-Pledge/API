@@ -2,12 +2,8 @@
 
 namespace DevPledge\Framework\Middleware;
 
-use DevPledge\Application\Factory\FactoryException;
+
 use DevPledge\Domain\Permission;
-use DevPledge\Domain\User;
-use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
-use DevPledge\Integrations\Middleware\AbstractMiddleware;
-use DevPledge\Integrations\Security\JWT\Token;
 use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -16,7 +12,7 @@ use Slim\Http\Response;
  * Class Permission
  * @package DevPledge\Framework\Middleware
  */
-class ResourcePermission extends AbstractMiddleware {
+class ResourcePermission extends AbstractUserMiddleware {
 	/**
 	 * @var
 	 */
@@ -54,37 +50,30 @@ class ResourcePermission extends AbstractMiddleware {
 	 */
 	public function __invoke( Request $request, Response $response, callable $next ) {
 
+		return $this->authorise()( $request, $response, $this->hasPermissionFunction() );
 
-		$user = $this->getUserFromRequest( $request );
+	}
 
-		if ( ! is_null( $user ) ) {
+	public function hasPermissionFunction() {
+		return function ( Request $request, Response $response, callable $next ) {
 
-			$id = $request->getAttribute( 'id', null );
+			$user = $this->getUserFromRequest( $request );
 
-			if ( $user->getPermissions()->has( $this->resource, $this->action, $id ) ) {
-				$response = $next( $request, $response );
+			if ( ! is_null( $user ) ) {
 
-				return $response;
+				$id = $request->getAttribute( 'id', null );
+
+				if ( $user->getPermissions()->has( $this->resource, $this->action, $id ) ) {
+					$response = $next( $request, $response );
+
+					return $response;
+				}
+
 			}
 
-		}
-
-		return $response->withJson( [ 'error' => 'Permission Denied' ], 403 );
-
-
+			return $response->withJson( [ 'error' => 'Permission Denied' ], 403 );
+		};
 	}
 
-	/**
-	 * @param Request $request
-	 *
-	 * @return User|null
-	 */
-	protected function getUserFromRequest( Request $request ): ?User {
-		try {
-			return UserFactoryDependency::getFactory()->createFromToken( $request->getAttribute( Token::class ) );
-		} catch ( FactoryException $exception ) {
-			return null;
-		}
-	}
 
 }

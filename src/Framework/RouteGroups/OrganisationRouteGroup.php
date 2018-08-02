@@ -18,7 +18,7 @@ class OrganisationRouteGroup extends AbstractRouteGroup {
 	 * @throws \DevPledge\Integrations\Route\Exception
 	 */
 	public function __construct() {
-		parent::__construct( '/organisation', array( new Authorise ) );
+		parent::__construct( '/organisation', [ new Authorise ] );
 
 	}
 

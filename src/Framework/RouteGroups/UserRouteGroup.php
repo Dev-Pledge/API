@@ -4,6 +4,8 @@ namespace DevPledge\Framework\RouteGroups;
 
 
 use DevPledge\Framework\Controller\User\UserCreateController;
+use DevPledge\Framework\Middleware\UserPermission;
+use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
 /**
@@ -29,5 +31,9 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'/checkUsernameAvailability',
 			UserCreateController::class . ':checkUsernameAvailability'
 		);
+//		$this->getApp()->patch(
+//			'/{id}'
+//		)->add( new UserPermission() )->add(new Authorise());
+
 	}
 }

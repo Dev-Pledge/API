@@ -15,7 +15,8 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$this->getApp()->post( '/create', ProblemController::class . ':createProblem' )->add( new ResourcePermission( 'problems', 'create' ) )->add( new Authorise() );
+		$this->getApp()->post( '/create', ProblemController::class . ':createProblem' )
+		     ->add( new ResourcePermission( 'problems', 'create' ) );
 
 		$this->getApp()->get( '/get/{id}', ProblemController::class . ':getProblem' );
 
