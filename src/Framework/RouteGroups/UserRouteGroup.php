@@ -32,7 +32,7 @@ class UserRouteGroup extends AbstractRouteGroup {
 			UserCreateController::class . ':checkUsernameAvailability'
 		);
 		$this->getApp()->patch(
-			'/{id}',
+			'/{user_id}',
 			UserUpdateController::class . ':update'
 		)->add( new UserPermission() );
 

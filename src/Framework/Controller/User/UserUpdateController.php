@@ -31,6 +31,13 @@ class UserUpdateController extends AbstractController {
 		$this->jwt = $jwt;
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
+	 */
 	public function update( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
 

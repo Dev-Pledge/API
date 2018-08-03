@@ -36,7 +36,7 @@ class UserPermission extends AbstractUserMiddleware {
 
 			if ( ! is_null( $user ) ) {
 
-				$userId = $this->getIdFromRequest( $request);
+				$userId = $this->getUserIdFromRequest( $request);
 				if ( $user->getId() === $userId ) {
 					$response = $next( $request, $response );
 

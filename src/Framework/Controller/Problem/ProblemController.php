@@ -8,7 +8,6 @@ use DevPledge\Application\Factory\FactoryException;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Domain\Problem;
 use DevPledge\Framework\Controller\AbstractController;
-use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\ProblemRepositoryDependency;
 use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
@@ -27,9 +26,9 @@ class ProblemController extends AbstractController {
 	 * @return Response
 	 */
 	public function getProblem( Request $request, Response $response ) {
-		$id      = $request->getAttribute( 'id' );
-		$problemService    = ProblemServiceProvider::getService();
-		$problem = $problemService->read( $id);
+		$id             = $request->getAttribute( 'id' );
+		$problemService = ProblemServiceProvider::getService();
+		$problem        = $problemService->read( $id );
 		if ( is_null( $problem ) ) {
 			return $response->withJson(
 				[ 'error' => 'Problem not found!' ]
@@ -71,6 +70,13 @@ class ProblemController extends AbstractController {
 		return $response->withJson( $problem->toAPIMap() );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
+	 */
 	public function updateProblem( Request $request, Response $response ) {
 
 		$user = $this->getUserFromRequest( $request );
@@ -96,10 +102,17 @@ class ProblemController extends AbstractController {
 		return $response->withJson( $problem->toAPIMap() );
 	}
 
-	public function getUserProblems(Request $request, Response $response ) {
-		$userId      = $request->getAttribute( 'id' );
-		$problemService    = ProblemServiceProvider::getService();
-		$problems = $problemService->readAll( $userId);
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \Exception
+	 */
+	public function getUserProblems( Request $request, Response $response ) {
+		$userId         = $request->getAttribute( 'user_id' );
+		$problemService = ProblemServiceProvider::getService();
+		$problems       = $problemService->readAll( $userId );
 		if ( is_null( $problems ) ) {
 			return $response->withJson(
 				[ 'error' => 'Problems not found!' ]

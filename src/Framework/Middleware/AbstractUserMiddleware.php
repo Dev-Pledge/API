@@ -56,4 +56,19 @@ abstract class AbstractUserMiddleware extends AbstractMiddleware {
 		return null;
 	}
 
+	/**
+	 * @param Request $request
+	 *
+	 * @return null|string
+	 */
+	protected function getUserIdFromRequest( Request $request ): ?string {
+		if ( isset( $request->getAttribute( 'routeInfo' )[2] ) ) {
+			if ( isset( $request->getAttribute( 'routeInfo' )[2]['user_id'] ) ) {
+				return $request->getAttribute( 'routeInfo' )[2]['user_id'];
+			}
+		}
+
+		return null;
+	}
+
 }
