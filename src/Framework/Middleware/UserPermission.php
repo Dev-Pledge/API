@@ -2,6 +2,8 @@
 
 namespace DevPledge\Framework\Middleware;
 
+
+use DevPledge\Integrations\Security\JWT\Token;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -34,9 +36,7 @@ class UserPermission extends AbstractUserMiddleware {
 
 			if ( ! is_null( $user ) ) {
 
-				$userId = $request->getAttribute( Token::class );
-				var_dump( $userId );
-				die( 'z' );
+				$userId = $this->getIdFromRequest( $request);
 				if ( $user->getId() === $userId ) {
 					$response = $next( $request, $response );
 

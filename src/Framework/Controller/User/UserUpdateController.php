@@ -8,6 +8,7 @@ use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Integrations\Command\Dispatch;
+use DevPledge\Integrations\Security\JWT\JWT;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -32,6 +33,7 @@ class UserUpdateController extends AbstractController {
 
 	public function update( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
+
 		try {
 			/**
 			 * @var $user User

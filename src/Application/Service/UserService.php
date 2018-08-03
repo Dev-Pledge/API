@@ -79,7 +79,6 @@ class UserService {
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	public function update( User $user, \stdClass $data ): User {
-
 		$user = $this->factory->update( $user, $data );
 		/**
 		 * @var $updatedUser User

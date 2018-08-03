@@ -67,7 +67,7 @@ class ResourcePermission extends AbstractUserMiddleware {
 
 			if ( ! is_null( $user ) ) {
 
-				$id = $request->getAttribute( 'id', null );
+				$id = $this->getIdFromRequest( $request );
 
 				if ( $user->getPermissions()->has( $this->resource, $this->action, $id ) ) {
 					$response = $next( $request, $response );

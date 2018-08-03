@@ -68,7 +68,7 @@ abstract class AbstractRepository {
 			$this->getMapRepository()->update( $domain );
 		}
 
-		return $this->read( $domain->getId(), $this->getResource(), $this->getColumn() );
+		return $this->read( $domain->getId());
 	}
 
 	/**

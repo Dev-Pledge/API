@@ -40,4 +40,20 @@ abstract class AbstractUserMiddleware extends AbstractMiddleware {
 	public function authorise( Request $request, Response $response, callable $next ) {
 		return ( new Authorise() )( $request, $response, $next );
 	}
+
+	/**
+	 * @param Request $request
+	 *
+	 * @return null|string
+	 */
+	protected function getIdFromRequest( Request $request ): ?string {
+		if ( isset( $request->getAttribute( 'routeInfo' )[2] ) ) {
+			if ( isset( $request->getAttribute( 'routeInfo' )[2]['id'] ) ) {
+				return $request->getAttribute( 'routeInfo' )[2]['id'];
+			}
+		}
+
+		return null;
+	}
+
 }
