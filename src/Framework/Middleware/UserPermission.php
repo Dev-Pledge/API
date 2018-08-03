@@ -28,14 +28,15 @@ class UserPermission extends AbstractUserMiddleware {
 	 * @return \Closure
 	 */
 	public function matchUserFunction( $next ) {
+
 		return function ( Request $request, Response $response ) use ( $next ) {
 			$user = $this->getUserFromRequest( $request );
 
 			if ( ! is_null( $user ) ) {
 
-				die( 'there' );
-
-				$userId = $request->getAttribute( 'id', null );
+				$userId = $request->getAttribute( Token::class );
+				var_dump( $userId );
+				die( 'z' );
 				if ( $user->getId() === $userId ) {
 					$response = $next( $request, $response );
 
