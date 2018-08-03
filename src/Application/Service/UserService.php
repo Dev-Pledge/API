@@ -84,6 +84,7 @@ class UserService {
 		 * @var $updatedUser User
 		 */
 		$updatedUser = $this->repo->update( $user );
+		$updatedUser = $this->repo->readAppendExistingPermissions( $updatedUser );
 		if ( $updatedUser->isPersistedDataFound() ) {
 			$rawData = $this->getRawDataFromUser( $updatedUser );
 			$this->cache->set( $updatedUser->getId(), $rawData )

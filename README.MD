@@ -24,22 +24,37 @@ JWT tokens are created when a user is authenticated and are sent via the UI to a
 
 ```
 {
-	"sub": "usr-111-111-111-111",
-	"orgs": [
-		"org-222-222-222-222",
-		"org-333-333-333-333"
-	],
-	"ttl": "1520197820",
-	"perms": {
-		"resourceName": {
-			"action": {
-				"restrictionName": [
-					"val1",
-					"val2"
-				],
-			}
-		}
-	}
+  "ttl": 1533395606,
+  "ttr": 1534295606,
+  "data": {
+    "user_id": "usr-67a93cc0-d183-46e6-82a6-1f23feb15d1c",
+    "name": "Kaddy Brow",
+    "email": "bozo@gmail.co.uk",
+    "data": "{}",
+    "username": "KaddyBrow21",
+    "modified": "2018-08-03 11:26:46",
+    "created": "2018-08-02 08:57:14",
+    "permissions": [
+      {
+        "permission_id": "prm-c3d56df4-4008-43ee-b47b-ff996581ecaa",
+        "resource": "organisations",
+        "resource_id": null,
+        "action": "create"
+      },
+      {
+        "permission_id": "prm-f1604942-cd81-4e6e-b9d4-0b265d2cbae4",
+        "resource": "problems",
+        "resource_id": null,
+        "action": "create"
+      },
+      {
+        "permission_id": "prm-1d0bdd9f-37fb-44a0-8a5c-a31af8a9382a",
+        "resource": "solutions",
+        "resource_id": null,
+        "action": "create"
+      }
+    ]
+  }
 }
 ```
 
@@ -151,6 +166,18 @@ You will need to use GitHubs Oauth to get the access token and github_id (github
 The /user/create... endpoints will give a new JWT Token or send back an error message.
 
 It will also give state what `field` the error relates to.
+
+## Update User
+
+### `PATCH`  `/user/[user_id e.g usr-1111-1111-2222-3333]`
+x-www-form-urlencoded
+```
+{
+    "name": "PTBarnum",
+    "data": '{"some_data":"some value"}'
+}
+```
+
 
 ## Create A Problem
 

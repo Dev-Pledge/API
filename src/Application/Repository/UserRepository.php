@@ -81,7 +81,7 @@ class UserRepository extends AbstractRepository {
 	 * @return Permissions
 	 */
 	protected function getUserPermissions( $userId ): Permissions {
-		$data = $this->adapter->readAll( 'permissions', $userId ,'user_id');
+		$data = $this->adapter->readAll( 'permissions', $userId, 'user_id' );
 
 		return new Permissions( $data );
 	}
@@ -102,7 +102,16 @@ class UserRepository extends AbstractRepository {
 			}
 		}
 
-		return $user->setPermissions( $this->getUserPermissions( $user->getId() ) );
+		return $this->readAppendExistingPermissions( $user );
 
+	}
+
+	/**
+	 * @param User $user
+	 *
+	 * @return User
+	 */
+	public function readAppendExistingPermissions( User $user ):User {
+		return $user->setPermissions( $this->getUserPermissions( $user->getId() ) );
 	}
 }
