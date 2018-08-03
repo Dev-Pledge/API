@@ -9,6 +9,8 @@ use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Integrations\Middleware\AbstractMiddleware;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Security\JWT\Token;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 /**
  * Class AbstractUserMiddleware
@@ -28,7 +30,14 @@ abstract class AbstractUserMiddleware extends AbstractMiddleware {
 		}
 	}
 
-	public function authorise(){
-		return new Authorise();
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 * @param callable $next
+	 *
+	 * @return mixed
+	 */
+	public function authorise( Request $request, Response $response, callable $next ) {
+		return ( new Authorise() )( $request, $response, $next );
 	}
 }

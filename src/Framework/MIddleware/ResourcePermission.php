@@ -50,12 +50,18 @@ class ResourcePermission extends AbstractUserMiddleware {
 	 */
 	public function __invoke( Request $request, Response $response, callable $next ) {
 
-		return $this->authorise()( $request, $response, $this->hasPermissionFunction() );
+		return $this->authorise( $request, $response, $this->hasPermissionFunction( $next ) );
 
 	}
 
-	public function hasPermissionFunction() {
-		return function ( Request $request, Response $response, callable $next ) {
+	/**
+	 * @param $next
+	 *
+	 * @return \Closure
+	 */
+	public function hasPermissionFunction( $next ) {
+
+		return function ( Request $request, Response $response ) use ( $next ) {
 
 			$user = $this->getUserFromRequest( $request );
 

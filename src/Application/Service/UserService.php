@@ -72,11 +72,15 @@ class UserService {
 
 	/**
 	 * @param User $user
+	 * @param \stdClass $data
 	 *
-	 * @return \DevPledge\Domain\User
-	 * @throws \Exception
+	 * @return User
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
-	public function update( User $user ): User {
+	public function update( User $user, \stdClass $data ): User {
+
+		$user = $this->factory->update( $user, $data );
 		/**
 		 * @var $updatedUser User
 		 */
