@@ -8,8 +8,14 @@ use DevPledge\Domain\User;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
 
+/**
+ * Class UpdateUserHandler
+ * @package DevPledge\Application\CommandHandlers
+ */
 class UpdateUserHandler extends AbstractCommandHandler {
-
+	/**
+	 * UpdateUserHandler constructor.
+	 */
 	public function __construct() {
 		parent::__construct( UpdateUserCommand::class );
 	}
@@ -18,7 +24,8 @@ class UpdateUserHandler extends AbstractCommandHandler {
 	 * @param UpdateUserCommand $command
 	 *
 	 * @return User
-	 * @throws \Exception
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	protected function handle( $command ) {
 		$data        = $command->getData();

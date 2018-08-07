@@ -227,10 +227,9 @@ class MysqlAdapter implements Adapter {
 	 * @throws \Exception
 	 */
 	public function delete( string $resource, string $id, string $column = 'id' ): ?int {
-		$query = ( new Query( 'UPDATE' ) )
+		$query = ( new Query( 'DELETE' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->addWhere( $column, $id )->buildQuery();
-
 		return $this->db->dbQuery( $query->getSql(), $query->getBinds() );
 	}
 

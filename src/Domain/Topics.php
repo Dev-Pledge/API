@@ -44,7 +44,9 @@ class Topics {
 		$returnArray = [];
 		if ( $topics = $this->topics ) {
 			foreach ( $topics as $topic ) {
-				$returnArray[] = $topic->getName();
+				if ( $topic instanceof Topic ) {
+					$returnArray[] = $topic->getName();
+				}
 			}
 		}
 
@@ -54,7 +56,7 @@ class Topics {
 	/**
 	 * @return array|Topic[]
 	 */
-	public function getTopics(){
+	public function getTopics() {
 		return $this->topics;
 	}
 }

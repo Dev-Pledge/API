@@ -31,10 +31,16 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'/checkUsernameAvailability',
 			UserCreateController::class . ':checkUsernameAvailability'
 		);
+		$this->getApp()->post(
+			'/updatePassword/{user_id}',
+			UserUpdateController::class . ':updatePassword'
+		)->add( new UserPermission() );
+
 		$this->getApp()->patch(
 			'/{user_id}',
 			UserUpdateController::class . ':update'
 		)->add( new UserPermission() );
+
 
 	}
 }

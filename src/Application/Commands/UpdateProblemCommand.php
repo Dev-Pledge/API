@@ -3,12 +3,14 @@
 namespace DevPledge\Application\Commands;
 
 
+use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\User;
 use DevPledge\Integrations\Command\AbstractCommand;
 
 /**
  * Class UpdateProblemCommand
  * @package DevPledge\Application\Commands
+ * @throws CommandPermissionException
  */
 class UpdateProblemCommand extends AbstractCommand {
 	/**
@@ -24,10 +26,18 @@ class UpdateProblemCommand extends AbstractCommand {
 	 */
 	protected $user;
 
-	public function __construct( string $problemId, \stdClass $data ,User $user ) {
+	/**
+	 * UpdateProblemCommand constructor.
+	 *
+	 * @param string $problemId
+	 * @param \stdClass $data
+	 * @param User $user
+	 * @throws CommandPermissionException
+	 */
+	public function __construct( string $problemId, \stdClass $data, User $user ) {
 		$this->problemId = $problemId;
 		$this->data      = $data;
-		$this->user = $user;
+		$this->user      = $user;
 
 	}
 
@@ -48,7 +58,7 @@ class UpdateProblemCommand extends AbstractCommand {
 	/**
 	 * @return User
 	 */
-	public function getUser(){
+	public function getUser() {
 		return $this->user;
 	}
 }

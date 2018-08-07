@@ -20,6 +20,12 @@ class UpdateUserCommand extends AbstractCommand {
 	 */
 	protected $user;
 
+	/**
+	 * UpdateUserCommand constructor.
+	 *
+	 * @param User $user
+	 * @param \stdClass $data
+	 */
 	public function __construct( User $user, \stdClass $data ) {
 		$this->user = $user;
 		$this->data = $data;

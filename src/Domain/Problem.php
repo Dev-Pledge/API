@@ -14,6 +14,10 @@ class Problem extends AbstractDomain {
 	/**
 	 * @var string
 	 */
+	protected $organisationId='';
+	/**
+	 * @var string
+	 */
 	protected $title;
 	/**
 	 * @var string
@@ -215,5 +219,22 @@ class Problem extends AbstractDomain {
 		$data->topics = $this->getTopics()->toArray();
 
 		return $data;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOrganisationId(): string {
+		return $this->organisationId;
+	}
+
+	/**
+	 * @param string $organisationId
+	 *
+	 * @return Problem
+	 */
+	public function setOrganisationId( string $organisationId ): Problem {
+		$this->organisationId = $organisationId;
+		return $this;
 	}
 }

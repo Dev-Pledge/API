@@ -28,7 +28,7 @@ class ResourcePermission extends AbstractUserMiddleware {
 	 * @param string $resource
 	 * @param string $action
 	 */
-	public function __construct( string $resource, string $action ) {
+	public function __construct( string $resource, string $action) {
 		try {
 			if ( ! in_array( $action, Permission::ACTION_TYPES ) ) {
 				throw new \Exception( 'Action has to be ' . join( ', ', Permission::ACTION_TYPES ) );

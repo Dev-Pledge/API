@@ -14,6 +14,7 @@ class ProblemFactory extends AbstractFactory {
 	function setMethodsToProductObject() {
 		return $this
 			->setMethodToProductObject( 'user_id', 'setUserId' )
+			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' )
 			->setMethodToProductObject( 'title', 'setTitle' )
 			->setMethodToProductObject( 'active_datetime', 'setActiveDatetime', \DateTime::class )
 			->setMethodToProductObject( 'deadline_datetime', 'setDeadlineDatetime', \DateTime::class )

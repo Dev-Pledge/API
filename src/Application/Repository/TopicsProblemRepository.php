@@ -44,7 +44,7 @@ class TopicsProblemRepository extends AbstractRepository {
 	 */
 	public function update( AbstractDomain $domain ): AbstractDomain {
 		if ( $domain instanceof Problem ) {
-			$this->adapter->delete( $this->getResource(), $this->getAllColumn(), $domain->getId() );
+			$this->adapter->delete( $this->getResource(), $domain->getId(), $this->getAllColumn() );
 			if ( $topicsArray = $domain->getTopics()->toArray() ) {
 				foreach ( $topicsArray as $topic ) {
 					$this->adapter->create( $this->getResource(), (object) [
