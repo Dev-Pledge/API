@@ -81,21 +81,20 @@ class ProblemController extends AbstractController {
 	 */
 	public function updateProblem( Request $request, Response $response ) {
 
-		$user = $this->getUserFromRequest( $request );
-		$data = $this->getStdClassFromRequest( $request );
-		$problemId   = $request->getAttribute( 'problem_id' );
+		$user      = $this->getUserFromRequest( $request );
+		$data      = $this->getStdClassFromRequest( $request );
+		$problemId = $request->getAttribute( 'problem_id' );
+
 
 		try {
-			try {
-				/**
-				 * @var $problem Problem
-				 */
-				$problem = Dispatch::command( new UpdateProblemCommand( $problemId, $data, $user ) );
-			} catch ( CommandPermissionException $permException ) {
-				return $response->withJson(
-					[ 'error' => $permException->getMessage() ]
-					, 401 );
-			}
+			/**
+			 * @var $problem Problem
+			 */
+			$problem = Dispatch::command( new UpdateProblemCommand( $problemId, $data, $user ) );
+		} catch ( CommandPermissionException | \TypeError $permException ) {
+			return $response->withJson(
+				[ 'error' => 'Permission Denied' ]
+				, 401 );
 		} catch ( InvalidArgumentException $exception ) {
 			return $response->withJson(
 				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]

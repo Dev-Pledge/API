@@ -47,7 +47,7 @@ class UserUpdateController extends AbstractController {
 			 * @var $user User
 			 */
 			$user = Dispatch::command( new UpdateUserCommand( $this->getUserFromRequest( $request ), (object) $data ) );
-		} catch ( \Exception $exception ) {
+		} catch ( \Exception | \TypeError $exception ) {
 			return $response->withJson( [ 'error' => 'unable to update user' ], 401 );
 		}
 
@@ -94,7 +94,7 @@ class UserUpdateController extends AbstractController {
 			$user = Dispatch::command(
 				new UpdateUserPasswordCommand( $this->getUserFromRequest( $request ), $oldPassword, $newPassword )
 			);
-		} catch ( \Exception $exception ) {
+		} catch ( \Exception  | \TypeError $exception) {
 			return $response->withJson( [ 'error' => 'unable to update user password' ], 401 );
 		}
 
