@@ -137,14 +137,21 @@ abstract class AbstractFactory {
 	 * @return AbstractDomain
 	 */
 	public function createFromPersistedData( \stdClass $rawData ) {
+
+		/**
+		 * TODO TYPE ERROR HAPPENING WHEN THIS METHOD CAUSED FIND FIX
+		 */
+
+
 		try {
-			return $this->setRawData( $rawData )
-			            ->newProductObject()
-			            ->setUuid( true )
-			            ->setData()
-			            ->setMethodsToProductObject()
-			            ->setCreatedModified()
-			            ->getProductObject();
+				return $this->setRawData( $rawData )
+				            ->newProductObject()
+				            ->setUuid( true )
+				            ->setData()
+				            ->setMethodsToProductObject()
+				            ->setCreatedModified()
+				            ->getProductObject();
+
 		} catch ( FactoryException $exception ) {
 			Sentry::get()->captureException( $exception );
 		}
