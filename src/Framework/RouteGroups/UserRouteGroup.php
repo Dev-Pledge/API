@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Framework\Controller\User\UserController;
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Framework\Controller\User\UserUpdateController;
 use DevPledge\Framework\Middleware\UserPermission;
@@ -18,7 +19,14 @@ class UserRouteGroup extends AbstractRouteGroup {
 		parent::__construct( '/user' );
 	}
 
+
 	protected function callableInGroup() {
+
+		$this->getApp()->get(
+			'/profileInfo/{username}',
+			UserController::class . ':getProfileInfoByUsername'
+		);
+
 		$this->getApp()->post(
 			'/createFromEmailPassword',
 			UserCreateController::class . ':createUserFromEmailPassword'

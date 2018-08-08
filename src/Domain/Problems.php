@@ -56,7 +56,7 @@ class Problems extends AbstractDomain {
 	public function toAPIMap(): \stdClass {
 		$data = new \stdClass();
 		if(isset($this->user)){
-			$data->user = $this->user->toAPIMap();
+			$data->user = $this->user->toPublicAPIMap();
 		}
 		$data->problems = [];
 		if ( $this->problems ) {

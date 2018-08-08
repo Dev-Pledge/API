@@ -139,6 +139,16 @@ class UserService {
 	}
 
 	/**
+	 * @param string $username
+	 *
+	 * @return User
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function getUserFromUsernameCache( string $username ): User {
+		return $this->factory->create( $this->cache->get( 'ursn:' . $username ) );
+	}
+
+	/**
 	 * @return UserFactory
 	 */
 	public function getFactory() {

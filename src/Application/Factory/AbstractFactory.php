@@ -138,11 +138,6 @@ abstract class AbstractFactory {
 	 */
 	public function createFromPersistedData( \stdClass $rawData ) {
 
-		/**
-		 * TODO TYPE ERROR HAPPENING WHEN THIS METHOD CAUSED FIND FIX
-		 */
-
-
 		try {
 				return $this->setRawData( $rawData )
 				            ->newProductObject()

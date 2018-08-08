@@ -14,7 +14,7 @@ class Problem extends AbstractDomain {
 	/**
 	 * @var string
 	 */
-	protected $organisationId='';
+	protected $organisationId;
 	/**
 	 * @var string
 	 */
@@ -47,6 +47,7 @@ class Problem extends AbstractDomain {
 	 * @var string
 	 */
 	protected $userName;
+
 	/**
 	 * @return \stdClass
 	 */
@@ -215,7 +216,7 @@ class Problem extends AbstractDomain {
 	 * @return \stdClass
 	 */
 	public function toAPIMap(): \stdClass {
-		$data        = parent::toAPIMap();
+		$data         = parent::toAPIMap();
 		$data->topics = $this->getTopics()->toArray();
 
 		return $data;
@@ -235,6 +236,7 @@ class Problem extends AbstractDomain {
 	 */
 	public function setOrganisationId( string $organisationId ): Problem {
 		$this->organisationId = $organisationId;
+
 		return $this;
 	}
 }
