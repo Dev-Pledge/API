@@ -48,7 +48,7 @@ class User extends AbstractDomain {
 	 *
 	 * @return User
 	 */
-	public function setEmail( string $email ): User {
+	public function setEmail( ?string $email ): User {
 		$this->email = $email;
 
 		return $this;
@@ -110,14 +110,14 @@ class User extends AbstractDomain {
 	 *
 	 * @return User
 	 */
-	public function setName( string $name ): User {
+	public function setName( ?string $name ): User {
 		$this->name = $name;
 
 		return $this;
 	}
 
 	/**
-	 * @param string $name
+	 * @param string $username
 	 *
 	 * @return User
 	 */

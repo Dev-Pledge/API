@@ -4,7 +4,6 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\AbstractFactory;
-use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Framework\Adapter\Adapter;
 use DevPledge\Framework\Adapter\Wheres;

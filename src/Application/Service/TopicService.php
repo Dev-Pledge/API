@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 18/07/2018
- * Time: 21:41
- */
 
 namespace DevPledge\Application\Service;
 

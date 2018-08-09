@@ -3,6 +3,7 @@
 namespace DevPledge\Application\Factory;
 
 
+use DevPledge\Domain\Fetcher\FetchCacheUser;
 use DevPledge\Domain\Topics;
 
 class ProblemFactory extends AbstractFactory {
@@ -14,6 +15,7 @@ class ProblemFactory extends AbstractFactory {
 	function setMethodsToProductObject() {
 		return $this
 			->setMethodToProductObject( 'user_id', 'setUserId' )
+			->setMethodToProductObject( 'user_id', 'setUser', FetchCacheUser::class )
 			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' )
 			->setMethodToProductObject( 'title', 'setTitle' )
 			->setMethodToProductObject( 'active_datetime', 'setActiveDatetime', \DateTime::class )

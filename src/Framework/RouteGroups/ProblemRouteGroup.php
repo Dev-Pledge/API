@@ -12,6 +12,7 @@ use DevPledge\Integrations\Route\AbstractRouteGroup;
  * @package DevPledge\Framework\RouteGroups
  */
 class ProblemRouteGroup extends AbstractRouteGroup {
+
 	public function __construct() {
 		parent::__construct( '/problem' );
 	}

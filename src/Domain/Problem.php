@@ -44,9 +44,13 @@ class Problem extends AbstractDomain {
 	 */
 	protected $topics;
 	/**
-	 * @var string
+	 * @var User
 	 */
-	protected $userName;
+	protected $user;
+	/**
+	 * @var Solutions
+	 */
+	protected $solutions;
 
 	/**
 	 * @return \stdClass
@@ -65,6 +69,19 @@ class Problem extends AbstractDomain {
 			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
 			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
+	}
+
+	/**
+	 * @return \stdClass
+	 * @throws \Exception
+	 */
+	public function toAPIMap(): \stdClass {
+		$data            = parent::toAPIMap();
+		$data->topics    = $this->getTopics()->toArray();
+		$data->solutions = $this->getSolutions()->toAPIMapArray();
+		$data->user      = $this->getUser()->toPublicAPIMap();
+
+		return $data;
 	}
 
 	/**
@@ -212,15 +229,6 @@ class Problem extends AbstractDomain {
 		return isset( $this->topics ) ? $this->topics : new Topics( [] );
 	}
 
-	/**
-	 * @return \stdClass
-	 */
-	public function toAPIMap(): \stdClass {
-		$data         = parent::toAPIMap();
-		$data->topics = $this->getTopics()->toArray();
-
-		return $data;
-	}
 
 	/**
 	 * @return string
@@ -236,6 +244,43 @@ class Problem extends AbstractDomain {
 	 */
 	public function setOrganisationId( string $organisationId ): Problem {
 		$this->organisationId = $organisationId;
+
+		return $this;
+	}
+
+	/**
+	 * @return Solutions
+	 * @throws \Exception
+	 */
+	public function getSolutions(): Solutions {
+		return isset( $this->solutions ) ? $this->solutions : new Solutions( [] );
+	}
+
+	/**
+	 * @param Solutions $solutions
+	 *
+	 * @return Problem
+	 */
+	public function setSolutions( Solutions $solutions ): Problem {
+		$this->solutions = $solutions;
+
+		return $this;
+	}
+
+	/**
+	 * @return User
+	 */
+	public function getUser(): User {
+		return $this->user;
+	}
+
+	/**
+	 * @param User $user
+	 *
+	 * @return Problem
+	 */
+	public function setUser( ?User $user ): Problem {
+		$this->user = $user;
 
 		return $this;
 	}

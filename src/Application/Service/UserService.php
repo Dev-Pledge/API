@@ -102,6 +102,15 @@ class UserService {
 	}
 
 	/**
+	 * @param string $userId
+	 *
+	 * @return int|null
+	 */
+	public function delete( string $userId ):?int {
+		return $this->repo->delete( $userId );
+	}
+
+	/**
 	 * @param string $username
 	 *
 	 * @return \DevPledge\Domain\User
