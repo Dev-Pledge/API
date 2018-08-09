@@ -19,8 +19,9 @@ class SolutionFactory extends AbstractFactory {
 			->setMethodToProductObject( 'solution_group_id', 'setSolutionGroupId' )
 			->setMethodToProductObject( 'problem_solution_group_id', 'setProblemSolutionGroupId' )
 			->setMethodToProductObject( 'user_id', 'setUserId' )
+			->setMethodToProductObject( 'name', 'setName' )
 			->setMethodToProductObject( 'user_id', 'setUser', FetchCacheUser::class )
-			->setMethodToProductObject( 'problemId', 'setProblemId' )
+			->setMethodToProductObject( 'problem_id', 'setProblemId' )
 			->setMethodToProductObject( 'open_source_location', 'setOpenSourceLocation' );
 	}
 }

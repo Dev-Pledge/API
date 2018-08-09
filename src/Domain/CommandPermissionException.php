@@ -36,7 +36,7 @@ class CommandPermissionException extends \Exception {
 			}
 		}
 		if ( ! is_null( $domainOrganisationId ) ) {
-			if ( $userPermissions->has( 'superAdmins', $action ) ) {
+			if ( $userPermissions->has( 'super_admins', $action ) ) {
 				return;
 			}
 		}

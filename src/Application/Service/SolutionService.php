@@ -4,8 +4,11 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\SolutionFactory;
 use DevPledge\Application\Repository\SolutionRepository;
+use DevPledge\Domain\Problem;
 use DevPledge\Domain\Solution;
 use DevPledge\Domain\Solutions;
+use DevPledge\Framework\Adapter\Where;
+use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
 
 /**
@@ -48,7 +51,6 @@ class SolutionService {
 	 */
 	public function create( \stdClass $data ): Solution {
 		$solution = $this->factory->create( $data );
-
 		$solution = $this->repo->createPersist( $solution );
 
 		return $solution;
@@ -77,7 +79,7 @@ class SolutionService {
 		return $this->repo->read( $solutionId );
 	}
 
-	public function delete( string $id ):?int {
+	public function delete( string $id ): ?int {
 		return $this->repo->delete( $id );
 	}
 
@@ -91,12 +93,38 @@ class SolutionService {
 		/**
 		 * @var $solutions Solution[]
 		 */
-		$solutions = $this->repo->readAll( $problemId );
+		$solutions = $this->repo->readAll( $problemId, 'created', true );
 		if ( $solutions ) {
 			return new Solutions( $solutions );
 		}
 
 		return new Solutions( [] );
+	}
+
+	/**
+	 * @param Problem $problem
+	 * @param string $name
+	 *
+	 * @return array|null
+	 * @throws \Exception
+	 */
+	public function getProblemSolutionWithName( Problem $problem, string $name ) {
+
+		return $this->repo->readAllWhere( new Wheres(
+			[
+				new Where( 'name', trim( $name ) ),
+				new Where( 'problem_id', $problem->getId() )
+			]
+		), 'name' );
+	}
+
+	public function getProblemSolutionWithOpenSourceLocation( Problem $problem, string $openSourceLocation ) {
+		return $this->repo->readAllWhere( new Wheres(
+			[
+				new Where( 'open_source_location', trim( $openSourceLocation ) ),
+				new Where( 'problem_id', $problem->getId() )
+			]
+		), 'open_source_location' );
 	}
 
 }

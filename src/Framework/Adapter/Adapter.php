@@ -23,23 +23,25 @@ interface Adapter {
 	 * @param string $id
 	 * @param string $column
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array;
+	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null ): ?array;
 
 	/**
 	 * @param string $resource
 	 * @param Wheres $wheres
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 */
-	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array;
+	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null ): ?array;
 
 	/**
 	 * @param string $resource

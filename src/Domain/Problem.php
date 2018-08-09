@@ -231,9 +231,9 @@ class Problem extends AbstractDomain {
 
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getOrganisationId(): string {
+	public function getOrganisationId(): ?string {
 		return $this->organisationId;
 	}
 
@@ -242,7 +242,7 @@ class Problem extends AbstractDomain {
 	 *
 	 * @return Problem
 	 */
-	public function setOrganisationId( string $organisationId ): Problem {
+	public function setOrganisationId( ?string $organisationId ): Problem {
 		$this->organisationId = $organisationId;
 
 		return $this;

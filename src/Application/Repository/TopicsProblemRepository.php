@@ -88,9 +88,9 @@ class TopicsProblemRepository extends AbstractRepository {
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
+	public function readAll( string $idForAll, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
 
-		$dataArray = isset( $dataArray ) ? $dataArray : parent::readAll( $idForAll, $limit, $offset, $dataArray );
+		$dataArray = isset( $dataArray ) ? $dataArray : parent::readAll( $idForAll, $orderByColumn, $reverseOrderBy, $limit, $offset, $dataArray );
 		if ( $dataArray ) {
 			foreach ( $dataArray as &$problemData ) {
 				if ( isset( $problemData->problem_id ) ) {

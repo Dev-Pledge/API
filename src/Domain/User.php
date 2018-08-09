@@ -185,7 +185,7 @@ class User extends AbstractDomain {
 
 		unset( $data->hashed_password );
 
-
+		return $data;
 	}
 
 	public function toPublicAPIMap() {

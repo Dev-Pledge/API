@@ -4,6 +4,7 @@ namespace DevPledge\Application\Repository;
 
 
 use DevPledge\Application\Factory\UserFactory;
+use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Permissions;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Adapter;
@@ -26,7 +27,6 @@ class UserRepository extends AbstractRepository {
 
 	}
 
-
 	/**
 	 * @param string $username
 	 *
@@ -35,7 +35,7 @@ class UserRepository extends AbstractRepository {
 	public function readByUsername( string $username ): User {
 		$data = $this->adapter->read( 'users', $username, 'username' );
 
-		return $this->factory->createFromPersistedData( $data );
+		return $this->readAppendExistingPermissions( $this->factory->createFromPersistedData( $data ) );
 	}
 
 	/**
@@ -46,7 +46,7 @@ class UserRepository extends AbstractRepository {
 	public function readByGitHubId( int $gitHubId ): User {
 		$data = $this->adapter->read( 'users', $gitHubId, 'github_id' );
 
-		return $this->factory->createFromPersistedData( $data );
+		return $this->readAppendExistingPermissions( $this->factory->createFromPersistedData( $data ) );
 	}
 
 
@@ -72,7 +72,7 @@ class UserRepository extends AbstractRepository {
 	 * @return AbstractRepository|null
 	 */
 	protected function getMapRepository(): ?AbstractRepository {
-		return null;//PermissionRepositoryDependency::getRepository();
+		return null;
 	}
 
 	/**
@@ -111,7 +111,7 @@ class UserRepository extends AbstractRepository {
 	 *
 	 * @return User
 	 */
-	public function readAppendExistingPermissions( User $user ):User {
+	public function readAppendExistingPermissions( User $user ): User {
 		return $user->setPermissions( $this->getUserPermissions( $user->getId() ) );
 	}
 }

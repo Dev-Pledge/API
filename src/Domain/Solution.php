@@ -26,6 +26,10 @@ class Solution extends AbstractDomain {
 	/**
 	 * @var string
 	 */
+	protected $name = '';
+	/**
+	 * @var string
+	 */
 	protected $openSourceLocation;
 	/**
 	 * @var User
@@ -41,6 +45,7 @@ class Solution extends AbstractDomain {
 			'problem_solution_group_id' => $this->getSolutionGroupId(),
 			'solution_group_id'         => $this->getProblemSolutionGroupId(),
 			'user_id'                   => $this->getUserId(),
+			'name'                      => $this->getName(),
 			'problem_id'                => $this->getProblemId(),
 			'open_source_location'      => $this->getOpenSourceLocation(),
 			'modified'                  => $this->getModified()->format( 'Y-m-d H:i:s' ),
@@ -157,6 +162,25 @@ class Solution extends AbstractDomain {
 	 */
 	public function setUser( ?User $user ): Solution {
 		$this->user = $user;
+
+		return $this;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getName(): string {
+		return $this->name;
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return Solution
+	 */
+	public function setName( string $name ): Solution {
+		$this->name = $name;
+
 		return $this;
 	}
 }

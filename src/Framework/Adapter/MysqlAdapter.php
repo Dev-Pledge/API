@@ -53,20 +53,23 @@ class MysqlAdapter implements Adapter {
 	 * @param string $id
 	 * @param string $column
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array {
+	public function readAll( string $resource, string $id, string $column = 'id', ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null ): ?array {
 		$query = ( new Query( 'SELECT' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->addWhere( $column, $id )
 			->setLimit( $limit )
 			->setOffset( $offset );
 		if ( isset( $orderByColumn ) ) {
+			$orderByColumn = $orderByColumn . ( $reverseOrderBy ? ' DESC' : '' );
 			$query->addOrderBy( $orderByColumn );
+
 		}
 		$query->buildQuery();
 
@@ -133,18 +136,20 @@ class MysqlAdapter implements Adapter {
 	 * @param string $resource
 	 * @param Wheres $wheres
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 *
 	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null ): ?array {
+	public function readAllWhere( string $resource, Wheres $wheres, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null ): ?array {
 		$query = ( new Query( 'SELECT' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->setLimit( $limit )
 			->setOffset( $offset );
 		if ( isset( $orderByColumn ) ) {
+			$orderByColumn = $orderByColumn . ( $reverseOrderBy ? ' DESC' : '' );
 			$query->addOrderBy( $orderByColumn );
 		}
 		$this->wheres( $query, $wheres )->buildQuery();
@@ -230,6 +235,7 @@ class MysqlAdapter implements Adapter {
 		$query = ( new Query( 'DELETE' ) )
 			->setTable( $this->getResourceTable( $resource ) )
 			->addWhere( $column, $id )->buildQuery();
+
 		return $this->db->dbQuery( $query->getSql(), $query->getBinds() );
 	}
 

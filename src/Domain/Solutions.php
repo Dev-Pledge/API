@@ -26,6 +26,10 @@ class Solutions extends AbstractDomain {
 	 */
 	public function __construct( array $solutions ) {
 		parent::__construct( 'solution' );
+		$this->setSolutions( $solutions );
+	}
+
+	public function setSolutions( array $solutions ) {
 		foreach ( $solutions as $solution ) {
 			if ( ! $solution instanceof Solution ) {
 				throw new \Exception( 'Not Solution' );
@@ -33,6 +37,14 @@ class Solutions extends AbstractDomain {
 		}
 
 		$this->solutions = $solutions;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getSolutions(): array {
+
+		return $this->solutions;
 	}
 
 	/**

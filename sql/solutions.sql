@@ -8,6 +8,7 @@ CREATE TABLE solutions
   problem_solution_group_id VARCHAR(50) NULL,
   user_id                   VARCHAR(50) NOT NULL,
   problem_id                VARCHAR(50) NOT NULL,
+  name                      VARCHAR(50) NOT NULL,
   open_source_location      TEXT        NULL,
   data                      JSON        NULL,
   created                   DATETIME    NOT NULL,

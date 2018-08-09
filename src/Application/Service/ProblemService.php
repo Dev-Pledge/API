@@ -92,6 +92,7 @@ class ProblemService {
 	public function delete( string $problemId ): ?int {
 		return $this->repo->delete( $problemId );
 	}
+
 	/**
 	 * @param $userId
 	 *
@@ -99,7 +100,7 @@ class ProblemService {
 	 * @throws \Exception
 	 */
 	public function readAll( string $userId ): Problems {
-		$problems = $this->repo->readAll( $userId );
+		$problems = $this->repo->readAll( $userId, 'created', true );
 		if ( $problems ) {
 			return new Problems( $problems );
 		}

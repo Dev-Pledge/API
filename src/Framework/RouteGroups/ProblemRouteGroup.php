@@ -4,6 +4,7 @@ namespace DevPledge\Framework\RouteGroups;
 
 
 use DevPledge\Framework\Controller\Problem\ProblemController;
+use DevPledge\Framework\Controller\Problem\SolutionController;
 use DevPledge\Framework\Middleware\ResourcePermission;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
@@ -27,9 +28,12 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 		$this->getApp()->patch( '/{problem_id}', ProblemController::class . ':updateProblem' )
 		     ->add( $createProblemsMiddleWare );
 
-		$this->getApp()->get( '/get/{id}', ProblemController::class . ':getProblem' );
+		$this->getApp()->get( '/{id}', ProblemController::class . ':getProblem' );
 
-		$this->getApp()->get( '/get-user-problems/{user_id}', ProblemController::class . ':getUserProblems' );
+		$this->getApp()->get( 's/user/{user_id}', ProblemController::class . ':getUserProblems' );
+
+		$this->getApp()->post( '/{problem_id}/solution', SolutionController::class . ':createSolution' )
+		     ->add( new ResourcePermission( 'solutions', 'create' ) );
 
 	}
 }

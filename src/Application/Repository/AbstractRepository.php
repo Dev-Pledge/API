@@ -67,7 +67,7 @@ abstract class AbstractRepository {
 			$this->getMapRepository()->update( $domain );
 		}
 
-		return $this->read( $domain->getId());
+		return $this->read( $domain->getId() );
 	}
 
 	/**
@@ -84,7 +84,7 @@ abstract class AbstractRepository {
 	 *
 	 * @return int|null
 	 */
-	public function deleteWhere( Wheres $wheres ) :?int{
+	public function deleteWhere( Wheres $wheres ): ?int {
 		return $this->adapter->deleteWhere( $this->getResource(), $wheres );
 	}
 
@@ -107,16 +107,17 @@ abstract class AbstractRepository {
 	/**
 	 * @param string $idForAll
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 * @param array|null $dataArray
 	 *
 	 * @return array|null
 	 */
-	public function readAll( string $idForAll, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
-		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $orderByColumn, $limit, $offset );
+	public function readAll( string $idForAll, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
+		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $orderByColumn, $reverseOrderBy, $limit, $offset );
 		if ( $this->getMapRepository() !== null && is_array( $dataArray ) ) {
-			return $this->getMapRepository()->readAll( $idForAll, $orderByColumn, $limit, $offset, $dataArray );
+			return $this->getMapRepository()->readAll( $idForAll, $orderByColumn, $reverseOrderBy, $limit, $offset, $dataArray );
 		}
 
 
@@ -132,16 +133,17 @@ abstract class AbstractRepository {
 	/**
 	 * @param Wheres $wheres
 	 * @param null|string $orderByColumn
+	 * @param bool $reverseOrderBy
 	 * @param int|null $limit
 	 * @param int|null $offset
 	 * @param array|null $dataArray
 	 *
 	 * @return array|null
 	 */
-	public function readAllWhere( Wheres $wheres, ?string $orderByColumn = null, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
-		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAllWhere( $this->getResource(), $wheres, $orderByColumn, $limit, $offset, $offset );
+	public function readAllWhere( Wheres $wheres, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
+		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAllWhere( $this->getResource(), $wheres, $orderByColumn, $reverseOrderBy, $limit, $offset, $offset );
 		if ( $this->getMapRepository() !== null && is_array( $dataArray ) ) {
-			return $this->getMapRepository()->readAllWhere( $wheres, $orderByColumn, $limit, $offset, $dataArray );
+			return $this->getMapRepository()->readAllWhere( $wheres, $orderByColumn, $reverseOrderBy, $limit, $offset, $dataArray );
 		}
 
 
