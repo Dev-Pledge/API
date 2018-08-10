@@ -17,9 +17,13 @@ CREATE TABLE pledges
 )
   ENGINE = InnoDB;
 
+CREATE INDEX pledges_problem_id_currency_index
+  ON pledges (problem_id, currency);
+
 CREATE INDEX pledges_problem_id_created_index
   ON pledges (problem_id, created);
 
 CREATE INDEX pledges_problem_id_index
   ON pledges (problem_id);
+
 

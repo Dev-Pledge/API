@@ -54,7 +54,11 @@ class Problem extends AbstractDomain {
 	/**
 	 * @var Count
 	 */
-	protected $pledgesCount = '';
+	protected $pledgesCount;
+	/**
+	 * @var CurrencyValue
+	 */
+	protected $pledgesValue;
 
 	/**
 	 * @return \stdClass
@@ -85,6 +89,7 @@ class Problem extends AbstractDomain {
 		$data->solutions     = $this->getSolutions()->toAPIMapArray();
 		$data->user          = $this->getUser()->toPublicAPIMap();
 		$data->pledges_count = $this->getPledgesCount()->getCount();
+		$data->pledges_value  = $this->getPledgesValue()->getValue();
 
 		return $data;
 	}
@@ -304,6 +309,24 @@ class Problem extends AbstractDomain {
 	 */
 	public function setPledgesCount( Count $pledgesCount ): Problem {
 		$this->pledgesCount = $pledgesCount;
+
+		return $this;
+	}
+
+	/**
+	 * @return CurrencyValue
+	 */
+	public function getPledgesValue(): CurrencyValue {
+		return isset( $this->pledgesValue ) ? $this->pledgesValue : new CurrencyValue( 'USD', 0.00 );
+	}
+
+	/**
+	 * @param CurrencyValue $pledgesValue
+	 *
+	 * @return Problem
+	 */
+	public function setPledgesValue( CurrencyValue $pledgesValue ): Problem {
+		$this->pledgesValue = $pledgesValue;
 
 		return $this;
 	}

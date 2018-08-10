@@ -8,6 +8,7 @@ use DevPledge\Domain\AbstractDomain;
 use DevPledge\Framework\Adapter\Adapter;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
+use DevPledge\Framework\ServiceProviders\CurrencyServiceProvider;
 
 /**
  * Class AbstractRepository
@@ -180,6 +181,56 @@ abstract class AbstractRepository {
 		);
 	}
 
+	/**
+	 * @param $sumColumn
+	 * @param Wheres $wheres
+	 *
+	 * @return float
+	 */
+	public function sum( string $sumColumn, Wheres $wheres ) {
+		return $this->adapter->sum( $this->getResource(), $sumColumn, $wheres );
+	}
+
+	/**
+	 * @param string $sumColumn
+	 * @param string $allColumnId
+	 *
+	 * @return float
+	 * @throws \Exception
+	 */
+	public function sumInAllColumn( string $sumColumn, string $allColumnId ) {
+		return $this->sum(
+			$sumColumn,
+			new Wheres(
+				[ new Where( $this->getAllColumn(), $allColumnId ) ]
+			)
+		);
+	}
+
+	/**
+	 * @param string $allColumnId
+	 *
+	 * @return float
+	 * @throws \Exception
+	 */
+	public function sumInAllColumnCurrency( string $allColumnId ) {
+		$currencies      = [ 'USD', 'GBP', 'EUR' ];
+		$currencyService = CurrencyServiceProvider::getService();
+		$total           = 0;
+		foreach ( $currencies as $currency ) {
+			$total = $total + $currencyService->getSiteCurrency( $currency, $this->sum(
+					'value',
+					new Wheres(
+						[
+							new Where( $this->getAllColumn(), $allColumnId ),
+							new Where( 'currency', $currency )
+						]
+					)
+				) );
+		}
+
+		return (float) money_format( '%i', $total );
+	}
 
 	/**
 	 * @return string

@@ -254,4 +254,26 @@ class MysqlAdapter implements Adapter {
 
 		return $this->db->queryAll( $query->getSql(), $query->getBinds() );
 	}
+
+	/**
+	 * @param string $resource
+	 * @param string $sumColumn
+	 * @param Wheres|null $wheres
+	 *
+	 * @return float|null
+	 * @throws \Exception
+	 */
+	public function sum( string $resource, $sumColumn = 'value', Wheres $wheres ): float {
+		$query = new Query( 'SELECT' );
+		$query->setTable( $this->getResourceTable( $resource ) )->setFields( [ 'SUM(' . $sumColumn . ') as total' ] );
+
+		$this->wheres( $query, $wheres )->buildQuery();
+
+		$data = $this->db->queryRow( $query->getSql(), $query->getBinds() );
+		if ( isset( $data->total ) ) {
+			return (float) $data->total;
+		}
+
+		return 0;
+	}
 }

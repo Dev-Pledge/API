@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b9ee71d4194801e4744583ac1c33b26e",
+    "content-hash": "80a9c8b7c8677004db51f14ab6e36b94",
     "packages": [
         {
             "name": "container-interop/container-interop",
@@ -90,6 +90,79 @@
                 "instantiate"
             ],
             "time": "2017-07-22T11:58:36+00:00"
+        },
+        {
+            "name": "jrsaunders/fixerexchangerates",
+            "version": "v2.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JRSaunders/FixerExchangeRates-PHP.git",
+                "reference": "ea74461d2acb72f5ce8e3c7e0c5fa1045918b9ad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JRSaunders/FixerExchangeRates-PHP/zipball/ea74461d2acb72f5ce8e3c7e0c5fa1045918b9ad",
+                "reference": "ea74461d2acb72f5ce8e3c7e0c5fa1045918b9ad",
+                "shasum": ""
+            },
+            "require": {
+                "jrsaunders/quickcache": "^1.0.4",
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "FixerExchangeRates\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "John Saunders",
+                    "email": "john@yettimedia.co.uk"
+                }
+            ],
+            "description": "Apply and Use up to date exchange rates from FIXER.IO",
+            "time": "2018-06-06T09:48:55+00:00"
+        },
+        {
+            "name": "jrsaunders/quickcache",
+            "version": "v1.0.6",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JRSaunders/QuickCache.git",
+                "reference": "56e5002361c4d402cad58ea4dad76a527317a63b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/JRSaunders/QuickCache/zipball/56e5002361c4d402cad58ea4dad76a527317a63b",
+                "reference": "56e5002361c4d402cad58ea4dad76a527317a63b",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QuickCache\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "John Saunders",
+                    "email": "john@yettimedia.co.uk"
+                }
+            ],
+            "description": "Quick Caching",
+            "time": "2017-05-24T09:07:15+00:00"
         },
         {
             "name": "monolog/monolog",
@@ -2452,43 +2525,7 @@
                 }
             ],
             "description": "Swoole 在IDE下自动识别类、函数、宏，自动补全函数名",
-            "time": "2018-03-28 03:53:57"
-        },
-        {
-            "name": "jrsaunders/quickcache",
-            "version": "v1.0.6",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/JRSaunders/QuickCache.git",
-                "reference": "56e5002361c4d402cad58ea4dad76a527317a63b"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/JRSaunders/QuickCache/zipball/56e5002361c4d402cad58ea4dad76a527317a63b",
-                "reference": "56e5002361c4d402cad58ea4dad76a527317a63b",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "QuickCache\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "proprietary"
-            ],
-            "authors": [
-                {
-                    "name": "John Saunders",
-                    "email": "john@yettimedia.co.uk"
-                }
-            ],
-            "description": "Quick Caching",
-            "time": "2017-05-24T09:07:15+00:00"
+            "time": "2018-03-28T03:53:57+00:00"
         },
         {
             "name": "predis/predis",

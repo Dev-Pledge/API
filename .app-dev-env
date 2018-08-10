@@ -15,4 +15,6 @@ API_DOMAIN=api
 JWT_SECRET=98ygvbnjhgvfr67ujh
 SENTRY_DOMAIN=sentry
 
+FIXERIO=8107ef6f788fa2f264fbb541d9f3404d
+
 

@@ -2,6 +2,7 @@
 
 namespace DevPledge\Application\Factory;
 
+use DevPledge\Domain\CurrencyValue;
 use DevPledge\Domain\Fetcher\FetchCacheUser;
 
 /**
@@ -20,8 +21,7 @@ class PledgeFactory extends AbstractFactory {
 			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' )
 			->setMethodToProductObject( 'problem_id', 'setProblemId' )
 			->setMethodToProductObject( 'kudos_points', 'setKudosPoints' )
-			->setMethodToProductObject( 'value', 'setValue' )
-			->setMethodToProductObject( 'currency', 'setCurrency' )
+			->setMethodToProductObject( [ 'currency', 'value' ], 'setCurrencyValue', CurrencyValue::class )
 			->setMethodToProductObject( 'comment', 'setComment' );
 	}
 }

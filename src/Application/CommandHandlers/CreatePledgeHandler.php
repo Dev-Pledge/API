@@ -44,6 +44,7 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 		if ( ! ( isset( $data->value ) && is_numeric( $data->value ) && $data->value > 0 ) ) {
 			throw new InvalidArgumentException( 'Please give your Pledge with a value greater that 0.00', 'value' );
 		}
+
 		$currencies = [ 'GBP', 'USD', 'EUR' ];
 		if ( ! ( isset( $data->currency ) && in_array( $data->currency, $currencies ) ) ) {
 			throw new InvalidArgumentException( 'Please ensure you use ' . join( ' ', $currencies ) . ' as currency', 'currency' );

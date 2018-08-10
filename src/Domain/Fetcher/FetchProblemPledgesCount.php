@@ -11,7 +11,7 @@ use DevPledge\Integrations\Sentry;
  * Class FetchProblemPledgeCount
  * @package DevPledge\Domain\Fetcher
  */
-class FetchProblemPledgeCount extends Count {
+class FetchProblemPledgesCount extends Count {
 	/**
 	 * FetchProblemPledgeCount constructor.
 	 *

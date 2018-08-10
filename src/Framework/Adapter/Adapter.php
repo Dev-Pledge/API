@@ -90,4 +90,13 @@ interface Adapter {
 	 */
 	public function count( string $resource, Wheres $wheres ): int;
 
+	/**
+	 * @param string $resource
+	 * @param string $sumColumn
+	 * @param Wheres $wheres
+	 *
+	 * @return float
+	 */
+	public function sum( string $resource, $sumColumn = 'value', Wheres $wheres ): float;
+
 }

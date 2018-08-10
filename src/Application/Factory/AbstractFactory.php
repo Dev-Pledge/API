@@ -101,7 +101,7 @@ abstract class AbstractFactory {
 	}
 
 	/**
-	 * @param $key
+	 * @param $key string|string[]
 	 * @param $setMethod
 	 * @param null $useClass
 	 * @param \Closure|null $onSetCallback
@@ -111,7 +111,31 @@ abstract class AbstractFactory {
 	 */
 	protected function setMethodToProductObject( $key, $setMethod, $useClass = null, \Closure $onSetCallback = null ) {
 
-		if ( isset( $this->rawData->{$key} ) ) {
+		if ( is_array( $key ) && count( $key ) ) {
+			$rawArray = [];
+			foreach ( $key as $k ) {
+				if ( ! isset( $this->rawData->{$k} ) ) {
+					return $this;
+				}
+				$rawArray[] = $this->rawData->{$k};
+			}
+			if ( is_callable( array( $this->productObject, $setMethod ) ) ) {
+				try {
+					if ( ! is_null( $useClass ) ) {
+
+						$this->productObject->{$setMethod}( new $useClass( ...$rawArray ) );
+					} else {
+						$this->productObject->{$setMethod}( ...$rawArray );
+					}
+				} catch ( \Error $error ) {
+					throw new FactoryException( $error->getMessage() );
+				}
+				if ( ! is_null( $onSetCallback ) ) {
+					call_user_func_array( $onSetCallback, [ $this->productObject ] );
+				}
+			}
+
+		} else if ( isset( $this->rawData->{$key} ) ) {
 			if ( is_callable( array( $this->productObject, $setMethod ) ) ) {
 				try {
 					if ( ! is_null( $useClass ) ) {
@@ -139,13 +163,13 @@ abstract class AbstractFactory {
 	public function createFromPersistedData( \stdClass $rawData ) {
 
 		try {
-				return $this->setRawData( $rawData )
-				            ->newProductObject()
-				            ->setUuid( true )
-				            ->setData()
-				            ->setMethodsToProductObject()
-				            ->setCreatedModified()
-				            ->getProductObject();
+			return $this->setRawData( $rawData )
+			            ->newProductObject()
+			            ->setUuid( true )
+			            ->setData()
+			            ->setMethodsToProductObject()
+			            ->setCreatedModified()
+			            ->getProductObject();
 
 		} catch ( FactoryException $exception ) {
 			Sentry::get()->captureException( $exception );

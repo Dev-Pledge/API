@@ -30,6 +30,7 @@ use Slim\App;
  */
 class Integrations extends AbstractAppAccess {
 
+	static protected $baseDir;
 
 	/**
 	 * @param \Raven_Client $client
@@ -114,5 +115,19 @@ class Integrations extends AbstractAppAccess {
 	 */
 	static public function getApplication(): App {
 		return static::$app;
+	}
+
+	/**
+	 * @param string $baseDir
+	 */
+	static public function setBaseDir( string $baseDir ) {
+		static::$baseDir = $baseDir;
+	}
+
+	/**
+	 * @return string
+	 */
+	static public function getBaseDir() {
+		return isset( static::$baseDir ) ? static::$baseDir : __DIR__;
 	}
 }

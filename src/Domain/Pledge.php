@@ -2,7 +2,10 @@
 
 namespace DevPledge\Domain;
 
-
+/**
+ * Class Pledge
+ * @package DevPledge\Domain
+ */
 class Pledge extends AbstractDomain {
 	/**
 	 * @var string
@@ -20,14 +23,11 @@ class Pledge extends AbstractDomain {
 	 * @var int
 	 */
 	protected $kudosPoints;
+
 	/**
-	 * @var float
+	 * @var CurrencyValue
 	 */
-	protected $value;
-	/**
-	 * @var string
-	 */
-	protected $currency;
+	protected $currencyValue;
 	/**
 	 * @var string
 	 */
@@ -47,8 +47,8 @@ class Pledge extends AbstractDomain {
 			'organisation_id' => $this->getOrganisationId(),
 			'problem_id'      => $this->getProblemId(),
 			'kudos_point'     => $this->getKudosPoints(),
-			'value'           => $this->getValue(),
-			'currency'        => $this->getCurrency(),
+			'value'           => $this->getCurrencyValue()->getValue(),
+			'currency'        => $this->getCurrencyValue()->getCurrency(),
 			'comment'         => $this->getComment(),
 			'data'            => $this->getData()->getJson(),
 			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' ),
@@ -138,38 +138,21 @@ class Pledge extends AbstractDomain {
 		return $this;
 	}
 
+
 	/**
-	 * @return string
+	 * @return CurrencyValue
 	 */
-	public function getValue(): float {
-		return $this->value;
+	public function getCurrencyValue(): CurrencyValue {
+		return isset( $this->currency ) ? $this->currencyValue : new CurrencyValue( 'USD', 0.00 );
 	}
 
 	/**
-	 * @param float $value
+	 * @param CurrencyValue | null $currencyValue
 	 *
 	 * @return Pledge
 	 */
-	public function setValue( float $value ): Pledge {
-		$this->value = $value;
-
-		return $this;
-	}
-
-	/**
-	 * @return string
-	 */
-	public function getCurrency(): string {
-		return $this->currency;
-	}
-
-	/**
-	 * @param string $currency
-	 *
-	 * @return Pledge
-	 */
-	public function setCurrency( string $currency ): Pledge {
-		$this->currency = $currency;
+	public function setCurrencyValue( ?CurrencyValue $currencyValue ): Pledge {
+		$this->currencyValue = $currencyValue;
 
 		return $this;
 	}

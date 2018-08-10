@@ -103,5 +103,14 @@ class PledgeService {
 		return $this->repo->countAllInAllColumn( $problemId );
 	}
 
+	/**
+	 * @param $problemId
+	 *
+	 * @return float
+	 * @throws \Exception
+	 */
+	public function getPledgeValueByProblemId( $problemId ): float {
+		return $this->repo->sumInAllColumnCurrency( $problemId );
+	}
 
 }
