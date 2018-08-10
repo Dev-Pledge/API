@@ -51,6 +51,10 @@ class Problem extends AbstractDomain {
 	 * @var Solutions
 	 */
 	protected $solutions;
+	/**
+	 * @var Count
+	 */
+	protected $pledgesCount = '';
 
 	/**
 	 * @return \stdClass
@@ -76,10 +80,11 @@ class Problem extends AbstractDomain {
 	 * @throws \Exception
 	 */
 	public function toAPIMap(): \stdClass {
-		$data            = parent::toAPIMap();
-		$data->topics    = $this->getTopics()->toArray();
-		$data->solutions = $this->getSolutions()->toAPIMapArray();
-		$data->user      = $this->getUser()->toPublicAPIMap();
+		$data                = parent::toAPIMap();
+		$data->topics        = $this->getTopics()->toArray();
+		$data->solutions     = $this->getSolutions()->toAPIMapArray();
+		$data->user          = $this->getUser()->toPublicAPIMap();
+		$data->pledges_count = $this->getPledgesCount()->getCount();
 
 		return $data;
 	}
@@ -281,6 +286,24 @@ class Problem extends AbstractDomain {
 	 */
 	public function setUser( ?User $user ): Problem {
 		$this->user = $user;
+
+		return $this;
+	}
+
+	/**
+	 * @return Count
+	 */
+	public function getPledgesCount(): Count {
+		return isset( $this->pledgesCount ) ? $this->pledgesCount : new Count( 0 );
+	}
+
+	/**
+	 * @param Count $pledgesCount
+	 *
+	 * @return Problem
+	 */
+	public function setPledgesCount( Count $pledgesCount ): Problem {
+		$this->pledgesCount = $pledgesCount;
 
 		return $this;
 	}

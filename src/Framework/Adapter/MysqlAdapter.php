@@ -213,7 +213,7 @@ class MysqlAdapter implements Adapter {
 	 */
 	public function count( string $resource, Wheres $wheres ): int {
 		$query = new Query( 'SELECT' );
-		$query->setTable( $this->getResourceTable( $resource ) )->setFields( 'COUNT(*) as total' );
+		$query->setTable( $this->getResourceTable( $resource ) )->setFields( [ 'COUNT(*) as total' ] );
 		$this->wheres( $query, $wheres )->buildQuery();
 		$data = $this->db->queryRow( $query->getSql(), $query->getBinds() );
 		if ( isset( $data->total ) ) {

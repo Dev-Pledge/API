@@ -4,6 +4,7 @@ namespace DevPledge\Application\Factory;
 
 
 use DevPledge\Domain\Fetcher\FetchCacheUser;
+use DevPledge\Domain\Fetcher\FetchProblemPledgeCount;
 use DevPledge\Domain\Fetcher\FetchProblemSolutions;
 use DevPledge\Domain\Topics;
 
@@ -25,6 +26,7 @@ class ProblemFactory extends AbstractFactory {
 			->setMethodToProductObject( 'specification', 'setSpecification' )
 			->setMethodToProductObject( 'description', 'setDescription' )
 			->setMethodToProductObject( 'topics', 'setTopics', Topics::class )
-			->setMethodToProductObject( 'problem_id', 'setSolutions', FetchProblemSolutions::class );
+			->setMethodToProductObject( 'problem_id', 'setSolutions', FetchProblemSolutions::class )
+			->setMethodToProductObject( 'problem_id', 'setPledgesCount', FetchProblemPledgeCount::class );
 	}
 }

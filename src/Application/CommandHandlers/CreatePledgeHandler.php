@@ -3,14 +3,11 @@
 namespace DevPledge\Application\CommandHandlers;
 
 use DevPledge\Application\Commands\CreatePledgeCommand;
-use DevPledge\Application\Commands\CreateSolutionCommand;
-use DevPledge\Application\Service\PledgeService;
 use DevPledge\Domain\Fetcher\FetchProblem;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
-use DevPledge\Framework\ServiceProviders\SolutionServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
-use DevPledge\Integrations\Curl\CurlRequest;
+
 
 /**
  * Class CreatePledgeHandler
@@ -45,7 +42,7 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 			throw new InvalidArgumentException( 'Problem ID is not Valid', 'problem_id' );
 		}
 		if ( ! ( isset( $data->value ) && is_numeric( $data->value ) && $data->value > 0 ) ) {
-			throw new InvalidArgumentException( 'Please give your Pledge a value greater that 0.00', 'value' );
+			throw new InvalidArgumentException( 'Please give your Pledge with a value greater that 0.00', 'value' );
 		}
 		$currencies = [ 'GBP', 'USD', 'EUR' ];
 		if ( ! ( isset( $data->currency ) && in_array( $data->currency, $currencies ) ) ) {
