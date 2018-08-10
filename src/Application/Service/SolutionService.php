@@ -9,7 +9,6 @@ use DevPledge\Domain\Solution;
 use DevPledge\Domain\Solutions;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
-use DevPledge\Integrations\Cache\Cache;
 
 /**
  * Class SolutionService

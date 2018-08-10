@@ -20,11 +20,11 @@ class FetchProblemSolutions extends Solutions {
 	 * @throws \Exception
 	 */
 	public function __construct( $problemId ) {
-		parent::__construct( [] );
+
 		try {
 			$solutionService = SolutionServiceProvider::getService();
 			$solutions       = $solutionService->readAll( $problemId );
-			$this->setSolutions( $solutions->getSolutions());
+			parent::__construct( $solutions->getSolutions() );
 
 		} catch ( \Exception | \TypeError $exception ) {
 

@@ -6,6 +6,7 @@ namespace DevPledge\Framework\RepositoryDependencies\Permission;
 use DevPledge\Application\Repository\PermissionRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\PermissionFactoryDependency;
+use DevPledge\Framework\ServiceProviders\AdapterServiceProvider;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
@@ -27,7 +28,7 @@ class PermissionRepositoryDependency extends AbstractRepositoryDependency {
 	 */
 	public function __invoke( Container $container ) {
 		$factory = PermissionFactoryDependency::getFactory();
-		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
+		$adaptor = AdapterServiceProvider::getService();
 
 		return new PermissionRepository( $adaptor, $factory );
 	}

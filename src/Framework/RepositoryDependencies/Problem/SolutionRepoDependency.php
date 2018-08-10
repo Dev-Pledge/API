@@ -6,6 +6,7 @@ namespace DevPledge\Framework\RepositoryDependencies\Problem;
 use DevPledge\Application\Repository\SolutionRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\SolutionFactoryDependency;
+use DevPledge\Framework\ServiceProviders\AdapterServiceProvider;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
@@ -29,7 +30,7 @@ class SolutionRepoDependency extends AbstractRepositoryDependency {
 	 */
 	public function __invoke( Container $container ) {
 		return new SolutionRepository(
-			new MysqlAdapter( ExtendedPDOServiceProvider::getService() ),
+			AdapterServiceProvider::getService(),
 			SolutionFactoryDependency::getFactory()
 		);
 	}

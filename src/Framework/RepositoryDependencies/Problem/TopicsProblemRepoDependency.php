@@ -7,6 +7,7 @@ use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Application\Repository\TopicsProblemRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\ProblemFactoryDependency;
+use DevPledge\Framework\ServiceProviders\AdapterServiceProvider;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
@@ -27,8 +28,9 @@ class TopicsProblemRepoDependency extends AbstractRepositoryDependency {
 	 */
 	public function __invoke( Container $container ) {
 		$factory = ProblemFactoryDependency::getFactory();
-		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
-		return new TopicsProblemRepository( $adaptor, $factory);
+		$adaptor = AdapterServiceProvider::getService();
+
+		return new TopicsProblemRepository( $adaptor, $factory );
 	}
 
 	/**

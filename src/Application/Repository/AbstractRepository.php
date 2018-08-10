@@ -6,6 +6,7 @@ namespace DevPledge\Application\Repository;
 use DevPledge\Application\Factory\AbstractFactory;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Framework\Adapter\Adapter;
+use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
 
 /**
@@ -155,6 +156,30 @@ abstract class AbstractRepository {
 
 		return $dataArray;
 	}
+
+	/**
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function countAllInResource(): int {
+		return $this->adapter->count( $this->getResource(), new Wheres( [] ) );
+	}
+
+	/**
+	 * @param string $allColumnId
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function countAllInAllColumn( string $allColumnId ): int {
+		return $this->adapter->count(
+			$this->getResource(),
+			new Wheres(
+				[ new Where( $this->getAllColumn(), $allColumnId ) ]
+			)
+		);
+	}
+
 
 	/**
 	 * @return string

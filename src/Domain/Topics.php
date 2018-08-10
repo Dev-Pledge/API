@@ -9,7 +9,7 @@ use DevPledge\Application\Service\TopicService;
  * Class Topics
  * @package DevPledge\Domain
  */
-class Topics {
+class Topics extends AbstractDomain {
 	/**
 	 * @var Topic[]
 	 */
@@ -58,5 +58,26 @@ class Topics {
 	 */
 	public function getTopics() {
 		return $this->topics;
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	function toPersistMap(): \stdClass {
+		return (object) $this->getTopics();
+	}
+
+	/**
+	 * @return array
+	 */
+	function toAPIMapArray(): array {
+		$returnArray = [];
+
+		$topics = $this->getTopics();
+		foreach ( $topics as $topic ) {
+			$returnArray[] = $topic->toAPIMap();
+		}
+
+		return $returnArray;
 	}
 }

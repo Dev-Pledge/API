@@ -53,7 +53,11 @@ class TopicService {
 		static::$topics = array_merge( $parentTopics, $languageTopics );
 	}
 
-
+	/**
+	 * @param $name
+	 *
+	 * @return Topic
+	 */
 	public static function getTopic( $name ) {
 		foreach ( static::getTopics() as &$topic ) {
 			if ( $topic->getName() == $name ) {

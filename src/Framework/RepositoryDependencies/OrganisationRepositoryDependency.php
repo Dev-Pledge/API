@@ -13,6 +13,7 @@ use DevPledge\Application\Mapper\Mapper;
 use DevPledge\Application\Repository\OrganisationRepository;
 use DevPledge\Framework\Adapter\MysqlAdapter;
 use DevPledge\Framework\FactoryDependencies\OrganisationFactoryDependency;
+use DevPledge\Framework\ServiceProviders\AdapterServiceProvider;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\Services\ExtendedPDOServiceProvider;
 use Slim\Container;
@@ -32,8 +33,9 @@ class OrganisationRepositoryDependency extends AbstractRepositoryDependency {
 	 */
 	public function __invoke( Container $container ) {
 		$factory = OrganisationFactoryDependency::getFactory();
-		$adaptor = new MysqlAdapter( ExtendedPDOServiceProvider::getService() );
+		$adaptor = AdapterServiceProvider::getService();
 		$mapper  = new Mapper();
+
 		return new OrganisationRepository( $adaptor, $mapper, $factory );
 	}
 
