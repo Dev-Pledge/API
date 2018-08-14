@@ -31,6 +31,10 @@ class ProblemService {
 	 * @var SolutionService
 	 */
 	protected $solutionService;
+	/**
+	 * @var Cache
+	 */
+	protected $cacheService;
 
 	/**
 	 * ProblemService constructor.
@@ -40,11 +44,12 @@ class ProblemService {
 	 * @param UserService $userService
 	 * @param SolutionService $solutionService
 	 */
-	public function __construct( ProblemRepository $repo, ProblemFactory $factory, UserService $userService, SolutionService $solutionService ) {
+	public function __construct( ProblemRepository $repo, ProblemFactory $factory, UserService $userService, SolutionService $solutionService, Cache $cacheService ) {
 		$this->repo            = $repo;
 		$this->factory         = $factory;
 		$this->userService     = $userService;
 		$this->solutionService = $solutionService;
+		$this->cacheService    = $cacheService;
 	}
 
 	/**
@@ -100,12 +105,24 @@ class ProblemService {
 	 * @throws \Exception
 	 */
 	public function readAll( string $userId ): Problems {
+
+		$key                  = 'all-prb-user:' . $userId;
+		$allCacheUserProblems = $this->cacheService->get( $key );
+
+		if ( $allCacheUserProblems ) {
+			return unserialize( $allCacheUserProblems );
+		}
 		$problems = $this->repo->readAll( $userId, 'created', true );
+
 		if ( $problems ) {
-			return new Problems( $problems );
+			$allUserProblems = new Problems( $problems );
+			$this->cacheService->set( $key, serialize( $allUserProblems ) );
+
+			return $allUserProblems;
 		}
 
 		return new Problems( [] );
+
 	}
 
 
