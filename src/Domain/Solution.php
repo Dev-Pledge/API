@@ -26,7 +26,7 @@ class Solution extends AbstractDomain {
 	/**
 	 * @var string
 	 */
-	protected $name = '';
+	protected $name;
 	/**
 	 * @var string
 	 */
@@ -149,7 +149,7 @@ class Solution extends AbstractDomain {
 
 
 	/**
-	 * @return User|null
+	 * @return User
 	 */
 	public function getUser(): User {
 		return $this->user;
@@ -182,5 +182,12 @@ class Solution extends AbstractDomain {
 		$this->name = $name;
 
 		return $this;
+	}
+
+	public function toAPIMap(): \stdClass {
+		$data       = parent::toAPIMap();
+		$data->user = $this->getUser()->toPublicAPIMap();
+
+		return $data;
 	}
 }

@@ -19,19 +19,27 @@ class CommandPermissionException extends \Exception {
 		if ( ! in_array( $action, Permission::ACTION_TYPES ) ) {
 			throw  new static( $action . ' is not available!' );
 		}
-		$userPermissions      = $user->getPermissions();
-		$userId               = $user->getId();
-		$domainUserId         = null;
-		$domainOrganisationId = null;
+		$userPermissions       = $user->getPermissions();
+		$userId                = $user->getId();
+		$domainUserId          = null;
+		$domainOrganisationId  = null;
+		$domainSolutionGroupId = null;
 		if ( is_callable( [ $domain, 'getUserId' ] ) ) {
 			$domainUserId = $domain->getUserId();
 		}
 		if ( is_callable( [ $domain, 'getOrganisationId' ] ) ) {
 			$domainOrganisationId = $domain->getOrganisationId();
 		}
-
+		if ( is_callable( [ $domain, 'getSolutionGroupId' ] ) ) {
+			$domainSolutionGroupId = $domain->getSolutionGroupId();
+		}
 		if ( ! is_null( $domainOrganisationId ) ) {
 			if ( $userPermissions->has( 'organisations', $action, $domainOrganisationId ) ) {
+				return;
+			}
+		}
+		if ( ! is_null( $domainSolutionGroupId ) ) {
+			if ( $userPermissions->has( 'solution_groups', $action, $domainSolutionGroupId ) ) {
 				return;
 			}
 		}

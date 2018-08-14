@@ -214,9 +214,10 @@ abstract class AbstractRepository {
 	 * @throws \Exception
 	 */
 	public function sumInAllColumnCurrency( string $allColumnId ) {
-		$currencies      = [ 'USD', 'GBP', 'EUR' ];
 		$currencyService = CurrencyServiceProvider::getService();
-		$total           = 0;
+		$currencies      = [ 'USD' ];
+
+		$total = 0;
 		foreach ( $currencies as $currency ) {
 			$total = $total + $currencyService->getSiteCurrency( $currency, $this->sum(
 					'value',

@@ -59,6 +59,10 @@ class Problem extends AbstractDomain {
 	 * @var CurrencyValue
 	 */
 	protected $pledgesValue;
+	/**
+	 * @var Pledges
+	 */
+	protected $latestPledges;
 
 	/**
 	 * @return \stdClass
@@ -84,12 +88,13 @@ class Problem extends AbstractDomain {
 	 * @throws \Exception
 	 */
 	public function toAPIMap(): \stdClass {
-		$data                = parent::toAPIMap();
-		$data->topics        = $this->getTopics()->toArray();
-		$data->solutions     = $this->getSolutions()->toAPIMapArray();
-		$data->user          = $this->getUser()->toPublicAPIMap();
-		$data->pledges_count = $this->getPledgesCount()->getCount();
+		$data                 = parent::toAPIMap();
+		$data->topics         = $this->getTopics()->toArray();
+		$data->solutions      = $this->getSolutions()->toAPIMapArray();
+		$data->user           = $this->getUser()->toPublicAPIMap();
+		$data->pledges_count  = $this->getPledgesCount()->getCount();
 		$data->pledges_value  = $this->getPledgesValue()->getValue();
+		$data->latest_pledges = $this->getLatestPledges()->toAPIMapArray();
 
 		return $data;
 	}
@@ -327,6 +332,25 @@ class Problem extends AbstractDomain {
 	 */
 	public function setPledgesValue( CurrencyValue $pledgesValue ): Problem {
 		$this->pledgesValue = $pledgesValue;
+
+		return $this;
+	}
+
+	/**
+	 * @return Pledges
+	 * @throws \Exception
+	 */
+	public function getLatestPledges(): Pledges {
+		return isset( $this->latestPledges ) ? $this->latestPledges : new Pledges( [] );
+	}
+
+	/**
+	 * @param Pledges $latestPledges
+	 *
+	 * @return Problem
+	 */
+	public function setLatestPledges( Pledges $latestPledges ): Problem {
+		$this->latestPledges = $latestPledges;
 
 		return $this;
 	}

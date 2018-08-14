@@ -3,7 +3,6 @@
 namespace DevPledge\Application\Commands;
 
 
-
 use DevPledge\Domain\User;
 use DevPledge\Integrations\Command\AbstractCommand;
 
@@ -20,11 +19,22 @@ class CreatePledgeCommand extends AbstractCommand {
 	 * @var User
 	 */
 	protected $user;
+	/**
+	 * @var string
+	 */
+	protected $problemId;
 
-
-	public function __construct( \stdClass $data, User $user ) {
-		$this->user = $user;
-		$this->data = $data;
+	/**
+	 * CreatePledgeCommand constructor.
+	 *
+	 * @param string $problemId
+	 * @param \stdClass $data
+	 * @param User $user
+	 */
+	public function __construct( string $problemId, \stdClass $data, User $user ) {
+		$this->user      = $user;
+		$this->data      = $data;
+		$this->problemId = $problemId;
 	}
 
 	/**
@@ -39,6 +49,13 @@ class CreatePledgeCommand extends AbstractCommand {
 	 */
 	public function getUser(): User {
 		return $this->user;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getProblemId(): string {
+		return $this->problemId;
 	}
 
 }

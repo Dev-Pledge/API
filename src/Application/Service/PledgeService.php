@@ -7,6 +7,8 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\PledgeFactory;
 use DevPledge\Application\Repository\PledgeRepository;
 use DevPledge\Domain\Pledge;
+use DevPledge\Framework\Adapter\Where;
+use DevPledge\Framework\Adapter\Wheres;
 
 /**
  * Class PledgeService
@@ -113,4 +115,13 @@ class PledgeService {
 		return $this->repo->sumInAllColumnCurrency( $problemId );
 	}
 
+	/**
+	 * @param $problemId
+	 *
+	 * @return array|null
+	 * @throws \Exception
+	 */
+	public function getLastFivePledges( $problemId ) {
+		return $this->repo->readAllWhere( new Wheres( [ new Where( 'problem_id', $problemId ) ] ), 'created', true, 5 );
+	}
 }

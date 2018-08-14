@@ -22,12 +22,24 @@ class Problems extends AbstractDomain {
 	 */
 	public function __construct( array $problems ) {
 		parent::__construct( 'problem' );
+		$this->setProblems( $problems );
+	}
+
+	/**
+	 * @param array $problems
+	 *
+	 * @return $this
+	 * @throws \Exception
+	 */
+	public function setProblems( array $problems ): Problems {
 		foreach ( $problems as $problem ) {
 			if ( ! $problem instanceof Problem ) {
 				throw new \Exception( 'Not Problem' );
 			}
 		}
 		$this->problems = $problems;
+
+		return $this;
 	}
 
 	/**

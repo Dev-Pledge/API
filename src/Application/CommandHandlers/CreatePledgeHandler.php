@@ -31,7 +31,7 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 
 		$data          = $command->getData();
 		$data->user_id = $command->getUser()->getId();
-
+		$data->problem_id = $command->getProblemId();
 		$pledgeService = PledgeServiceProvider::getService();
 
 		if ( ! ( isset( $data->problem_id ) && is_string( $data->problem_id ) ) ) {
