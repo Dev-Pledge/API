@@ -192,6 +192,7 @@ class User extends AbstractDomain {
 		$data = parent::toAPIMap();
 		unset( $data->email );
 		unset( $data->hashed_password );
+		unset( $data->data );
 
 		return $data;
 	}
