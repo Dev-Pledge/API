@@ -69,4 +69,11 @@ class Pledges extends AbstractDomain {
 
 		return $data;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function toAPIMapArray(): array {
+		return $this->toAPIMap()->pledges;
+	}
 }

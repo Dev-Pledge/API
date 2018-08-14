@@ -11,7 +11,7 @@ use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
  * Class FetchProblemPledgesValue
  * @package DevPledge\Domain\Fetcher
  */
-class FetchProblemPledgesValue extends CurrencyValue {
+class FetchProblemPledgeValue extends CurrencyValue {
 	/**
 	 * FetchProblemPledgesValue constructor.
 	 *

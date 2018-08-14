@@ -117,6 +117,13 @@ class SolutionService {
 		), 'name' );
 	}
 
+	/**
+	 * @param Problem $problem
+	 * @param string $openSourceLocation
+	 *
+	 * @return array|null
+	 * @throws \Exception
+	 */
 	public function getProblemSolutionWithOpenSourceLocation( Problem $problem, string $openSourceLocation ) {
 		return $this->repo->readAllWhere( new Wheres(
 			[

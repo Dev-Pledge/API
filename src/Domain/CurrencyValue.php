@@ -25,6 +25,7 @@ class CurrencyValue {
 	 * @param float $value
 	 */
 	public function __construct( string $currency, float $value ) {
+
 		$this->currency = $currency;
 		$this->value    = $value;
 	}
@@ -47,7 +48,7 @@ class CurrencyValue {
 	 * @return float
 	 * @throws \Exception
 	 */
-	public function getMoney():float {
+	public function getMoney(): float {
 		return CurrencyServiceProvider::getService()->siteSumCurrencyValues( new CurrencyValues( [ $this ] ) );
 	}
 

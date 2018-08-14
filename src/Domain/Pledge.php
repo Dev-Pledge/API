@@ -46,7 +46,7 @@ class Pledge extends AbstractDomain {
 			'user_id'         => $this->getUserId(),
 			'organisation_id' => $this->getOrganisationId(),
 			'problem_id'      => $this->getProblemId(),
-			'kudos_point'     => $this->getKudosPoints(),
+			'kudos_points'    => $this->getKudosPoints(),
 			'value'           => $this->getCurrencyValue()->getValue(),
 			'currency'        => $this->getCurrencyValue()->getCurrency(),
 			'comment'         => $this->getComment(),
@@ -61,7 +61,7 @@ class Pledge extends AbstractDomain {
 	 */
 	function toAPIMap(): \stdClass {
 		$data       = parent::toAPIMap();
-		$data->user = $this->getUser()->toAPIMap();
+		$data->user = $this->getUser()->toPublicAPIMap();
 
 		return $data;
 	}
@@ -123,7 +123,7 @@ class Pledge extends AbstractDomain {
 	/**
 	 * @return string
 	 */
-	public function getKudosPoints(): string {
+	public function getKudosPoints(): ?string {
 		return $this->kudosPoints;
 	}
 
@@ -132,7 +132,7 @@ class Pledge extends AbstractDomain {
 	 *
 	 * @return Pledge
 	 */
-	public function setKudosPoints( string $kudosPoints ): Pledge {
+	public function setKudosPoints( ?string $kudosPoints ): Pledge {
 		$this->kudosPoints = $kudosPoints;
 
 		return $this;
@@ -143,7 +143,7 @@ class Pledge extends AbstractDomain {
 	 * @return CurrencyValue
 	 */
 	public function getCurrencyValue(): CurrencyValue {
-		return isset( $this->currency ) ? $this->currencyValue : new CurrencyValue( 'USD', 0.00 );
+		return isset( $this->currencyValue ) ? $this->currencyValue : new CurrencyValue( 'USD', 0.00 );
 	}
 
 	/**

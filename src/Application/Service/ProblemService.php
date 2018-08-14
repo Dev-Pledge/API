@@ -116,7 +116,7 @@ class ProblemService {
 
 		if ( $problems ) {
 			$allUserProblems = new Problems( $problems );
-			$this->cacheService->set( $key, serialize( $allUserProblems ) );
+			$this->cacheService->setEx( $key, serialize( $allUserProblems ), 30 );
 
 			return $allUserProblems;
 		}

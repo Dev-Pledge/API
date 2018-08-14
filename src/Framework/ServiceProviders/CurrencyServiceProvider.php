@@ -30,6 +30,7 @@ class CurrencyServiceProvider extends AbstractServiceProvider {
 	 */
 	public function __invoke( Container $container ) {
 		$settings   = FixerIOSettings::getSetting();
+
 		$fixerCache = new Cache();
 		$fixerCache->setCachePath( $settings->getCacheDir() );
 		AccessKey::setAccessKey( $settings->getApiAccessKey() );

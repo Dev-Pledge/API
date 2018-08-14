@@ -35,7 +35,7 @@ class FixerIOSettings extends AbstractSetting {
 	 */
 	public function __invoke( Container $container ) {
 		$this->apiAccessKey = getenv( 'FIXERIO' );
-		$this->cacheDir     = Integrations::getBaseDir() . '../data/fixerio';
+		$this->cacheDir     = Integrations::getBaseDir() . '/data/fixerio';
 
 		return $this;
 	}
@@ -45,7 +45,7 @@ class FixerIOSettings extends AbstractSetting {
 	 * @throws \Interop\Container\Exception\ContainerException
 	 */
 	static public function getSetting() {
-		static::getFromContainer();
+		return static::getFromContainer();
 	}
 
 	/**

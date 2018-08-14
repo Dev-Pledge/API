@@ -29,10 +29,10 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 	 */
 	protected function handle( $command ) {
 
-		$data          = $command->getData();
-		$data->user_id = $command->getUser()->getId();
+		$data             = $command->getData();
+		$data->user_id    = $command->getUser()->getId();
 		$data->problem_id = $command->getProblemId();
-		$pledgeService = PledgeServiceProvider::getService();
+		$pledgeService    = PledgeServiceProvider::getService();
 
 		if ( ! ( isset( $data->problem_id ) && is_string( $data->problem_id ) ) ) {
 			throw new InvalidArgumentException( 'Problem ID is Required', 'problem_id' );
@@ -41,9 +41,20 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 		if ( ! $problem->isPersistedDataFound() ) {
 			throw new InvalidArgumentException( 'Problem ID is not Valid', 'problem_id' );
 		}
+	
 		if ( ! ( isset( $data->value ) && is_numeric( $data->value ) && $data->value > 0 ) ) {
 			throw new InvalidArgumentException( 'Please give your Pledge with a value greater that 0.00', 'value' );
 		}
+
+
+		$checkFields = [ 'comment' ];
+
+		foreach ( $checkFields as $field ) {
+			if ( ! ( isset( $data->{$field} ) && strlen( $data->{$field} ) > 3 ) ) {
+				throw new InvalidArgumentException( 'Please ensure you have completed ' . $field, $field );
+			}
+		}
+
 
 		$currencies = [ 'GBP', 'USD', 'EUR' ];
 		if ( ! ( isset( $data->currency ) && in_array( $data->currency, $currencies ) ) ) {

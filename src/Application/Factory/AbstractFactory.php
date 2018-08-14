@@ -122,7 +122,6 @@ abstract class AbstractFactory {
 			if ( is_callable( array( $this->productObject, $setMethod ) ) ) {
 				try {
 					if ( ! is_null( $useClass ) ) {
-
 						$this->productObject->{$setMethod}( new $useClass( ...$rawArray ) );
 					} else {
 						$this->productObject->{$setMethod}( ...$rawArray );

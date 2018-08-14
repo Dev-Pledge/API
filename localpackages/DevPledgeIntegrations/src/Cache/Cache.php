@@ -3,6 +3,7 @@
 namespace DevPledge\Integrations\Cache;
 
 
+use phpDocumentor\Reflection\Types\Mixed_;
 use Predis\Client;
 use TomWright\JSON\Exception\JSONDecodeException;
 use TomWright\JSON\Exception\JSONEncodeException;
@@ -41,9 +42,27 @@ class Cache {
 	 * @return $this
 	 * @throws CacheException
 	 */
-	public function set( $key, $value ): Cache {
+	public function set( string $key, $value ): Cache {
 		try {
 			$this->getClient()->set( $key, $this->json->encode( $value ) );
+		} catch ( JSONEncodeException $exception ) {
+			throw new CacheException( $exception->getMessage() );
+		}
+
+		return $this;
+	}
+
+	/**
+	 * @param string $key
+	 * @param $value
+	 * @param int $ttl
+	 *
+	 * @return Cache
+	 * @throws CacheException
+	 */
+	public function setEx( string $key, $value, int $ttl = 10 ): Cache {
+		try {
+			$this->getClient()->setex( $key, $ttl, $this->json->encode( $value ) );
 		} catch ( JSONEncodeException $exception ) {
 			throw new CacheException( $exception->getMessage() );
 		}
