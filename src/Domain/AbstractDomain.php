@@ -164,6 +164,14 @@ abstract class AbstractDomain implements PersistMappable {
 	}
 
 	/**
+	 * @return \stdClass
+	 */
+	public function toPublicAPIMap(): \stdClass {
+		return parent::toAPIMap();
+
+	}
+
+	/**
 	 * @return array
 	 */
 	public function toAPIMapArray(): array {

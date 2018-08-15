@@ -41,7 +41,7 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 		if ( ! $problem->isPersistedDataFound() ) {
 			throw new InvalidArgumentException( 'Problem ID is not Valid', 'problem_id' );
 		}
-	
+
 		if ( ! ( isset( $data->value ) && is_numeric( $data->value ) && $data->value > 0 ) ) {
 			throw new InvalidArgumentException( 'Please give your Pledge with a value greater that 0.00', 'value' );
 		}
@@ -60,7 +60,12 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 		if ( ! ( isset( $data->currency ) && in_array( $data->currency, $currencies ) ) ) {
 			throw new InvalidArgumentException( 'Please ensure you use ' . join( ' ', $currencies ) . ' as currency', 'currency' );
 		}
-
+		$unSets = [ 'payment_gateway', 'payment_reference', 'solution_id' ];
+		foreach ( $unSets as $unset ) {
+			if ( isset( $data->{$unset} ) ) {
+				unset( $data->{$unset} );
+			}
+		}
 
 		return $pledgeService->create(
 			$data

@@ -36,23 +36,38 @@ class Pledge extends AbstractDomain {
 	 * @var User
 	 */
 	protected $user;
+	/**
+	 * @var null| string
+	 */
+	protected $paymentReference;
+	/**
+	 * @var null | string
+	 */
+	protected $paymentGateway;
+	/**
+	 * @var null | string
+	 */
+	protected $solutionId;
 
 	/**
 	 * @return \stdClass
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'pledge_id'       => $this->getId(),
-			'user_id'         => $this->getUserId(),
-			'organisation_id' => $this->getOrganisationId(),
-			'problem_id'      => $this->getProblemId(),
-			'kudos_points'    => $this->getKudosPoints(),
-			'value'           => $this->getCurrencyValue()->getValue(),
-			'currency'        => $this->getCurrencyValue()->getCurrency(),
-			'comment'         => $this->getComment(),
-			'data'            => $this->getData()->getJson(),
-			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' ),
-			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
+			'pledge_id'         => $this->getId(),
+			'user_id'           => $this->getUserId(),
+			'organisation_id'   => $this->getOrganisationId(),
+			'problem_id'        => $this->getProblemId(),
+			'kudos_points'      => $this->getKudosPoints(),
+			'value'             => $this->getCurrencyValue()->getValue(),
+			'currency'          => $this->getCurrencyValue()->getCurrency(),
+			'comment'           => $this->getComment(),
+			'data'              => $this->getData()->getJson(),
+			'payment_gateway'   => $this->getPaymentGateway(),
+			'payment_reference' => $this->getPaymentReference(),
+			'solution_id'       => $this->getSolutionId(),
+			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' ),
+			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
 		];
 	}
 
@@ -60,8 +75,25 @@ class Pledge extends AbstractDomain {
 	 * @return \stdClass
 	 */
 	function toAPIMap(): \stdClass {
-		$data       = parent::toAPIMap();
+		$data              = parent::toAPIMap();
+		$data->user        = $this->getUser()->toPublicAPIMap();
+		$data->is_paid     = $this->isPaid();
+		$data->is_verified = $this->isVerified();
+
+		return $data;
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	function toPublicAPIMap(): \stdClass {
+		$data       = $this->toAPIMap();
 		$data->user = $this->getUser()->toPublicAPIMap();
+		$unsets     = [ 'data', 'payment_gateway', 'payment_reference' ];
+		foreach ( $unsets as $unset ) {
+			unset( $data->{$unset} );
+		}
+
 
 		return $data;
 	}
@@ -121,18 +153,18 @@ class Pledge extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function getKudosPoints(): ?string {
-		return $this->kudosPoints;
+	public function getKudosPoints(): int {
+		return isset( $this->kudosPoints ) ? $this->kudosPoints : 0;
 	}
 
 	/**
-	 * @param string $kudosPoints
+	 * @param int $kudosPoints
 	 *
 	 * @return Pledge
 	 */
-	public function setKudosPoints( ?string $kudosPoints ): Pledge {
+	public function setKudosPoints( ?int $kudosPoints ): Pledge {
 		$this->kudosPoints = $kudosPoints;
 
 		return $this;
@@ -193,5 +225,72 @@ class Pledge extends AbstractDomain {
 		return $this;
 	}
 
+	/**
+	 * @return null|string
+	 */
+	public function getPaymentReference(): ?string {
+		return $this->paymentReference;
+	}
+
+	/**
+	 * @param null|string $paymentReference
+	 *
+	 * @return Pledge
+	 */
+	public function setPaymentReference( ?string $paymentReference ): Pledge {
+		$this->paymentReference = $paymentReference;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isVerified() {
+		return (bool) ( is_null( $this->solutionId ) && isset( $this->paymentReference ) );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isPaid() {
+		return (bool) ( ! is_null( $this->solutionId ) && ! is_null( $this->paymentReference ) );
+	}
+
+	/**
+	 * @return string | null
+	 */
+	public function getPaymentGateway() {
+		return $this->paymentGateway;
+	}
+
+	/**
+	 * @param $paymentGateway
+	 *
+	 * @return Pledge
+	 */
+	public function setPaymentGateway( ?string $paymentGateway ): Pledge {
+		$this->paymentGateway = $paymentGateway;
+
+		return $this;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getSolutionId(): ?string {
+		return $this->solutionId;
+	}
+
+	/**
+	 * @param null|string $solutionId
+	 *
+	 * @return Pledge
+	 */
+	public function setSolutionId( ?string $solutionId ): Pledge {
+		$this->solutionId = $solutionId;
+
+		return $this;
+	}
 
 }

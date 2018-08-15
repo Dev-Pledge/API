@@ -63,7 +63,7 @@ class Pledges extends AbstractDomain {
 		$data->pledges = [];
 		if ( $this->pledges ) {
 			foreach ( $this->pledges as $pledge ) {
-				$data->pledges[] = $pledge->toAPIMap();
+				$data->pledges[] = $pledge->toPublicAPIMap();
 			}
 		}
 

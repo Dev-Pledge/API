@@ -188,7 +188,10 @@ class User extends AbstractDomain {
 		return $data;
 	}
 
-	public function toPublicAPIMap() {
+	/**
+	 * @return \stdClass
+	 */
+	public function toPublicAPIMap():\stdClass {
 		$data = parent::toAPIMap();
 		unset( $data->email );
 		unset( $data->hashed_password );

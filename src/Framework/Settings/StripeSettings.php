@@ -21,7 +21,7 @@ class StripeSettings extends AbstractSetting {
 
 
 	/**
-	 * FixerIO constructor.
+	 * StripeSettings constructor.
 	 */
 	public function __construct() {
 		parent::__construct( 'Stripe' );
@@ -31,7 +31,7 @@ class StripeSettings extends AbstractSetting {
 	/**
 	 * @param Container $container
 	 *
-	 * @return FixerIOSettings
+	 * @return StripeSettings
 	 */
 	public function __invoke( Container $container ) {
 		$this->publicApiKey  = getenv( 'STRIPE_PUBLIC' );
@@ -41,7 +41,7 @@ class StripeSettings extends AbstractSetting {
 	}
 
 	/**
-	 * @return FixerIOSettings
+	 * @return StripeSettings
 	 * @throws \Interop\Container\Exception\ContainerException
 	 */
 	static public function getSetting() {
