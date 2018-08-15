@@ -13,6 +13,8 @@ services:
       - .sentry-env
     #create a .smtp-env use .smtp-example-env as template...
       - .smtp-env
+    #create a .stripe-env use .stripe-example-env as template...
+      - .stripe-env
       - .app-dev-env
     volumes:
       - .:/var/www:cached
