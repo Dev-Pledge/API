@@ -6,4 +6,5 @@
 /data/*
 /.sentry-env
 /.smtp-env
+/.stripe-env
 /dev_vendor/

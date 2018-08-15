@@ -101,7 +101,7 @@ abstract class AbstractFactory {
 	}
 
 	/**
-	 * @param $key string|string[]
+	 * @param $key string | string[]
 	 * @param $setMethod
 	 * @param null $useClass
 	 * @param \Closure|null $onSetCallback
