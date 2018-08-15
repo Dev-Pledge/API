@@ -3,7 +3,11 @@
 namespace DevPledge\Application\Service;
 
 
+use DevPledge\Application\Factory\FactoryException;
 use DevPledge\Domain\PaymentException;
+use DevPledge\Domain\Pledge;
+use DevPledge\Domain\RefundException;
+use DevPledge\Integrations\Sentry;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\ResponseInterface;
 use Omnipay\Stripe\Gateway;
@@ -41,19 +45,21 @@ class PledgePaymentService {
 	 *
 	 * @return bool
 	 * @throws PaymentException
-	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function stripePay( string $pledgeId, string $token, float $value, string $currency ) {
-		/**
-		 * @var $gateway Gateway
-		 */
-		return $this->handleGatewayResponse(
-			$this->getPledge( $pledgeId ),
-			$this->gateway->purchase( [
-				'amount'   => $value,
-				'currency' => $currency,
-				'token'    => $token,
-			] )->send() );
+
+		try {
+			return $this->handleGatewayResponse(
+				$this->getPledge( $pledgeId ),
+				$this->gateway->purchase( [
+					'amount'   => $value,
+					'currency' => $currency,
+					'token'    => $token,
+				] )->send() );
+		} catch ( FactoryException $exception ) {
+			Sentry::get()->captureException( $exception );
+			throw new PaymentException( 'Data being used is incorrect!' );
+		}
 	}
 
 	/**
@@ -67,7 +73,6 @@ class PledgePaymentService {
 	 *
 	 * @return bool
 	 * @throws PaymentException
-	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function cardPay( string $pledgeId, int $cardNumber, int $expiryMonth, int $expiryYear, int $cvv, float $value, string $currency ) {
 		$formData = [
@@ -76,30 +81,38 @@ class PledgePaymentService {
 			'expiryYear'  => $expiryYear,
 			'cvv'         => $cvv
 		];
-
-		return $this->handleGatewayResponse(
-			$this->getPledge( $pledgeId ),
-			$this->gateway->purchase(
-				[
-					'amount'   => $value,
-					'currency' => $currency,
-					'card'     => $formData
-				]
-			)->send() );
-
+		try {
+			return $this->handleGatewayResponse(
+				$this->getPledge( $pledgeId ),
+				$this->gateway->purchase(
+					[
+						'amount'   => $value,
+						'currency' => $currency,
+						'card'     => $formData
+					]
+				)->send(), function ( $pledge, $response ) {
+				$this->pledgeService->update( $pledge, (object) [
+					'payment_gateway'   => get_class( $this->gateway ),
+					'payment_reference' => $response->getTransactionReference()
+				] );
+			} );
+		} catch ( FactoryException $exception ) {
+			Sentry::get()->captureException( $exception );
+			throw new PaymentException( 'Data being used is incorrect!' );
+		}
 	}
 
 	/**
-	 * @param $pledgeId
+	 * @param string $pledgeId
+	 * @param string $throwClass
 	 *
-	 * @return \DevPledge\Domain\Pledge
-	 * @throws PaymentException
+	 * @return Pledge
 	 */
-	protected function getPledge( $pledgeId ) {
+	protected function getPledge( string $pledgeId, string $throwClass = PaymentException::class ): Pledge {
 		$pledge = $this->pledgeService->read( $pledgeId );
 
 		if ( ! $pledge->isPersistedDataFound() ) {
-			throw new PaymentException( 'Unable to make payment on Pledge' );
+			throw new $throwClass( 'Unable to make payment on Pledge' );
 		}
 
 		return $pledge;
@@ -113,20 +126,41 @@ class PledgePaymentService {
 	 * @throws PaymentException
 	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
-	protected function handleGatewayResponse( Pledge $pledge, ResponseInterface $response ): bool {
+	protected function handleGatewayResponse( Pledge $pledge, ResponseInterface $response, \Closure $successfulFunction ): bool {
 
 
 		if ( $response->isRedirect() ) {
 			throw new PaymentException( $response->getMessage(), $response->getRedirectUrl() );
 		} elseif ( $response->isSuccessful() ) {
-			$this->pledgeService->update( $pledge, (object) [
-				'payment_gateway'   => get_class( $this->gateway ),
-				'payment_reference' => $response->getTransactionReference()
-			] );
+
+			call_user_func_array( $successfulFunction, [ $pledge, $response ] );
+
 		} else {
 			throw new PaymentException( $response->getMessage() );
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string $pledgeId
+	 *
+	 * @return bool
+	 * @throws FactoryException
+	 * @throws PaymentException | RefundException
+	 */
+	public function refund( string $pledgeId ) {
+		return $this->handleGatewayResponse(
+			$pledge = $this->getPledge( $pledgeId ),
+			$this->gateway->refund( [
+				'transactionReference' => $pledge->getPaymentReference(),
+				'amount'               => $pledge->getCurrencyValue()->getValue(),
+				'currency'             => $pledge->getCurrencyValue()->getCurrency()
+			] )->send(),
+			function ( $pledge ) {
+				$this->pledgeService->update( $pledge, (object) [
+					'refunded' => 1
+				] );
+			} );
 	}
 }

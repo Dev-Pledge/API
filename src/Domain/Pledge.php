@@ -48,6 +48,10 @@ class Pledge extends AbstractDomain {
 	 * @var null | string
 	 */
 	protected $solutionId;
+	/**
+	 * @var bool
+	 */
+	protected $refunded = false;
 
 	/**
 	 * @return \stdClass
@@ -66,6 +70,7 @@ class Pledge extends AbstractDomain {
 			'payment_gateway'   => $this->getPaymentGateway(),
 			'payment_reference' => $this->getPaymentReference(),
 			'solution_id'       => $this->getSolutionId(),
+			'refunded'          => $this->getRefunded(),
 			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' ),
 			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
 		];
@@ -75,10 +80,11 @@ class Pledge extends AbstractDomain {
 	 * @return \stdClass
 	 */
 	function toAPIMap(): \stdClass {
-		$data              = parent::toAPIMap();
-		$data->user        = $this->getUser()->toPublicAPIMap();
-		$data->is_paid     = $this->isPaid();
-		$data->is_verified = $this->isVerified();
+		$data                         = parent::toAPIMap();
+		$data->user                   = $this->getUser()->toPublicAPIMap();
+		$data->is_paid                = $this->isPaid();
+		$data->is_verified            = $this->isVerified();
+		$data->is_awarded_to_solution = $this->isAwardedToSolution();
 
 		return $data;
 	}
@@ -89,8 +95,8 @@ class Pledge extends AbstractDomain {
 	function toPublicAPIMap(): \stdClass {
 		$data       = $this->toAPIMap();
 		$data->user = $this->getUser()->toPublicAPIMap();
-		$unsets     = [ 'data', 'payment_gateway', 'payment_reference' ];
-		foreach ( $unsets as $unset ) {
+		$unSets     = [ 'data', 'payment_gateway', 'payment_reference', 'refunded' ];
+		foreach ( $unSets as $unset ) {
 			unset( $data->{$unset} );
 		}
 
@@ -291,6 +297,38 @@ class Pledge extends AbstractDomain {
 		$this->solutionId = $solutionId;
 
 		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isRefunded(): bool {
+		return $this->refunded;
+	}
+
+	/**
+	 * @param int $refunded
+	 *
+	 * @return Pledge
+	 */
+	public function setRefunded( int $refunded ): Pledge {
+		$this->refunded = (bool) $refunded;
+
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getRefunded() {
+		return (int) ( $this->refunded ? 1 : 0 );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isAwardedToSolution() {
+		return (bool) isset( $this->solutionId );
 	}
 
 }

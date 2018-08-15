@@ -15,6 +15,7 @@ CREATE TABLE pledges
   payment_gateway   VARCHAR(100)                             NULL,
   payment_reference TEXT                                     NULL,
   solution_id       VARCHAR(50)                              NULL,
+  refunded          TINYINT(1) DEFAULT '0'                   NULL,
   created           DATETIME                                 NOT NULL,
   modified          DATETIME                                 NOT NULL
 )

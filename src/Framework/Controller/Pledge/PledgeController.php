@@ -5,6 +5,7 @@ namespace DevPledge\Framework\Controller\Pledge;
 use DevPledge\Application\Commands\CreatePledgeCommand;
 use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\InvalidArgumentException;
+use DevPledge\Domain\Pledge;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Integrations\Command\Dispatch;
 use Slim\Http\Request;

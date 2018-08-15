@@ -24,6 +24,7 @@ class PledgeFactory extends AbstractFactory {
 			->setMethodToProductObject( 'payment_gateway', 'setPaymentGateway' )
 			->setMethodToProductObject( 'payment_reference', 'setPaymentReference' )
 			->setMethodToProductObject( 'solution_id', 'setSolutionId' )
+			->setMethodToProductObject( 'refunded', 'setRefunded' )
 			->setMethodToProductObject( [ 'currency', 'value' ], 'setCurrencyValue', CurrencyValue::class )
 			->setMethodToProductObject( 'comment', 'setComment' );
 	}
