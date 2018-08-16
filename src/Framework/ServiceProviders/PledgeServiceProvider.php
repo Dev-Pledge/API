@@ -31,7 +31,8 @@ class PledgeServiceProvider extends AbstractServiceProvider {
 			PledgeRepositoryDependency::getRepository(),
 			PledgeFactoryDependency::getFactory(),
 			UserServiceProvider::getService(),
-			SolutionServiceProvider::getService()
+			SolutionServiceProvider::getService(),
+			PaymentServiceProvider::getService()
 		);
 	}
 

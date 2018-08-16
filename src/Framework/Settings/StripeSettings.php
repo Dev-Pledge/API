@@ -19,6 +19,7 @@ class StripeSettings extends AbstractSetting {
 	 */
 	protected $privateApiKey;
 
+	protected $testMode = false;
 
 	/**
 	 * StripeSettings constructor.
@@ -36,6 +37,7 @@ class StripeSettings extends AbstractSetting {
 	public function __invoke( Container $container ) {
 		$this->publicApiKey  = getenv( 'STRIPE_PUBLIC' );
 		$this->privateApiKey = getenv( 'STRIPE_PRIVATE' );
+		$this->testMode      = ( getenv( 'ENVIRONMENT' ) == 'development' ) ? true : false;
 
 		return $this;
 	}
@@ -60,6 +62,13 @@ class StripeSettings extends AbstractSetting {
 	 */
 	public function getPublicApiKey(): string {
 		return $this->publicApiKey;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isTestMode(): bool {
+		return $this->testMode;
 	}
 
 

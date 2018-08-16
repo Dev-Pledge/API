@@ -1,15 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 15/08/2018
- * Time: 11:37
- */
 
 namespace DevPledge\Framework\ServiceProviders;
 
 
-use DevPledge\Application\Service\PledgePaymentService;
+use DevPledge\Application\Service\PaymentService;
+use DevPledge\Framework\FactoryDependencies\PaymentFactoryDependency;
+use DevPledge\Framework\RepositoryDependencies\Payment\PaymentRepositoryDependency;
 use DevPledge\Framework\Settings\StripeSettings;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use Omnipay\Omnipay;
@@ -20,16 +16,18 @@ use Slim\Container;
  * Class PaymentServiceProvider
  * @package DevPledge\Framework\ServiceProviders
  */
-class PledgePaymentServiceProvider extends AbstractServiceProvider {
-
+class PaymentServiceProvider extends AbstractServiceProvider {
+	/**
+	 * PaymentServiceProvider constructor.
+	 */
 	public function __construct() {
-		parent::__construct( PledgePaymentService::class );
+		parent::__construct( PaymentService::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return PledgePaymentService
+	 * @return PaymentService
 	 * @throws \Interop\Container\Exception\ContainerException
 	 */
 	public function __invoke( Container $container ) {
@@ -38,14 +36,17 @@ class PledgePaymentServiceProvider extends AbstractServiceProvider {
 		 * @var $gateway Gateway
 		 */
 		$gateway = Omnipay::create( 'Stripe' );
-		$gateway->setApiKey( $stripeSettings->getPrivateApiKey() );
+		$gateway
+			->setApiKey( $stripeSettings->getPrivateApiKey() )
+			->setTestMode( $stripeSettings->isTestMode() );
 
-		return new PledgePaymentService( $gateway , PledgeServiceProvider::getService());
+
+		return new PaymentService( PaymentRepositoryDependency::getRepository(), PaymentFactoryDependency::getFactory(), $gateway );
 	}
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return PledgePaymentService
+	 * @return PaymentService
 	 */
 	static public function getService() {
 		return static::getFromContainer();

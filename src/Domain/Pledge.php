@@ -39,11 +39,8 @@ class Pledge extends AbstractDomain {
 	/**
 	 * @var null| string
 	 */
-	protected $paymentReference;
-	/**
-	 * @var null | string
-	 */
-	protected $paymentGateway;
+	protected $paymentId;
+
 	/**
 	 * @var null | string
 	 */
@@ -58,21 +55,19 @@ class Pledge extends AbstractDomain {
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'pledge_id'         => $this->getId(),
-			'user_id'           => $this->getUserId(),
-			'organisation_id'   => $this->getOrganisationId(),
-			'problem_id'        => $this->getProblemId(),
-			'kudos_points'      => $this->getKudosPoints(),
-			'value'             => $this->getCurrencyValue()->getValue(),
-			'currency'          => $this->getCurrencyValue()->getCurrency(),
-			'comment'           => $this->getComment(),
-			'data'              => $this->getData()->getJson(),
-			'payment_gateway'   => $this->getPaymentGateway(),
-			'payment_reference' => $this->getPaymentReference(),
-			'solution_id'       => $this->getSolutionId(),
-			'refunded'          => $this->getRefunded(),
-			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' ),
-			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
+			'pledge_id'       => $this->getId(),
+			'user_id'         => $this->getUserId(),
+			'organisation_id' => $this->getOrganisationId(),
+			'problem_id'      => $this->getProblemId(),
+			'kudos_points'    => $this->getKudosPoints(),
+			'value'           => $this->getCurrencyValue()->getValue(),
+			'currency'        => $this->getCurrencyValue()->getCurrency(),
+			'comment'         => $this->getComment(),
+			'data'            => $this->getData()->getJson(),
+			'payment_id'      => $this->getPaymentId(),
+			'solution_id'     => $this->getSolutionId(),
+			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' ),
+			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
 		];
 	}
 
@@ -95,7 +90,7 @@ class Pledge extends AbstractDomain {
 	function toPublicAPIMap(): \stdClass {
 		$data       = $this->toAPIMap();
 		$data->user = $this->getUser()->toPublicAPIMap();
-		$unSets     = [ 'data', 'payment_gateway', 'payment_reference', 'refunded' ];
+		$unSets     = [ 'data', 'payment_id' ];
 		foreach ( $unSets as $unset ) {
 			unset( $data->{$unset} );
 		}
@@ -134,7 +129,7 @@ class Pledge extends AbstractDomain {
 	 *
 	 * @return Pledge
 	 */
-	public function setOrganisationId( string $organisationId ): Pledge {
+	public function setOrganisationId( ?string $organisationId ): Pledge {
 		$this->organisationId = $organisationId;
 
 		return $this;
@@ -234,17 +229,17 @@ class Pledge extends AbstractDomain {
 	/**
 	 * @return null|string
 	 */
-	public function getPaymentReference(): ?string {
-		return $this->paymentReference;
+	public function getPaymentId(): ?string {
+		return $this->paymentId;
 	}
 
 	/**
-	 * @param null|string $paymentReference
+	 * @param null|string $paymentId
 	 *
 	 * @return Pledge
 	 */
-	public function setPaymentReference( ?string $paymentReference ): Pledge {
-		$this->paymentReference = $paymentReference;
+	public function setPaymentId( ?string $paymentId ): Pledge {
+		$this->paymentId = $paymentId;
 
 		return $this;
 	}
@@ -253,32 +248,14 @@ class Pledge extends AbstractDomain {
 	 * @return bool
 	 */
 	public function isVerified() {
-		return (bool) ( is_null( $this->solutionId ) && isset( $this->paymentReference ) );
+		return (bool) ( is_null( $this->solutionId ) && isset( $this->paymentId ) );
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function isPaid() {
-		return (bool) ( ! is_null( $this->solutionId ) && ! is_null( $this->paymentReference ) );
-	}
-
-	/**
-	 * @return string | null
-	 */
-	public function getPaymentGateway() {
-		return $this->paymentGateway;
-	}
-
-	/**
-	 * @param $paymentGateway
-	 *
-	 * @return Pledge
-	 */
-	public function setPaymentGateway( ?string $paymentGateway ): Pledge {
-		$this->paymentGateway = $paymentGateway;
-
-		return $this;
+		return (bool) ( ! is_null( $this->solutionId ) && ! is_null( $this->paymentId ) );
 	}
 
 	/**
@@ -297,31 +274,6 @@ class Pledge extends AbstractDomain {
 		$this->solutionId = $solutionId;
 
 		return $this;
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function isRefunded(): bool {
-		return $this->refunded;
-	}
-
-	/**
-	 * @param int $refunded
-	 *
-	 * @return Pledge
-	 */
-	public function setRefunded( int $refunded ): Pledge {
-		$this->refunded = (bool) $refunded;
-
-		return $this;
-	}
-
-	/**
-	 * @return int
-	 */
-	public function getRefunded() {
-		return (int) ( $this->refunded ? 1 : 0 );
 	}
 
 	/**

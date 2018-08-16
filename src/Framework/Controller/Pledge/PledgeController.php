@@ -53,4 +53,16 @@ class PledgeController extends AbstractController {
 		return $response->withJson( $pledge->toAPIMap() );
 	}
 
+	public function makePaymentOnPledge( Request $request, Response $response ) {
+		$user      = $this->getUserFromRequest( $request );
+		$data      = $this->getStdClassFromRequest( $request );
+		$problemId = $request->getAttribute( 'problem_id' );
+
+		if ( is_null( $user ) ) {
+			return $response->withJson(
+				[ 'error' => 'No User Found' ]
+				, 401 );
+		}
+	}
+
 }

@@ -6,6 +6,7 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\PledgeFactory;
 use DevPledge\Application\Repository\PledgeRepository;
+use DevPledge\Domain\Payment;
 use DevPledge\Domain\Pledge;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
@@ -32,6 +33,10 @@ class PledgeService {
 	 * @var SolutionService
 	 */
 	protected $solutionService;
+	/**
+	 * @var PaymentService
+	 */
+	protected $paymentService;
 
 	/**
 	 * PledgeService constructor.
@@ -40,12 +45,14 @@ class PledgeService {
 	 * @param PledgeFactory $factory
 	 * @param UserService $userService
 	 * @param SolutionService $solutionService
+	 * @param PaymentService $paymentService
 	 */
-	public function __construct( PledgeRepository $repo, PledgeFactory $factory, UserService $userService, SolutionService $solutionService ) {
+	public function __construct( PledgeRepository $repo, PledgeFactory $factory, UserService $userService, SolutionService $solutionService, PaymentService $paymentService ) {
 		$this->repo            = $repo;
 		$this->factory         = $factory;
 		$this->userService     = $userService;
 		$this->solutionService = $solutionService;
+		$this->paymentService  = $paymentService;
 	}
 
 	/**
@@ -123,5 +130,26 @@ class PledgeService {
 	 */
 	public function getLastFivePledges( $problemId ) {
 		return $this->repo->readAllWhere( new Wheres( [ new Where( 'problem_id', $problemId ) ] ), 'created', true, 5 );
+	}
+
+	/**
+	 * @param string $pledgeId
+	 * @param string $token
+	 *
+	 * @return bool|null
+	 * @throws \DevPledge\Domain\PaymentException
+	 */
+	public function payPledgeWithStripeToken( string $pledgeId, string $token ): bool {
+		$pledge = $this->read( $pledgeId );
+		if ( ! $pledge->isPersistedDataFound() ) {
+			return false;
+		}
+
+		return $this->paymentService->stripePayWithToken( $token, $pledge->getCurrencyValue(), function ( $response, ?Payment $payment ) use ( $pledge ) {
+			if ( ! is_null( $payment ) ) {
+				$pledge->setPaymentId( $payment->getId() );
+				$this->update( $pledge, (object) [] );
+			}
+		} );
 	}
 }

@@ -21,10 +21,8 @@ class PledgeFactory extends AbstractFactory {
 			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' )
 			->setMethodToProductObject( 'problem_id', 'setProblemId' )
 			->setMethodToProductObject( 'kudos_points', 'setKudosPoints' )
-			->setMethodToProductObject( 'payment_gateway', 'setPaymentGateway' )
-			->setMethodToProductObject( 'payment_reference', 'setPaymentReference' )
+			->setMethodToProductObject( 'payment_id', 'setPaymentId' )
 			->setMethodToProductObject( 'solution_id', 'setSolutionId' )
-			->setMethodToProductObject( 'refunded', 'setRefunded' )
 			->setMethodToProductObject( [ 'currency', 'value' ], 'setCurrencyValue', CurrencyValue::class )
 			->setMethodToProductObject( 'comment', 'setComment' );
 	}

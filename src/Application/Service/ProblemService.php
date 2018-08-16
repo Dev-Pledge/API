@@ -36,6 +36,7 @@ class ProblemService {
 	 */
 	protected $cacheService;
 
+
 	/**
 	 * ProblemService constructor.
 	 *
@@ -43,8 +44,15 @@ class ProblemService {
 	 * @param ProblemFactory $factory
 	 * @param UserService $userService
 	 * @param SolutionService $solutionService
+	 * @param Cache $cacheService
 	 */
-	public function __construct( ProblemRepository $repo, ProblemFactory $factory, UserService $userService, SolutionService $solutionService, Cache $cacheService ) {
+	public function __construct(
+		ProblemRepository $repo,
+		ProblemFactory $factory,
+		UserService $userService,
+		SolutionService $solutionService,
+		Cache $cacheService
+	) {
 		$this->repo            = $repo;
 		$this->factory         = $factory;
 		$this->userService     = $userService;
