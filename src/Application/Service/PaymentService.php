@@ -107,7 +107,7 @@ class PaymentService {
 				$payment = null;
 				if ( isset( $createPayment ) ) {
 					$payment = $this->create( (object) [
-						'gateway'   => get_class( $this->gateway ),
+						'gateway'   => $this->gateway->getShortName(),
 						'reference' => $response->getTransactionReference(),
 						'data'      => json_encode( $response->getData() ),
 						'value'     => $createPayment->getValue(),
