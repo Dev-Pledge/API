@@ -13,18 +13,19 @@ class Uuid {
 	 * @var array
 	 */
 	protected static $entities = [
-		'permission' => 'prm',
-		'comment'    => 'cmt',
-		'currency'   => 'cur',
-		'kudos'      => 'kud',
-		'org'        => 'org',
-		'payment'    => 'pay',
-		'pledge'     => 'plg',
-		'problem'    => 'prb',
-		'solution'   => 'sol',
-		'topic'      => 'top',
-		'user'       => 'usr',
-		'user_group' => 'usg',
+		'permission'    => 'prm',
+		'comment'       => 'cmt',
+		'currency'      => 'cur',
+		'kudos'         => 'kud',
+		'org'           => 'org',
+		'payment'       => 'pay',
+		'payment_means' => 'pym',
+		'pledge'        => 'plg',
+		'problem'       => 'prb',
+		'solution'      => 'sol',
+		'topic'         => 'top',
+		'user'          => 'usr',
+		'user_group'    => 'usg',
 	];
 
 	protected static $uuidLength = 36;

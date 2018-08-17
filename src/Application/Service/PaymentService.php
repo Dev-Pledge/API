@@ -4,9 +4,12 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\PaymentFactory;
 use DevPledge\Application\Repository\PaymentRepository;
+use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\CurrencyValue;
+use DevPledge\Domain\Organisation;
 use DevPledge\Domain\Payment;
 use DevPledge\Domain\PaymentException;
+use DevPledge\Domain\User;
 use DevPledge\Integrations\Sentry;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\ResponseInterface;
@@ -114,6 +117,7 @@ class PaymentService {
 						'currency'  => $createPayment->getValue()
 					] );
 				}
+
 				call_user_func_array( $successfulFunction, [ $response, $payment ] );
 
 			}
@@ -181,6 +185,26 @@ class PaymentService {
 			Sentry::get()->captureException( $exception );
 			throw new PaymentException( 'Data being used is incorrect!' );
 		}
+	}
+
+	public function createPaymentMeansFromStripeToken( AbstractDomain $domain, string $token ) {
+		return $this->createPaymentMeans( $domain, [ 'token' => $token ] );
+	}
+
+
+	public function createPaymentMeans( AbstractDomain $domain, array $createCardParameters = [] ) {
+
+		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
+			throw new PaymentException( 'No User or Organisation Specified' );
+		}
+
+		return $this->handleGatewayResponse(
+			$this->gateway->createCard( $createCardParameters )->send(),
+			function ( ResponseInterface $response ) {
+				$cardReference = $response->getCardReference();
+
+			}
+		);
 	}
 
 
