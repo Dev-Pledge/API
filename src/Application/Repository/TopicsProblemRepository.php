@@ -68,6 +68,7 @@ class TopicsProblemRepository extends AbstractRepository {
 	 * @return AbstractDomain
 	 */
 	public function read( string $id, \stdClass $data = null ): AbstractDomain {
+
 		$topicData = $this->adapter->readAll( $this->getResource(), $id, $this->getAllColumn() );
 
 		if ( $topicData ) {

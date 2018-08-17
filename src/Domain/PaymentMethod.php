@@ -46,13 +46,13 @@ class PaymentMethod extends AbstractDomain {
 	function toPersistMap(): \stdClass {
 		return (object) [
 			'payment_method_id' => $this->getId(),
-			'user_id'          => $this->getUserId(),
-			'organisation_id'  => $this->getOrganisationId(),
-			'gateway'          => $this->getGateway(),
-			'name'             => $this->getName(),
-			'data'             => $this->getData()->getJson(),
-			'created'          => $this->getCreated()->format( 'Y-m-d H:i:s' ),
-			'modified'         => $this->getModified()->format( 'Y-m-d H:i:s' )
+			'user_id'           => $this->getUserId(),
+			'organisation_id'   => $this->getOrganisationId(),
+			'gateway'           => $this->getGateway(),
+			'name'              => $this->getName(),
+			'data'              => $this->getData()->getJson(),
+			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' ),
+			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' )
 		];
 	}
 
@@ -127,4 +127,7 @@ class PaymentMethod extends AbstractDomain {
 
 		return $this;
 	}
+
+
+
 }
