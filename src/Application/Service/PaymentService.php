@@ -32,6 +32,10 @@ class PaymentService {
 	 * @var PaymentFactory
 	 */
 	protected $factory;
+	/**
+	 * @var PaymentMeansService
+	 */
+	protected $paymentMeansService;
 
 	/**
 	 * PaymentService constructor.
@@ -40,10 +44,11 @@ class PaymentService {
 	 * @param PaymentFactory $factory
 	 * @param AbstractGateway $gateway
 	 */
-	public function __construct( PaymentRepository $repo, PaymentFactory $factory, AbstractGateway $gateway ) {
-		$this->repo    = $repo;
-		$this->factory = $factory;
-		$this->gateway = $gateway;
+	public function __construct( PaymentRepository $repo, PaymentFactory $factory, PaymentMeansService $paymentMeansService, AbstractGateway $gateway ) {
+		$this->repo                = $repo;
+		$this->factory             = $factory;
+		$this->gateway             = $gateway;
+		$this->paymentMeansService = $paymentMeansService;
 	}
 
 	/**
@@ -54,11 +59,11 @@ class PaymentService {
 	 */
 	public function create( \stdClass $data ): Payment {
 
-		$pledge = $this->factory->create( $data );
+		$payment = $this->factory->create( $data );
 
-		$pledge = $this->repo->createPersist( $pledge );
+		$payment = $this->repo->createPersist( $payment );
 
-		return $pledge;
+		return $payment;
 	}
 
 	/**
@@ -69,9 +74,9 @@ class PaymentService {
 	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function update( Payment $payment, \stdClass $rawUpdateData ): Payment {
-		$pledge = $this->factory->update( $payment, $rawUpdateData );
+		$payment = $this->factory->update( $payment, $rawUpdateData );
 
-		return $this->repo->update( $pledge );
+		return $this->repo->update( $payment );
 	}
 
 	/**
@@ -187,12 +192,27 @@ class PaymentService {
 		}
 	}
 
-	public function createPaymentMeansFromStripeToken( AbstractDomain $domain, string $token ) {
-		return $this->createPaymentMeans( $domain, [ 'token' => $token ] );
+	/**
+	 * @param AbstractDomain|User|Organisation $domain
+	 * @param string $token
+	 * @param string $name
+	 *
+	 * @return bool
+	 * @throws PaymentException
+	 */
+	public function createPaymentMeansFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
+		return $this->createPaymentMeans( $name, $domain, [ 'token' => $token ] );
 	}
 
-
-	public function createPaymentMeans( AbstractDomain $domain, array $createCardParameters = [] ) {
+	/**
+	 * @param AbstractDomain|User|Organisation $domain
+	 * @param array $createCardParameters
+	 * @param string $name
+	 *
+	 * @return bool
+	 * @throws PaymentException
+	 */
+	public function createPaymentMeans( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
 
 		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
 			throw new PaymentException( 'No User or Organisation Specified' );
@@ -200,9 +220,22 @@ class PaymentService {
 
 		return $this->handleGatewayResponse(
 			$this->gateway->createCard( $createCardParameters )->send(),
-			function ( ResponseInterface $response ) {
-				$cardReference = $response->getCardReference();
-
+			function ( ResponseInterface $response ) use ( $domain, $name ) {
+				//$cardReference = $response->getCardReference();
+				$dataArray = [
+					'gateway' => $this->gateway->getShortName(),
+					'data'    => \json_encode( $response->getData() ),
+					'name'    => $name
+				];
+				switch ( $domain->getUuid()->getEntity() ) {
+					case 'user':
+						$dataArray['user_id'] = $domain->getId();
+						break;
+					case 'organisation':
+						$dataArray['organisation_id'] = $domain->getId();
+						break;
+				}
+				$this->paymentMeansService->create( (object) $dataArray );
 			}
 		);
 	}

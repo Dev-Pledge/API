@@ -57,18 +57,18 @@ class PaymentMeans extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return null| string
 	 */
-	public function getUserId(): string {
+	public function getUserId(): ?string {
 		return $this->userId;
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string | null $userId
 	 *
 	 * @return PaymentMeans
 	 */
-	public function setUserId( string $userId ): PaymentMeans {
+	public function setUserId( ?string $userId ): PaymentMeans {
 		$this->userId = $userId;
 
 		return $this;

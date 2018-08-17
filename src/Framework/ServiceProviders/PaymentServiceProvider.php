@@ -41,7 +41,7 @@ class PaymentServiceProvider extends AbstractServiceProvider {
 			->setTestMode( $stripeSettings->isTestMode() );
 
 
-		return new PaymentService( PaymentRepositoryDependency::getRepository(), PaymentFactoryDependency::getFactory(), $gateway );
+		return new PaymentService( PaymentRepositoryDependency::getRepository(), PaymentFactoryDependency::getFactory(), PaymentServiceProvider::getService(), $gateway );
 	}
 
 	/**

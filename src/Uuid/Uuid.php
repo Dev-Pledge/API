@@ -17,7 +17,7 @@ class Uuid {
 		'comment'       => 'cmt',
 		'currency'      => 'cur',
 		'kudos'         => 'kud',
-		'org'           => 'org',
+		'organisation'  => 'org',
 		'payment'       => 'pay',
 		'payment_means' => 'pym',
 		'pledge'        => 'plg',
@@ -140,5 +140,18 @@ class Uuid {
 
 	public function toString() {
 		return "{$this->prefix}-{$this->uuid}";
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getEntity(): ?string {
+		foreach ( static::$entities as $entity => $prefix ) {
+			if ( $this->getPrefix() == $prefix ) {
+				return $entity;
+			}
+		}
+
+		return null;
 	}
 }
