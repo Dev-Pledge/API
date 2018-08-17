@@ -4,10 +4,10 @@
 namespace DevPledge\Domain;
 
 /**
- * Class PaymentMeans
+ * Class PaymentMethod
  * @package DevPledge\Domain
  */
-class PaymentMeans extends AbstractDomain {
+class PaymentMethod extends AbstractDomain {
 	/**
 	 * @var string
 	 */
@@ -45,7 +45,7 @@ class PaymentMeans extends AbstractDomain {
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'payment_means_id' => $this->getId(),
+			'payment_method_id' => $this->getId(),
 			'user_id'          => $this->getUserId(),
 			'organisation_id'  => $this->getOrganisationId(),
 			'gateway'          => $this->getGateway(),
@@ -66,9 +66,9 @@ class PaymentMeans extends AbstractDomain {
 	/**
 	 * @param string | null $userId
 	 *
-	 * @return PaymentMeans
+	 * @return PaymentMethod
 	 */
-	public function setUserId( ?string $userId ): PaymentMeans {
+	public function setUserId( ?string $userId ): PaymentMethod {
 		$this->userId = $userId;
 
 		return $this;
@@ -77,9 +77,9 @@ class PaymentMeans extends AbstractDomain {
 	/**
 	 * @param null|string $organisationId
 	 *
-	 * @return PaymentMeans
+	 * @return PaymentMethod
 	 */
-	public function setOrganisationId( ?string $organisationId ): PaymentMeans {
+	public function setOrganisationId( ?string $organisationId ): PaymentMethod {
 		$this->organisationId = $organisationId;
 
 		return $this;
@@ -102,9 +102,9 @@ class PaymentMeans extends AbstractDomain {
 	/**
 	 * @param string $gateway
 	 *
-	 * @return PaymentMeans
+	 * @return PaymentMethod
 	 */
-	public function setGateway( string $gateway ): PaymentMeans {
+	public function setGateway( string $gateway ): PaymentMethod {
 		$this->gateway = $gateway;
 
 		return $this;
@@ -120,9 +120,9 @@ class PaymentMeans extends AbstractDomain {
 	/**
 	 * @param string $name
 	 *
-	 * @return PaymentMeans
+	 * @return PaymentMethod
 	 */
-	public function setName( string $name ): PaymentMeans {
+	public function setName( string $name ): PaymentMethod {
 		$this->name = $name;
 
 		return $this;

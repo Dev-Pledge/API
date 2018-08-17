@@ -3,35 +3,35 @@
 namespace DevPledge\Framework\ServiceProviders;
 
 
-use DevPledge\Application\Service\PaymentMeansService;
-use DevPledge\Framework\FactoryDependencies\PaymentMeansFactoryDependency;
+use DevPledge\Application\Service\PaymentMethodService;
+use DevPledge\Framework\FactoryDependencies\PaymentMethodFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\Payment\PaymentRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use Slim\Container;
 
 /**
- * Class PaymentMeansServiceProvider
+ * Class PaymentMethodServiceProvider
  * @package DevPledge\Framework\ServiceProviders
  */
-class PaymentMeansServiceProvider extends AbstractServiceProvider {
+class PaymentMethodServiceProvider extends AbstractServiceProvider {
 	public function __construct() {
-		parent::__construct( PaymentMeansService::class );
+		parent::__construct( paymentMethodService::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return PaymentMeansService
+	 * @return PaymentMethodService
 	 */
 	public function __invoke( Container $container ) {
-		return new PaymentMeansService(
-			PaymentRepositoryDependency::getRepository(), PaymentMeansFactoryDependency::getFactory()
+		return new PaymentMethodService(
+			PaymentRepositoryDependency::getRepository(), PaymentMethodFactoryDependency::getFactory()
 		);
 	}
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return PaymentMeansService
+	 * @return PaymentMethodService
 	 */
 	static public function getService() {
 		return static::getFromContainer();

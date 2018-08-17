@@ -19,7 +19,7 @@ class Uuid {
 		'kudos'         => 'kud',
 		'organisation'  => 'org',
 		'payment'       => 'pay',
-		'payment_means' => 'pym',
+		'payment_method' => 'pym',
 		'pledge'        => 'plg',
 		'problem'       => 'prb',
 		'solution'      => 'sol',

@@ -33,22 +33,23 @@ class PaymentService {
 	 */
 	protected $factory;
 	/**
-	 * @var PaymentMeansService
+	 * @var paymentMethodService
 	 */
-	protected $paymentMeansService;
+	protected $paymentMethodService;
 
 	/**
 	 * PaymentService constructor.
 	 *
 	 * @param PaymentRepository $repo
 	 * @param PaymentFactory $factory
+	 * @param PaymentMethodService $paymentMethodService
 	 * @param AbstractGateway $gateway
 	 */
-	public function __construct( PaymentRepository $repo, PaymentFactory $factory, PaymentMeansService $paymentMeansService, AbstractGateway $gateway ) {
-		$this->repo                = $repo;
-		$this->factory             = $factory;
-		$this->gateway             = $gateway;
-		$this->paymentMeansService = $paymentMeansService;
+	public function __construct( PaymentRepository $repo, PaymentFactory $factory, PaymentMethodService $paymentMethodService, AbstractGateway $gateway ) {
+		$this->repo                 = $repo;
+		$this->factory              = $factory;
+		$this->gateway              = $gateway;
+		$this->paymentMethodService = $paymentMethodService;
 	}
 
 	/**
@@ -200,8 +201,8 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createPaymentMeansFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
-		return $this->createPaymentMeans( $name, $domain, [ 'token' => $token ] );
+	public function createpaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
+		return $this->createpaymentMethod( $name, $domain, [ 'token' => $token ] );
 	}
 
 	/**
@@ -212,7 +213,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createPaymentMeans( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
+	public function createpaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
 
 		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
 			throw new PaymentException( 'No User or Organisation Specified' );
@@ -235,7 +236,7 @@ class PaymentService {
 						$dataArray['organisation_id'] = $domain->getId();
 						break;
 				}
-				$this->paymentMeansService->create( (object) $dataArray );
+				$this->paymentMethodService->create( (object) $dataArray );
 			}
 		);
 	}

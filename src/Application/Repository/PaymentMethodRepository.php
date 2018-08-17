@@ -3,23 +3,23 @@
 namespace DevPledge\Application\Repository;
 
 /**
- * Class PaymentMeansRepository
+ * Class PaymentMethodRepository
  * @package DevPledge\Application\Repository
  */
-class PaymentMeansRepository extends AbstractRepository {
+class PaymentMethodRepository extends AbstractRepository {
 
 	/**
 	 * @return string
 	 */
 	protected function getResource(): string {
-		return 'payment_means';
+		return 'payment_method';
 	}
 
 	/**
 	 * @return string
 	 */
 	protected function getColumn(): string {
-		return 'payment_means_id';
+		return 'payment_method_id';
 	}
 
 	/**

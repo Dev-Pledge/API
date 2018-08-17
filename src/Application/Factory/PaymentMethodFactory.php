@@ -3,13 +3,13 @@
 namespace DevPledge\Application\Factory;
 
 /**
- * Class PaymentMeansFactory
+ * Class PaymentMethodFactory
  * @package DevPledge\Application\Factory
  */
-class PaymentMeansFactory extends AbstractFactory {
+class PaymentMethodFactory extends AbstractFactory {
 
 	/**
-	 * @return AbstractFactory|PaymentMeansFactory
+	 * @return AbstractFactory|PaymentMethodFactory
 	 * @throws FactoryException
 	 */
 	function setMethodsToProductObject() {
