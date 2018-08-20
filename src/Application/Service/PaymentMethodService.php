@@ -2,9 +2,11 @@
 
 namespace DevPledge\Application\Service;
 
+use DevPaymentMethod\Domain\PaymentMethods;
 use DevPledge\Application\Factory\PaymentMethodFactory;
 use DevPledge\Application\Repository\PaymentMethodRepository;
 use DevPledge\Domain\PaymentMethod;
+use DevPledge\Framework\Adapter\Where;
 
 /**
  * Class PaymentMethodService
@@ -80,8 +82,36 @@ class PaymentMethodService {
 		return $this->repo->delete( $paymentMethodId );
 	}
 
-	public function getUserPaymentMethod( string $userId ) {
-		return $this->repo->readAll( $userId );
+	/**
+	 * @param string $userId
+	 *
+	 * @return PaymentMethods
+	 * @throws \Exception
+	 */
+	public function getUserPaymentMethods( string $userId ): PaymentMethods {
+		$paymentMethods = $this->repo->readAll( $userId, 'created', true );
+		if ( $paymentMethods ) {
+			return new PaymentMethods( $paymentMethods );
+		}
+
+		return new PaymentMethods( [] );
+	}
+
+	/**
+	 * @param $organisationId
+	 *
+	 * @return PaymentMethods
+	 * @throws \Exception
+	 */
+	public function getOrganisationPaymentMethods( $organisationId ): PaymentMethods {
+		$paymentMethods = $this->repo->readAllWhere( new Wheres( [
+			new Where( 'organisation_id', $organisationId )
+		] ), 'created', true );
+		if ( $paymentMethods ) {
+			return new PaymentMethods( $paymentMethods );
+		}
+
+		return new PaymentMethods( [] );
 	}
 
 

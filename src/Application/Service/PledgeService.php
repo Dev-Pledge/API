@@ -103,32 +103,32 @@ class PledgeService {
 	}
 
 	/**
-	 * @param $problemId
+	 * @param string $problemId
 	 *
 	 * @return int
 	 * @throws \Exception
 	 */
-	public function getPledgeCountFromByProblemId( $problemId ): int {
+	public function getPledgeCountFromByProblemId( string $problemId ): int {
 		return $this->repo->countAllInAllColumn( $problemId );
 	}
 
 	/**
-	 * @param $problemId
+	 * @param string $problemId
 	 *
 	 * @return float
 	 * @throws \Exception
 	 */
-	public function getPledgeValueByProblemId( $problemId ): float {
+	public function getPledgeValueByProblemId( string $problemId ): float {
 		return $this->repo->sumInAllColumnCurrency( $problemId );
 	}
 
 	/**
-	 * @param $problemId
+	 * @param string $problemId
 	 *
 	 * @return array|null
 	 * @throws \Exception
 	 */
-	public function getLastFivePledges( $problemId ) {
+	public function getLastFivePledges( string $problemId ): ?array {
 		return $this->repo->readAllWhere( new Wheres( [ new Where( 'problem_id', $problemId ) ] ), 'created', true, 5 );
 	}
 
