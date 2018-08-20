@@ -232,8 +232,8 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createpaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
-		return $this->createpaymentMethod( $name, $domain, [ 'token' => $token ] );
+	public function createPaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
+		return $this->createPaymentMethod( $name, $domain, [ 'token' => $token ] );
 	}
 
 	/**
@@ -244,7 +244,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createpaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
+	public function createPaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
 
 		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
 			throw new PaymentException( 'No User or Organisation Specified' );
