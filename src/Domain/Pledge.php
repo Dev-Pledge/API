@@ -8,11 +8,11 @@ namespace DevPledge\Domain;
  */
 class Pledge extends AbstractDomain {
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $userId;
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $organisationId;
 	/**
@@ -100,18 +100,18 @@ class Pledge extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getUserId(): string {
+	public function getUserId(): ?string {
 		return $this->userId;
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string|null $userId
 	 *
 	 * @return Pledge
 	 */
-	public function setUserId( string $userId ): Pledge {
+	public function setUserId( ?string $userId ): Pledge {
 		$this->userId = $userId;
 
 		return $this;

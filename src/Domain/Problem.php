@@ -8,11 +8,11 @@ namespace DevPledge\Domain;
  */
 class Problem extends AbstractDomain {
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $userId;
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $organisationId;
 	/**
@@ -71,6 +71,7 @@ class Problem extends AbstractDomain {
 		return (object) [
 			'problem_id'        => $this->getId(),
 			'user_id'           => $this->getUserId(),
+			'organisation_id'   => $this->getOrganisationId(),
 			'title'             => $this->getTitle(),
 			'description'       => $this->getDescription(),
 			'specification'     => $this->getSpecification(),
@@ -100,18 +101,18 @@ class Problem extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getUserId(): string {
+	public function getUserId(): ?string {
 		return $this->userId;
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string|null $userId
 	 *
 	 * @return $this
 	 */
-	public function setUserId( string $userId ) {
+	public function setUserId( ?string $userId ): Problem {
 		$this->userId = $userId;
 
 		return $this;
