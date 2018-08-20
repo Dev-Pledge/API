@@ -56,4 +56,30 @@ class CommandPermissionException extends \Exception {
 		throw new static( 'Permission Denied!' );
 
 	}
+
+	/**
+	 * @param User $user
+	 * @param string $organisationId
+	 * @param string $action
+	 *
+	 * @throws CommandPermissionException
+	 */
+	static public function tryOrganisationPermission( User $user, string $organisationId, string $action ) {
+		if ( ! $user->getPermissions()->has( 'organisations', $action, $organisationId ) ) {
+			throw new static( 'Permission to Organisation Denied!' );
+		}
+	}
+
+	/**
+	 * @param User $user
+	 * @param string $solutionGroupId
+	 * @param string $action
+	 *
+	 * @throws CommandPermissionException
+	 */
+	static public function trySolutionGroupPermission( User $user, string $solutionGroupId, string $action ) {
+		if ( ! $user->getPermissions()->has( 'solution_groups', $action, $solutionGroupId ) ) {
+			throw new static( 'Permission to Solution Group Denied!' );
+		}
+	}
 }

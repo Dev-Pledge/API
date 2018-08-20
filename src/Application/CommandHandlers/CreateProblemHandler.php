@@ -10,6 +10,7 @@ namespace DevPledge\Application\CommandHandlers;
 
 
 use DevPledge\Application\Commands\CreateProblemCommand;
+use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
@@ -47,6 +48,10 @@ class CreateProblemHandler extends AbstractCommandHandler {
 			throw new InvalidArgumentException( 'At least one topic is required', 'topics' );
 		}
 
+		if ( isset( $data->organisation_id ) ) {
+			CommandPermissionException::tryOrganisationPermission( $command->getUser(), $data->organisation_id, 'create' );
+			$data->user_id = null;
+		}
 
 		return ProblemServiceProvider::getService()->create(
 			$data

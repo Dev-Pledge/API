@@ -3,6 +3,7 @@
 namespace DevPledge\Application\CommandHandlers;
 
 use DevPledge\Application\Commands\CreateSolutionCommand;
+use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\Fetcher\FetchProblem;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\SolutionServiceProvider;

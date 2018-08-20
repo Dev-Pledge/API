@@ -3,6 +3,7 @@
 namespace DevPledge\Application\CommandHandlers;
 
 use DevPledge\Application\Commands\CreatePledgeCommand;
+use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\Fetcher\FetchProblem;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
@@ -66,6 +67,12 @@ class CreatePledgeHandler extends AbstractCommandHandler {
 				unset( $data->{$unset} );
 			}
 		}
+
+		if ( isset( $data->organisation_id ) ) {
+			CommandPermissionException::tryOrganisationPermission( $command->getUser(), $data->organisation_id, 'create' );
+			$data->user_id = null;
+		}
+
 
 		return $pledgeService->create(
 			$data
