@@ -4,7 +4,7 @@ CREATE TABLE problems
 (
   problem_id        VARCHAR(50)            NOT NULL
     PRIMARY KEY,
-  user_id           VARCHAR(50)            NOT NULL,
+  user_id           VARCHAR(50)            NULL,
   organisation_id   VARCHAR(50)            NULL,
   title             VARCHAR(67)            NOT NULL,
   specification     TEXT                   NULL,

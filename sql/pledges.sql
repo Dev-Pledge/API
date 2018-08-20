@@ -4,7 +4,7 @@ CREATE TABLE pledges
 (
   pledge_id       VARCHAR(50)                              NOT NULL
     PRIMARY KEY,
-  user_id         VARCHAR(50)                              NOT NULL,
+  user_id         VARCHAR(50)                              NULL,
   organisation_id VARCHAR(50)                              NULL,
   problem_id      VARCHAR(50)                              NOT NULL,
   kudos_points    INT DEFAULT '0'                          NULL,
