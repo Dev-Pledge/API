@@ -2,6 +2,7 @@
 
 namespace DevPledge\Application\Service;
 
+use DevPayment\Domain\Payments;
 use DevPledge\Application\Factory\PaymentFactory;
 use DevPledge\Application\Repository\PaymentRepository;
 use DevPledge\Domain\AbstractDomain;
@@ -10,6 +11,7 @@ use DevPledge\Domain\Organisation;
 use DevPledge\Domain\Payment;
 use DevPledge\Domain\PaymentException;
 use DevPledge\Domain\User;
+use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Sentry;
 use Omnipay\Common\AbstractGateway;
 use Omnipay\Common\Message\ResponseInterface;
@@ -98,6 +100,35 @@ class PaymentService {
 		return $this->repo->delete( $paymentId );
 	}
 
+	/**
+	 * @param string $userId
+	 *
+	 * @return Payments
+	 * @throws \Exception
+	 */
+	public function getUserPayments( string $userId ): Payments {
+		$payments = $this->repo->readAll( $userId, 'created' );
+		if ( $payments ) {
+			return new Payments( $payments );
+		}
+
+		return new Payments( [] );
+	}
+
+	/**
+	 * @param string $organisationId
+	 *
+	 * @return Payments
+	 * @throws \Exception
+	 */
+	public function getOrganisationPayments( string $organisationId ): Payments {
+		$payments = $this->repo->readAllWhere( new Wheres( [ new Where( 'organisation_id', $organisationId ) ] ), 'created' );
+		if ( $payments ) {
+			return new Payments( $payments );
+		}
+
+		return new Payments( [] );
+	}
 
 	/**
 	 * @param ResponseInterface $response
@@ -120,7 +151,7 @@ class PaymentService {
 						'reference' => $response->getTransactionReference(),
 						'data'      => json_encode( $response->getData() ),
 						'value'     => $createPayment->getValue(),
-						'currency'  => $createPayment->getValue()
+						'currency'  => $createPayment->getCurrency()
 					] );
 				}
 

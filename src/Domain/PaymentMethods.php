@@ -2,7 +2,7 @@
 
 namespace DevPaymentMethod\Domain;
 
-use Omnipay\Common\PaymentMethod;
+use DevPledge\Domain\PaymentMethod;
 
 /**
  * Class PaymentMethods
