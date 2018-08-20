@@ -9,7 +9,7 @@ namespace DevPledge\Domain;
  */
 class PaymentMethod extends AbstractDomain {
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $userId;
 	/**
@@ -127,7 +127,6 @@ class PaymentMethod extends AbstractDomain {
 
 		return $this;
 	}
-
 
 
 }

@@ -10,7 +10,7 @@ use DevPledge\Application\Service\CurrencyService;
  */
 class Payment extends AbstractDomain {
 	/**
-	 * @var string
+	 * @var string | null
 	 */
 	protected $userId;
 	/**
@@ -55,18 +55,18 @@ class Payment extends AbstractDomain {
 
 
 	/**
-	 * @return string
+	 * @return string \ null
 	 */
-	public function getUserId(): string {
+	public function getUserId(): ?string {
 		return $this->userId;
 	}
 
 	/**
-	 * @param string $userId
+	 * @param string | null $userId
 	 *
 	 * @return Payment
 	 */
-	public function setUserId( string $userId ): Payment {
+	public function setUserId( ?string $userId ): Payment {
 		$this->userId = $userId;
 
 		return $this;

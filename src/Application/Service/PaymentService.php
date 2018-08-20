@@ -176,7 +176,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function cardPay( int $cardNumber, int $expiryMonth, int $expiryYear, int $cvv, CurrencyValue $currencyValue, ?\Closure $successFunction = null ) {
+	public function cardPay( int $cardNumber, int $expiryMonth, int $expiryYear, int $cvv, CurrencyValue $currencyValue, ?\Closure $successFunction = null ): bool {
 		$formData = [
 			'number'      => $cardNumber,
 			'expiryMonth' => $expiryMonth,
@@ -209,7 +209,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function stripePayWithToken( string $token, CurrencyValue $currencyValue, ?\Closure $successFunction = null ) {
+	public function stripePayWithToken( string $token, CurrencyValue $currencyValue, ?\Closure $successFunction = null ): bool {
 
 		try {
 			return $this->handleGatewayResponse(
@@ -232,7 +232,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createPaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ) {
+	public function createPaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ): bool {
 		return $this->createPaymentMethod( $name, $domain, [ 'token' => $token ] );
 	}
 
@@ -244,7 +244,7 @@ class PaymentService {
 	 * @return bool
 	 * @throws PaymentException
 	 */
-	public function createPaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ) {
+	public function createPaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ): bool {
 
 		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
 			throw new PaymentException( 'No User or Organisation Specified' );
@@ -270,6 +270,10 @@ class PaymentService {
 				$this->paymentMethodService->create( (object) $dataArray );
 			}
 		);
+	}
+
+	public function payWithPaymentMethod(){
+
 	}
 
 
