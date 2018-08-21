@@ -10,6 +10,7 @@ use DevPledge\Domain\CurrencyValue;
 use DevPledge\Domain\Organisation;
 use DevPledge\Domain\Payment;
 use DevPledge\Domain\PaymentException;
+use DevPledge\Domain\PaymentMethod;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Sentry;
@@ -135,16 +136,16 @@ class PaymentService {
 	 * @param \Closure|null $successfulFunction
 	 * @param CurrencyValue|null $createPayment
 	 *
-	 * @return bool
+	 * @return PaymentMethod | Payment | null
 	 * @throws PaymentException
 	 */
-	protected function handleGatewayResponse( ResponseInterface $response, ?\Closure $successfulFunction = null, ?CurrencyValue $createPayment = null ): bool {
-
+	protected function handleGatewayResponse( ResponseInterface $response, ?\Closure $successfulFunction = null, ?CurrencyValue $createPayment = null ): ?AbstractDomain {
+		$payment = null;
 		if ( $response->isRedirect() ) {
 			throw new PaymentException( $response->getMessage(), $response->getRedirectUrl() );
 		} elseif ( $response->isSuccessful() ) {
 			if ( isset( $successfulFunction ) ) {
-				$payment = null;
+
 				if ( isset( $createPayment ) ) {
 					$payment = $this->create( (object) [
 						'gateway'   => $this->gateway->getShortName(),
@@ -155,14 +156,14 @@ class PaymentService {
 					] );
 				}
 
-				call_user_func_array( $successfulFunction, [ $response, $payment ] );
+				return call_user_func_array( $successfulFunction, [ $response, $payment ] );
 
 			}
 		} else {
 			throw new PaymentException( $response->getMessage() );
 		}
 
-		return true;
+		return $payment;
 	}
 
 	/**
@@ -206,10 +207,10 @@ class PaymentService {
 	 * @param CurrencyValue $currencyValue
 	 * @param \Closure|null $successFunction
 	 *
-	 * @return bool
+	 * @return Payment | null
 	 * @throws PaymentException
 	 */
-	public function stripePayWithToken( string $token, CurrencyValue $currencyValue, ?\Closure $successFunction = null ): bool {
+	public function stripePayWithToken( string $token, CurrencyValue $currencyValue, ?\Closure $successFunction = null ): ?Payment {
 
 		try {
 			return $this->handleGatewayResponse(
@@ -229,11 +230,11 @@ class PaymentService {
 	 * @param string $token
 	 * @param string $name
 	 *
-	 * @return bool
+	 * @return PaymentMethod
 	 * @throws PaymentException
 	 */
-	public function createPaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ): bool {
-		return $this->createPaymentMethod( $name, $domain, [ 'token' => $token ] );
+	public function createPaymentMethodFromStripeToken( AbstractDomain $domain, string $token, string $name = 'default card' ): PaymentMethod {
+		return $this->createPaymentMethod( $name, $domain, [ 'token' => $token ], $name );
 	}
 
 	/**
@@ -241,10 +242,10 @@ class PaymentService {
 	 * @param array $createCardParameters
 	 * @param string $name
 	 *
-	 * @return bool
+	 * @return PaymentMethod
 	 * @throws PaymentException
 	 */
-	public function createPaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ): bool {
+	public function createPaymentMethod( AbstractDomain $domain, array $createCardParameters = [], string $name = 'default card' ): PaymentMethod {
 
 		if ( ! ( ( $domain instanceof User ) || ( $domain instanceof Organisation ) ) ) {
 			throw new PaymentException( 'No User or Organisation Specified' );
@@ -267,12 +268,34 @@ class PaymentService {
 						$dataArray['organisation_id'] = $domain->getId();
 						break;
 				}
-				$this->paymentMethodService->create( (object) $dataArray );
+
+				return $this->paymentMethodService->create( (object) $dataArray );
 			}
 		);
 	}
 
-	public function payWithPaymentMethod(){
+	/**
+	 * @param string $paymentMethodId
+	 * @param CurrencyValue $currencyValue
+	 * @param \Closure|null $successFunction
+	 *
+	 * @return Payment|null
+	 * @throws PaymentException
+	 */
+	public function payWithStripePaymentMethod( string $paymentMethodId, CurrencyValue $currencyValue, ?\Closure $successFunction = null ): ?Payment {
+
+		$paymentMethod = $this->paymentMethodService->read( $paymentMethodId );
+
+		return $this->handleGatewayResponse(
+			$this->gateway->purchase( [
+				'amount'        => $currencyValue->getValue(),
+				'currency'      => $currencyValue->getCurrency(),
+				'cardReference' => $paymentMethod->getCardReference(),
+				//		'customerReference'=> $paymentMethod->getCardReference(),
+			] ),
+			$successFunction,
+			$currencyValue
+		);
 
 	}
 

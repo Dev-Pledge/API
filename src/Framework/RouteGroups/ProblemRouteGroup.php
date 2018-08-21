@@ -36,8 +36,9 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 		$this->getApp()->get( 's/user/{user_id}', ProblemController::class . ':getUserProblems' );
 
 		$this->getApp()->post( '/{problem_id}/solution', SolutionController::class . ':createSolution' )
-		     ->add( new ResourcePermission( 'solutions', 'create' ) )->add(new OriginPermission());
+		     ->add( new ResourcePermission( 'solutions', 'create' ) );
 
 		$this->getApp()->post( '/{problem_id}/pledge', PledgeController::class . ':createPledge' )->add( new Authorise() );
+
 	}
 }

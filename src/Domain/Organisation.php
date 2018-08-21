@@ -68,4 +68,25 @@ class Organisation implements PersistMappable
             'name' => $this->getName(),
         ];
     }
+
+	/**
+	 * @return array
+	 */
+	function toPersistMapArray(): array {
+		// TODO: Implement toPersistMapArray() method.
+	}
+
+	/**
+	 * @return \stdClass
+	 */
+	function toAPIMap(): \stdClass {
+		// TODO: Implement toAPIMap() method.
+	}
+
+	/**
+	 * @return array
+	 */
+	function toAPIMapArray(): array {
+		// TODO: Implement toAPIMapArray() method.
+	}
 }

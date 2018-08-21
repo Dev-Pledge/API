@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Framework\Controller\Auth\PayController;
 use DevPledge\Framework\Controller\User\UserController;
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Framework\Controller\User\UserUpdateController;
@@ -49,6 +50,10 @@ class UserRouteGroup extends AbstractRouteGroup {
 			UserUpdateController::class . ':update'
 		)->add( new UserPermission() );
 
+		$this->getApp()->post(
+			'createStripePaymentMethod/{user_id}',
+			PayController::class . ':createUserStripePaymentMethod'
+		)->add( new UserPermission() );
 
 	}
 }
