@@ -24,6 +24,13 @@ class CreatePledgePaymentUsingMethodCommand extends AbstractCommand {
 	 */
 	protected $pledgeId;
 
+	/**
+	 * CreatePledgePaymentUsingMethodCommand constructor.
+	 *
+	 * @param User $user
+	 * @param string $paymentMethodId
+	 * @param string $pledgeId
+	 */
 	public function __construct( User $user, string $paymentMethodId, string $pledgeId ) {
 		$this->user            = $user;
 		$this->paymentMethodId = $paymentMethodId;

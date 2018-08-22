@@ -3,8 +3,11 @@
 namespace DevPledge\Framework\Controller\Auth;
 
 
+use DevPledge\Application\Commands\CreatePledgePaymentUsingMethodCommand;
+use DevPledge\Application\Commands\CreatePledgePaymentUsingStripeTokenCommand;
 use DevPledge\Application\Commands\CreateStripePaymentMethodCommand;
 use DevPledge\Domain\CommandPermissionException;
+use DevPledge\Domain\Payment;
 use DevPledge\Domain\PaymentMethod;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ServiceProviders\PaymentMethodServiceProvider;
@@ -91,10 +94,49 @@ class PayController extends AbstractController {
 		}
 	}
 
-	public function createStripePayment( Request $request, Response $response){
+	public function payPledgeWithStripeToken( Request $request, Response $response ) {
+		$data = $request->getParsedBody();
 
+		$token    = $data['token'] ?? null;
+		$pledgeId = $request->getAttribute( 'pledge_id' );
+		$user     = $this->getUserFromRequest( $request );
+		try {
+			/**
+			 * @var $payment Payment
+			 */
+			$payment = Dispatch::command( new CreatePledgePaymentUsingStripeTokenCommand( $user, $token, $pledgeId ) );
+		} catch ( CommandPermissionException $permissionException ) {
+			return $response->withJson( [ 'error' => $permissionException->getMessage() ], 403 );
+		} catch ( PaymentException | CommandException $paymentException ) {
+			return $response->withJson( [ 'error' => $paymentException->getMessage() ], 401 );
+		} catch ( \TypeError $error ) {
+			return $response->withJson( [ 'error' => 'input error' ], 500 );
+		}
+
+		return $response->withJson( [ 'payment' => $payment->toAPIMap() ] );
 	}
 
+	public function payPledgeWithPaymentMethod( Request $request, Response $response ) {
+		$data = $request->getParsedBody();
+
+		$paymentMethodId    = $data['payment_method_id'] ?? null;
+		$pledgeId = $request->getAttribute( 'pledge_id' );
+		$user     = $this->getUserFromRequest( $request );
+		try {
+			/**
+			 * @var $payment Payment
+			 */
+			$payment = Dispatch::command( new CreatePledgePaymentUsingMethodCommand( $user, $paymentMethodId, $pledgeId ) );
+		} catch ( CommandPermissionException $permissionException ) {
+			return $response->withJson( [ 'error' => $permissionException->getMessage() ], 403 );
+		} catch ( PaymentException | CommandException $paymentException ) {
+			return $response->withJson( [ 'error' => $paymentException->getMessage() ], 401 );
+		} catch ( \TypeError $error ) {
+			return $response->withJson( [ 'error' => 'input error' ], 500 );
+		}
+
+		return $response->withJson( [ 'payment' => $payment->toAPIMap() ] );
+	}
 
 
 }

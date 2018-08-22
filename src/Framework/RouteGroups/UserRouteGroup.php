@@ -23,11 +23,6 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->getApp()->get(
-			'/profileInfo/{username}',
-			UserController::class . ':getProfileInfoByUsername'
-		);
-
 		$this->getApp()->post(
 			'/createFromEmailPassword',
 			UserCreateController::class . ':createUserFromEmailPassword'
@@ -54,6 +49,12 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'createStripePaymentMethod/{user_id}',
 			PayController::class . ':createUserStripePaymentMethod'
 		)->add( new UserPermission() );
+
+		$this->getApp()->get(
+			'paymentMethods/{user_id}',
+			PayController::class . ':getUserPaymentMethods'
+		)->add( new UserPermission() );
+
 
 	}
 }
