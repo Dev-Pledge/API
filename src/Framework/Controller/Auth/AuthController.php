@@ -7,13 +7,7 @@ use DevPledge\Application\Service\UserService;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
 use DevPledge\Domain\PreferredUserAuth\UsernamePassword;
 use DevPledge\Domain\TokenString;
-use DevPledge\Domain\WildCardPermissions;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
-use DevPledge\Integrations\Command\Dispatch;
-use DevPledge\Integrations\Event\EventBus;
-use DevPledge\Integrations\Security\Permissions\Action;
-use DevPledge\Integrations\Security\Permissions\Permissions;
-use DevPledge\Integrations\Security\Permissions\Resource;
 use DevPledge\Integrations\Security\JWT\JWT;
 use DevPledge\Integrations\Security\JWT\Token;
 use Slim\Http\Request;
@@ -68,7 +62,7 @@ class AuthController {
 				$token = new TokenString( $user, $this->jwt );
 
 				return $response->withJson( [ 'token' => $token->getTokenString() ] );
-			} catch ( \TypeError $error ) {
+			} catch ( \TypeError | \Exception $error ) {
 				return $response->withJson( [ 'error' => 'User Not Found' ], 401 );
 			}
 		}

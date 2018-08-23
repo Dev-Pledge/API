@@ -4,9 +4,6 @@ namespace DevPledge\Framework\RouteGroups;
 
 
 use DevPledge\Framework\Controller\User\UserController;
-use DevPledge\Framework\Controller\User\UserCreateController;
-use DevPledge\Framework\Controller\User\UserUpdateController;
-use DevPledge\Framework\Middleware\UserPermission;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
 /**
