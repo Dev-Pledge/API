@@ -6,7 +6,6 @@ namespace DevPledge\Framework\RouteGroups;
 use DevPledge\Framework\Controller\Pledge\PledgeController;
 use DevPledge\Framework\Controller\Problem\ProblemController;
 use DevPledge\Framework\Controller\Problem\SolutionController;
-use DevPledge\Framework\Middleware\OriginPermission;
 use DevPledge\Framework\Middleware\ResourcePermission;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
