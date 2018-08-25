@@ -3,11 +3,15 @@
 namespace DevPledge\Framework\Controller\User;
 
 
+use DevPledge\Application\Service\FeedService;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use Swoole\Client;
+use Swoole\Coroutine;
+use Swoole\WebSocket\Server;
 
 
 /**
@@ -28,6 +32,10 @@ class UserController extends AbstractController {
 		try {
 			$user     = $userService->getUserFromUsernameCache( $username );
 			$problems = $problemService->readAll( $user->getId() );
+
+			$feed = new FeedService();
+
+			$feed->test((object)['user_id'=>$user->getId()]);
 		} catch ( \Exception | \TypeError $exception ) {
 			return $response->withJson( [ 'error' => 'User Not Found' ], 404 );
 		}

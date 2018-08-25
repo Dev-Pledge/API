@@ -3,7 +3,6 @@
 namespace DevPledge\Framework\ServiceProviders;
 
 
-use DevPledge\Application\Service\PaymentMethodService;
 use DevPledge\Application\Service\PaymentService;
 use DevPledge\Framework\FactoryDependencies\PaymentFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\Payment\PaymentRepositoryDependency;
@@ -42,7 +41,7 @@ class PaymentServiceProvider extends AbstractServiceProvider {
 			->setTestMode( $stripeSettings->isTestMode() );
 
 
-		return new PaymentService( PaymentRepositoryDependency::getRepository(), PaymentFactoryDependency::getFactory(), PaymentMethodService::getService(), $gateway );
+		return new PaymentService( PaymentRepositoryDependency::getRepository(), PaymentFactoryDependency::getFactory(), PaymentMethodServiceProvider::getService(), $gateway );
 	}
 
 	/**

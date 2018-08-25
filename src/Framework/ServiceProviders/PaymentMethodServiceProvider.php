@@ -5,7 +5,7 @@ namespace DevPledge\Framework\ServiceProviders;
 
 use DevPledge\Application\Service\PaymentMethodService;
 use DevPledge\Framework\FactoryDependencies\PaymentMethodFactoryDependency;
-use DevPledge\Framework\RepositoryDependencies\Payment\PaymentRepositoryDependency;
+use DevPledge\Framework\RepositoryDependencies\Payment\PaymentMethodRepoDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use Slim\Container;
 
@@ -25,7 +25,7 @@ class PaymentMethodServiceProvider extends AbstractServiceProvider {
 	 */
 	public function __invoke( Container $container ) {
 		return new PaymentMethodService(
-			PaymentRepositoryDependency::getRepository(), PaymentMethodFactoryDependency::getFactory()
+			PaymentMethodRepoDependency::getRepository(), PaymentMethodFactoryDependency::getFactory()
 		);
 	}
 

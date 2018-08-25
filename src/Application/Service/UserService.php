@@ -15,6 +15,8 @@ use DevPledge\Integrations\Cache\Cache;
  * @package DevPledge\Application\Service
  */
 class UserService {
+
+	const USERNAME_CACHE_KEY = 'usrn::';
 	/**
 	 * @var UserRepository $repo
 	 */
@@ -64,7 +66,7 @@ class UserService {
 		if ( $createdUser->isPersistedDataFound() ) {
 			$rawData = $this->getRawDataFromUser( $createdUser );
 			$this->cache->set( $createdUser->getId(), $rawData )
-			            ->set( 'usrn::' . $createdUser->getUsername(), $rawData );
+			            ->set( static::USERNAME_CACHE_KEY . $createdUser->getUsername(), $rawData );
 		}
 
 		return $createdUser;
@@ -88,7 +90,7 @@ class UserService {
 		if ( $updatedUser->isPersistedDataFound() ) {
 			$rawData = $this->getRawDataFromUser( $updatedUser );
 			$this->cache->set( $updatedUser->getId(), $rawData )
-			            ->set( 'usrn::' . $updatedUser->getUsername(), $rawData );
+			            ->set( static::USERNAME_CACHE_KEY . $updatedUser->getUsername(), $rawData );
 		}
 
 		return $updatedUser;
@@ -106,7 +108,7 @@ class UserService {
 	 *
 	 * @return int|null
 	 */
-	public function delete( string $userId ):?int {
+	public function delete( string $userId ): ?int {
 		return $this->repo->delete( $userId );
 	}
 
@@ -154,7 +156,7 @@ class UserService {
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	public function getUserFromUsernameCache( string $username ): User {
-		return $this->factory->create( $this->cache->get( 'ursn:' . $username ) );
+		return $this->factory->create( $this->cache->get( static::USERNAME_CACHE_KEY . $username ) );
 	}
 
 	/**
