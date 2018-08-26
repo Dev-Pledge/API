@@ -29,20 +29,32 @@ abstract class AbstractFactory {
 	 */
 	protected $entity;
 	/**
-	 * @var string
+	 * @var string| string[]
 	 */
 	protected $primaryIdColumn;
+	/**
+	 * @var string
+	 */
+	protected $uuidClass = Uuid::class;
+	/**
+	 * @var string
+	 */
+	protected $setUuidMethod = 'setUuid';
 
 	/**
 	 * AbstractFactory constructor.
 	 *
 	 * @param $productObjectClassString
 	 * @param $uuidEntity
-	 * @param $primaryIdColumn
+	 * @param $primaryIdColumn string | string[]
 	 *
 	 * @throws FactoryException
 	 */
 	public function __construct( $productObjectClassString, $uuidEntity, $primaryIdColumn ) {
+
+		if ( ! ( is_string( $primaryIdColumn ) || is_array( $primaryIdColumn ) ) ) {
+			throw new FactoryException( 'Only String or Array Accepted for $primaryIdColumn' );
+		}
 
 		$productObject = new $productObjectClassString( $uuidEntity );
 		if ( ! $productObject instanceof AbstractDomain ) {
@@ -229,7 +241,7 @@ abstract class AbstractFactory {
 	 */
 	protected function setUuid( $fromPersistedData = false ) {
 		try {
-			$this->setMethodToProductObject( $this->primaryIdColumn, 'setUuid', Uuid::class, function ( AbstractDomain $domain ) use ( $fromPersistedData ) {
+			$this->setMethodToProductObject( $this->primaryIdColumn, $this->setUuidMethod, $this->uuidClass, function ( AbstractDomain $domain ) use ( $fromPersistedData ) {
 				if ( $fromPersistedData ) {
 					$domain->setPersistedDataFound( true );
 				}
