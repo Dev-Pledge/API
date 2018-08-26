@@ -2,8 +2,7 @@
 
 namespace DevPledge\Application\Factory;
 
-use DevPledge\Domain\DualUuid;
-use DevPledge\Domain\IdAndType;
+use DevPledge\Uuid\DualUuid;
 
 /**
  * Class FollowFactory

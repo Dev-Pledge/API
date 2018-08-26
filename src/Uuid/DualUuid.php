@@ -6,6 +6,9 @@ namespace DevPledge\Uuid;
  * @package DevPledge\Uuid
  */
 class DualUuid {
+
+	const DUAL_UUID_STRING_SEPARATOR = '|';
+
 	/**
 	 * @var Uuid
 	 */
@@ -52,5 +55,12 @@ class DualUuid {
 	 */
 	public function getSecondaryIdEntity(): string {
 		return $this->uuid2->getEntity();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function toString() {
+		return $this->getPrimaryId() . static::DUAL_UUID_STRING_SEPARATOR . $this->getSecondaryId();
 	}
 }

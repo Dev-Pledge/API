@@ -4,6 +4,8 @@
 namespace DevPledge\Framework\Adapter;
 
 
+use DevPledge\Uuid\DualUuid;
+use QuickCache\Cache;
 use TomWright\Database\ExtendedPDO\ExtendedPDO;
 use TomWright\Database\ExtendedPDO\Like;
 use TomWright\Database\ExtendedPDO\Query;
@@ -37,14 +39,42 @@ class MysqlAdapter implements Adapter {
 	 * @throws \Exception
 	 */
 	public function read( string $resource, string $id, string $column = 'id' ): ?\stdClass {
+
 		$query = ( new Query( 'SELECT' ) )
-			->setTable( $this->getResourceTable( $resource ) )
-			->addWhere( $column, $id )
-			->setLimit( 1 )
-			->setOffset( 0 )
-			->buildQuery();
+			->setTable( $this->getResourceTable( $resource ) );
+
+		$this->singleRecordWhere( $query, $id, $column )
+		     ->setLimit( 1 )
+		     ->setOffset( 0 )
+		     ->buildQuery();
 
 		return $this->db->queryRow( $query->getSql(), $query->getBinds() );
+	}
+
+	/**
+	 * @param Query $query
+	 * @param string $id
+	 * @param string $column
+	 *
+	 * @return Query
+	 */
+	protected function singleRecordWhere( Query $query, string $id, string $column ): Query {
+		if ( strpos( $id, DualUuid::DUAL_UUID_STRING_SEPARATOR ) === false ) {
+			$query->addWhere( $column, $id );
+		} else {
+
+			$idArray     = explode( DualUuid::DUAL_UUID_STRING_SEPARATOR, $id );
+			$columnArray = explode( DualUuid::DUAL_UUID_STRING_SEPARATOR, $column );
+
+			if ( count( $idArray ) === count( $columnArray ) ) {
+				foreach ( $columnArray as $key => $ColValue ) {
+					$query->addWhere( $ColValue, $idArray[ $key ] );
+				}
+			}
+
+		}
+
+		return $query;
 	}
 
 
@@ -109,8 +139,9 @@ class MysqlAdapter implements Adapter {
 	 */
 	public function update( string $resource, string $id, \stdClass $data, string $column = 'id' ): int {
 		$query = ( new Query( 'UPDATE' ) )
-			->setTable( $this->getResourceTable( $resource ) )
-			->addWhere( $column, $id );
+			->setTable( $this->getResourceTable( $resource ) );
+
+		$this->singleRecordWhere( $query, $id, $column );
 
 		foreach ( $data as $k => $v ) {
 			$query->addValue( $k, $v );
@@ -233,8 +264,10 @@ class MysqlAdapter implements Adapter {
 	 */
 	public function delete( string $resource, string $id, string $column = 'id' ): ?int {
 		$query = ( new Query( 'DELETE' ) )
-			->setTable( $this->getResourceTable( $resource ) )
-			->addWhere( $column, $id )->buildQuery();
+			->setTable( $this->getResourceTable( $resource ) );
+
+		$this->singleRecordWhere( $query, $id, $column )
+		     ->buildQuery();
 
 		return $this->db->dbQuery( $query->getSql(), $query->getBinds() );
 	}

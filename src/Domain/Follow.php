@@ -25,8 +25,15 @@ class Follow extends AbstractDomain {
 	/**
 	 * @return string
 	 */
-	public function getId(): string {
+	public function getEntityId(): string {
 		return $this->getDualUuid()->getSecondaryId();
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getId(): string {
+		return $this->getDualUuid()->toString();
 	}
 
 	/**
@@ -41,10 +48,10 @@ class Follow extends AbstractDomain {
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'user_id' => $this->getUserId(),
-			'id'      => $this->getId(),
-			'entity'  => $this->getEntity(),
-			'created' => $this->getCreated()
+			'user_id'   => $this->getUserId(),
+			'entity_id' => $this->getEntityId(),
+			'entity'    => $this->getEntity(),
+			'created'   => $this->getCreated()
 		];
 	}
 
