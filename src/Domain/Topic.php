@@ -31,6 +31,7 @@ class Topic implements PersistMappable {
 		$this->example     = $example;
 	}
 
+
 	/**
 	 * @return \stdClass
 	 */
@@ -46,14 +47,14 @@ class Topic implements PersistMappable {
 	/**
 	 * @return string|null
 	 */
-	public function getName():?string {
+	public function getName(): ?string {
 		return $this->name;
 	}
 
 	/**
 	 * @return null | string
 	 */
-	public function getParentName():?string {
+	public function getParentName(): ?string {
 		return $this->parentName;
 	}
 
@@ -61,7 +62,7 @@ class Topic implements PersistMappable {
 	 * @return array
 	 */
 	function toPersistMapArray(): array {
-		return (array)$this->toPersistMap();
+		return (array) $this->toPersistMap();
 	}
 
 	/**
@@ -75,6 +76,6 @@ class Topic implements PersistMappable {
 	 * @return array
 	 */
 	function toAPIMapArray(): array {
-		return (array)$this->toPersistMap();
+		return (array) $this->toPersistMap();
 	}
 }
