@@ -3,17 +3,11 @@
 namespace DevPledge\Domain;
 
 
-use DevPledge\Uuid\DualUuid;
-
 /**
  * Class Follow
  * @package DevPledge\Domain
  */
-class Follow extends AbstractDomain {
-	/**
-	 * @var DualUuid
-	 */
-	protected $dualUuid;
+class Follow extends AbstractDomainDualUuid {
 
 	/**
 	 * @return string
@@ -29,12 +23,6 @@ class Follow extends AbstractDomain {
 		return $this->getDualUuid()->getSecondaryId();
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getId(): string {
-		return $this->getDualUuid()->toString();
-	}
 
 	/**
 	 * @return string
@@ -51,27 +39,10 @@ class Follow extends AbstractDomain {
 			'user_id'   => $this->getUserId(),
 			'entity_id' => $this->getEntityId(),
 			'entity'    => $this->getEntity(),
-			'created'   => $this->getCreated()
+			'created'   => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
 	}
 
-	/**
-	 * @return DualUuid
-	 */
-	public function getDualUuid(): DualUuid {
-		return $this->dualUuid;
-	}
-
-	/**
-	 * @param DualUuid $dualUuid
-	 *
-	 * @return Follow
-	 */
-	public function setDualUuid( DualUuid $dualUuid ): Follow {
-		$this->dualUuid = $dualUuid;
-
-		return $this;
-	}
 
 
 }
