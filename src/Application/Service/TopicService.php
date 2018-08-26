@@ -29,15 +29,14 @@ class TopicService {
 	}
 
 	static protected function setUpTopics() {
-		$parentTopics   = [
+		$parentTopics    = [
 			new Topic( 'Framework' ),
-			new Topic( 'Language' ),
-			new Topic( 'Docker' )
+			new Topic( 'Language' )
 		];
-		$language       = function ( $name, $description = null, $example = null ) {
+		$language        = function ( $name, $description = null, $example = null ) {
 			return new Topic( $name, 'Language', $description, $example );
 		};
-		$languageTopics = [
+		$languageTopics  = [
 			$language( 'PHP' ),
 			$language( 'HTML' ),
 			$language( 'JS' ),
@@ -46,11 +45,27 @@ class TopicService {
 			$language( 'Shell' ),
 			$language( 'Swift' ),
 			$language( 'Go' ),
+			$language( 'C#' ),
+			$language( 'C' ),
+			$language( 'Obective C' ),
+			$language( 'Docker' ),
+			$language( 'Java' ),
 			$language( 'SCSS' ),
 			$language( 'SASS' ),
 			$language( 'LESS' )
 		];
-		static::$topics = array_merge( $parentTopics, $languageTopics );
+		$framework       = function ( $name, $description = null, $example = null ) {
+			return new Topic( $name, 'Framework', $description, $example );
+		};
+		$frameworkTopics = [
+			$framework( 'Laravel', 'PHP Framework' ),
+			$framework( 'Code Igniter', 'PHP Framework' ),
+			$framework( 'Zend', 'PHP Framework' ),
+			$framework( 'React', 'JS Framework' ),
+			$framework( 'Vue', 'JS Framework' ),
+			$framework( 'Word Press', 'PHP Framework' )
+		];
+		static::$topics  = array_merge( $parentTopics, $languageTopics, $frameworkTopics );
 	}
 
 	/**
@@ -58,9 +73,22 @@ class TopicService {
 	 *
 	 * @return Topic
 	 */
-	public static function getTopic( $name ) {
+	public static function getTopicByName( string $name ) {
 		foreach ( static::getTopics() as &$topic ) {
 			if ( $topic->getName() == $name ) {
+				return $topic;
+			}
+		}
+	}
+
+	/**
+	 * @param string $topicId
+	 *
+	 * @return Topic
+	 */
+	public static function getTopic( string $topicId ) {
+		foreach ( static::getTopics() as &$topic ) {
+			if ( $topic->getId() == $topicId ) {
 				return $topic;
 			}
 		}

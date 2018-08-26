@@ -6,6 +6,7 @@ namespace DevPledge\Application\Service;
 use DevPledge\Application\Factory\FollowFactory;
 use DevPledge\Application\Repository\FollowRepository;
 use DevPledge\Domain\Follow;
+use DevPledge\Domain\Follows;
 
 /**
  * Class FollowService
@@ -28,8 +29,8 @@ class FollowService {
 	 * @param FollowRepository $repo
 	 * @param FollowFactory $factory
 	 */
-	public function __construct(FollowRepository $repo, FollowFactory $factory) {
-		$this->repo = $repo;
+	public function __construct( FollowRepository $repo, FollowFactory $factory ) {
+		$this->repo    = $repo;
 		$this->factory = $factory;
 	}
 
@@ -50,6 +51,7 @@ class FollowService {
 
 	/**
 	 * followId is user_id|entity_id
+	 *
 	 * @param string $followId
 	 *
 	 * @return int|null
@@ -60,12 +62,35 @@ class FollowService {
 
 	/**
 	 * followId is user_id|entity_id
+	 *
 	 * @param string $followId
 	 *
 	 * @return Follow
 	 */
 	public function read( string $followId ): Follow {
 		return $this->repo->read( $followId );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return Follows
+	 * @throws \Exception
+	 */
+	public function readAll( string $userId ): Follows {
+		$follows = $this->repo->readAll( $userId, 'created', true );
+		if ( $follows ) {
+			$allUserFollows = new Follows( $follows );
+
+			return $allUserFollows;
+		}
+
+		return new Follows( [] );
+
+	}
+
+	public function getUserTopics(string $userId){
+
 	}
 
 }

@@ -4,6 +4,35 @@ namespace DevPledge\Domain;
 
 
 use DevPledge\Application\Mapper\PersistMappable;
+use DevPledge\Uuid\Uuid;
+
+/**
+ * Class TopicUuid
+ * @package DevPledge\Domain
+ */
+class TopicUuid extends Uuid {
+	/**
+	 * @var int
+	 */
+	protected static $uuidParts = 1;
+
+	/**
+	 * TopicUuid constructor.
+	 *
+	 * @param string $uuid
+	 */
+	public function __construct( string $uuid ) {
+		parent::__construct( $uuid, 'top' );
+	}
+
+	/**
+	 * @param string $uuid
+	 */
+	public function setUuid( string $uuid ): void {
+		$this->uuid = $uuid;
+	}
+
+}
 
 /**
  * Class Topic
@@ -15,6 +44,10 @@ class Topic implements PersistMappable {
 	protected $parentName;
 	protected $description;
 	protected $example;
+	/**
+	 * @var TopicUuid
+	 */
+	protected $uuid;
 
 	/**
 	 * Topic constructor.
@@ -29,14 +62,29 @@ class Topic implements PersistMappable {
 		$this->parentName  = $parentName;
 		$this->description = $description;
 		$this->example     = $example;
+		$this->uuid        = new TopicUuid( str_replace( [ ' ', '|' ], '-', $name ) );
 	}
 
+	/**
+	 * @return TopicUuid
+	 */
+	public function getUuid(): TopicUuid {
+		return $this->uuid;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getId(): string {
+		return $this->getUuid()->toString();
+	}
 
 	/**
 	 * @return \stdClass
 	 */
 	public function toPersistMap(): \stdClass {
 		return (object) [
+			'topic_id'    => $this->getId(),
 			'name'        => $this->name,
 			'parent_name' => $this->parentName,
 			'description' => $this->description,
