@@ -46,7 +46,7 @@ class Topic implements PersistMappable {
 		$this->parentName  = $parentName;
 		$this->description = $description;
 		$this->example     = $example;
-		$this->uuid        = new TopicUuid( $name  );
+		$this->uuid        = new TopicUuid( $name );
 	}
 
 	/**
@@ -118,6 +118,7 @@ class Topic implements PersistMappable {
 	 */
 	public function setName( string $name ): Topic {
 		$this->name = $name;
+
 		return $this;
 	}
 
@@ -130,7 +131,7 @@ class Topic implements PersistMappable {
 		$this->parentName = $parentName;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @param null|string $description
@@ -141,7 +142,7 @@ class Topic implements PersistMappable {
 		$this->description = $description;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @return null|string
@@ -159,7 +160,7 @@ class Topic implements PersistMappable {
 		$this->example = $example;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @return null|string
