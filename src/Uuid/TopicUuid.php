@@ -25,7 +25,7 @@ class TopicUuid extends Uuid {
 	 * @param string $uuid
 	 */
 	public function setUuid( string $uuid ): void {
-		$this->uuid = $uuid;
+		$this->uuid = str_replace( [ '|', '%', ' ', '+' ], '-', urlencode( $uuid ) );
 	}
 
 }

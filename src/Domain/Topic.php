@@ -35,7 +35,7 @@ class Topic implements PersistMappable {
 		$this->parentName  = $parentName;
 		$this->description = $description;
 		$this->example     = $example;
-		$this->uuid        = new TopicUuid( str_replace( [ ' ', '|' ], '-', $name ) );
+		$this->uuid        = new TopicUuid( $name  );
 	}
 
 	/**
