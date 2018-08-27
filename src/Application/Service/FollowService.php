@@ -10,6 +10,7 @@ use DevPledge\Domain\Follows;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
+use DevPledge\Uuid\DualUuid;
 
 /**
  * Class FollowService
@@ -88,6 +89,17 @@ class FollowService {
 	}
 
 	/**
+	 * @param $userId
+	 * @param $entityId
+	 *
+	 * @return Follow
+	 */
+	public function readByUserIdEntityId( $userId, $entityId ): Follow {
+
+		return $this->read( ( new DualUuid( $userId, $entityId ) )->toString() );
+	}
+
+	/**
 	 * @param string $userId
 	 *
 	 * @return Follows
@@ -111,7 +123,7 @@ class FollowService {
 	 * @return Follows
 	 * @throws \Exception
 	 */
-	public function getUserTopics( string $userId ) {
+	public function getUserTopics( string $userId ): Follows {
 		$follows = $this->repo->readAllWhere( new Wheres( [
 			new Where( 'user_id', $userId ),
 			new Where( 'entity', 'topic' )

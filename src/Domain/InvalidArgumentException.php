@@ -1,14 +1,11 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 16/07/2018
- * Time: 23:36
- */
 
 namespace DevPledge\Domain;
 
-
+/**
+ * Class InvalidArgumentException
+ * @package DevPledge\Domain
+ */
 class InvalidArgumentException extends \InvalidArgumentException {
 	/**
 	 * @var string

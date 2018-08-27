@@ -58,7 +58,7 @@ class Follows extends AbstractDomain {
 		return $data;
 	}
 
-	public function toAPIMap(): \stdClass {
+	function toAPIMap(): \stdClass {
 		$data = new \stdClass();
 
 		$data->follows = [];

@@ -4,39 +4,40 @@ namespace DevPledge\Application\CommandHandlers;
 
 
 use DevPledge\Application\Commands\CreateFollowCommand;
-use DevPledge\Domain\InvalidArgumentException;
-use DevPledge\Framework\ServiceProviders\EntityServiceProvider;
+use DevPledge\Application\Commands\DeleteFollowCommand;
 use DevPledge\Framework\ServiceProviders\FollowServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
+use DevPledge\Integrations\Command\CommandException;
 
 /**
- * Class CreateFollowHandler
+ * Class DeleteFollowHandler
  * @package DevPledge\Application\CommandHandlers
  */
-class CreateFollowHandler extends AbstractCommandHandler {
+class DeleteFollowHandler extends AbstractCommandHandler {
 	/**
 	 * CreateFollowHandler constructor.
 	 */
 	public function __construct() {
-		parent::__construct( CreateFollowCommand::class );
+		parent::__construct( DeleteFollowCommand::class );
 	}
 
-
 	/**
-	 * @param $command CreateFollowCommand
+	 * @param $command DeleteFollowCommand
 	 *
-	 * @return \DevPledge\Domain\Follow
-	 * @throws \Exception
+	 * @return int|null
+	 * @throws CommandException
 	 */
 	protected function handle( $command ) {
 		$followService = FollowServiceProvider::getService();
 		$userId        = $command->getUser()->getId();
 		$entityId      = $command->getEntityId();
-		/**
-		 * this will throw InvalidArgument Exception
-		 */
-		EntityServiceProvider::getService()->read( $entityId );
 
-		return $followService->create( (object) [ 'user_id' => $userId, 'entity_id' => $entityId ] );
+		$follow = $followService->readByUserIdEntityId( $userId, $entityId );
+		if ( $follow->isPersistedDataFound() ) {
+
+			return $followService->delete( $follow->getId() );
+		}
+		throw new CommandException( 'Follow Not Found' );
+
 	}
 }

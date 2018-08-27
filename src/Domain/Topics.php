@@ -27,7 +27,6 @@ class Topics extends AbstractDomain {
 			foreach ( $topics as &$topic ) {
 				if ( ! ( $topic instanceof Topic ) ) {
 					$topic = TopicService::getTopicByName( $topic );
-
 				}
 			}
 

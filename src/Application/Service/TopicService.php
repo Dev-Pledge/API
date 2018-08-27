@@ -73,12 +73,13 @@ class TopicService {
 	 *
 	 * @return Topic
 	 */
-	public static function getTopicByName( string $name ) {
+	public static function getTopicByName( string $name ): Topic {
 		foreach ( static::getTopics() as &$topic ) {
 			if ( $topic->getName() == $name ) {
 				return $topic;
 			}
 		}
+
 	}
 
 	/**
@@ -86,12 +87,22 @@ class TopicService {
 	 *
 	 * @return Topic
 	 */
-	public static function getTopic( string $topicId ) {
+	public static function getTopic( string $topicId ): Topic {
 		foreach ( static::getTopics() as &$topic ) {
 			if ( $topic->getId() == $topicId ) {
 				return $topic;
 			}
 		}
+
+	}
+
+	/**
+	 * @param $topicId
+	 *
+	 * @return Topic
+	 */
+	public function read( $topicId ): Topic {
+		return static::getTopic( $topicId );
 	}
 
 }

@@ -3,11 +3,17 @@
 namespace DevPledge\Domain;
 
 
+use DevPledge\Domain\Fetcher\FetchCacheUser;
+
 /**
  * Class Follow
  * @package DevPledge\Domain
  */
 class Follow extends AbstractDomainDualUuid {
+
+	public function getName() {
+		return $this->name;
+	}
 
 	/**
 	 * @return string
@@ -43,6 +49,18 @@ class Follow extends AbstractDomainDualUuid {
 		];
 	}
 
+	/**
+	 * @return \stdClass
+	 */
+	function toAPIMap(): \stdClass {
+		$data                = parent::toAPIMap();
+		$data->follow_entity = null;
+		if ( $this->getEntity() == 'user' ) {
+			$data->user = ( new FetchCacheUser( $this->getEntityId() ) )->toPublicAPIMap();
+		}
+
+		return $data;
+	}
 
 
 }
