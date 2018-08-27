@@ -5,7 +5,6 @@ namespace DevPledge\Framework\Adapter;
 
 
 use DevPledge\Uuid\DualUuid;
-use QuickCache\Cache;
 use TomWright\Database\ExtendedPDO\ExtendedPDO;
 use TomWright\Database\ExtendedPDO\Like;
 use TomWright\Database\ExtendedPDO\Query;
@@ -227,6 +226,9 @@ class MysqlAdapter implements Adapter {
 						break;
 					case 'less than equals':
 						$query->addRawWhere( " `{$column}` <= '{$cleanValue}' " );
+						break;
+					case 'not':
+						$query->addRawWhere( " `{$column}` != '{$cleanValue}' " );
 						break;
 				}
 			}

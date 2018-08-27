@@ -7,6 +7,9 @@ use DevPledge\Application\Factory\FollowFactory;
 use DevPledge\Application\Repository\FollowRepository;
 use DevPledge\Domain\Follow;
 use DevPledge\Domain\Follows;
+use DevPledge\Framework\Adapter\Where;
+use DevPledge\Framework\Adapter\Wheres;
+use DevPledge\Integrations\Cache\Cache;
 
 /**
  * Class FollowService
@@ -24,14 +27,27 @@ class FollowService {
 	protected $factory;
 
 	/**
+	 * @var UserService
+	 */
+	protected $userService;
+	/**
+	 * @var Cache
+	 */
+	protected $cache;
+
+	/**
 	 * FollowService constructor.
 	 *
 	 * @param FollowRepository $repo
 	 * @param FollowFactory $factory
+	 * @param UserService $userService
+	 * @param Cache $cache
 	 */
-	public function __construct( FollowRepository $repo, FollowFactory $factory ) {
-		$this->repo    = $repo;
-		$this->factory = $factory;
+	public function __construct( FollowRepository $repo, FollowFactory $factory, UserService $userService, Cache $cache ) {
+		$this->repo        = $repo;
+		$this->factory     = $factory;
+		$this->userService = $userService;
+		$this->cache       = $cache;
 	}
 
 	/**
@@ -89,8 +105,24 @@ class FollowService {
 
 	}
 
-	public function getUserTopics(string $userId){
+	/**
+	 * @param string $userId
+	 *
+	 * @return Follows
+	 * @throws \Exception
+	 */
+	public function getUserTopics( string $userId ) {
+		$follows = $this->repo->readAllWhere( new Wheres( [
+			new Where( 'user_id', $userId ),
+			new Where( 'entity', 'topic' )
+		] ), 'created', true );
+		if ( $follows ) {
+			$allUserFollows = new Follows( $follows );
 
+			return $allUserFollows;
+		}
+
+		return new Follows( [] );
 	}
 
 }

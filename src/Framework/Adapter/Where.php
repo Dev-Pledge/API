@@ -29,7 +29,8 @@ class Where {
 		'more than equal',
 		'less than equal',
 		'like at start',
-		'like at end'
+		'like at end',
+		'not'
 	];
 
 	/**
@@ -147,6 +148,10 @@ class Where {
 	 */
 	public function lessThanOrEqual(): Where {
 		return $this->setType( 'less than equals' );
+	}
+
+	public function not(): Where {
+		return $this->setType( 'not' );
 	}
 
 	/**
