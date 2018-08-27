@@ -26,7 +26,11 @@ class DualUuid {
 	 */
 	public function __construct( string $uuid1, string $uuid2 ) {
 		$this->uuid1 = new Uuid( $uuid1 );
-		$this->uuid2 = new Uuid( $uuid2 );
+		try {
+			$this->uuid2 = new Uuid( $uuid2 );
+		} catch ( \InvalidArgumentException $exception ) {
+			$this->uuid2 = new TopicUuid( $uuid2, null );
+		}
 	}
 
 	/**
@@ -40,7 +44,7 @@ class DualUuid {
 	 * @return string
 	 */
 	public function getSecondaryId(): string {
-		return $this->uuid1->toString();
+		return $this->uuid2->toString();
 	}
 
 	/**

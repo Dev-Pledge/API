@@ -6,6 +6,8 @@ use DevPledge\Application\Commands\CreateFollowCommand;
 use DevPledge\Application\Commands\DeleteFollowCommand;
 use DevPledge\Domain\Follow;
 use DevPledge\Domain\InvalidArgumentException;
+use DevPledge\Framework\Adapter\MysqlAdapter;
+use DevPledge\Framework\Adapter\MysqlPDODuplicationException;
 use DevPledge\Framework\ServiceProviders\FollowServiceProvider;
 use DevPledge\Integrations\Command\CommandException;
 use DevPledge\Integrations\Command\Dispatch;
@@ -33,13 +35,25 @@ class FollowController extends AbstractController {
 		}
 		$entityId = $request->getAttribute( 'entity_id' );
 		try {
-			/**
-			 * @var $follow Follow
-			 */
-			$follow = Dispatch::command( new CreateFollowCommand( $user, $entityId ) );
+			try {
+				/**
+				 * @var $follow Follow
+				 */
+				$follow = Dispatch::command( new CreateFollowCommand( $user, $entityId ) );
+			} catch ( \PDOException $PDoException ) {
+				new MysqlPDODuplicationException( $PDoException, [
+					'user_id-entity_id' => $user->getId() . MysqlAdapter::DUAL_PRIMARY_KEY_SEPARATOR . $entityId
+				], function ( MysqlPDODuplicationException $ex ) use ( $user, $entityId ) {
+
+					throw new InvalidArgumentException(
+						'User is already Following ' . $entityId . ' already exists!'
+					);
+
+				} );
+			}
 		} catch ( InvalidArgumentException $exception ) {
 			return $response->withJson(
-				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
+				[ 'error' => $exception->getMessage() ]
 				, 401 );
 		}
 
@@ -69,7 +83,7 @@ class FollowController extends AbstractController {
 			$deleted = Dispatch::command( new DeleteFollowCommand( $user, $entityId ) );
 		} catch ( \TypeError | \Exception | CommandException $exception ) {
 			return $response->withJson(
-				[ 'error' => $exception->getMessage() ]
+				[ 'error' => 'No Follow Found' ]
 				, 401 );
 		}
 

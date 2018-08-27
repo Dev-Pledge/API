@@ -55,7 +55,6 @@ class Follow extends AbstractDomainDualUuid {
 	 */
 	function toAPIMap(): \stdClass {
 		$data                = parent::toAPIMap();
-		$data->follow_entity = null;
 		if ( $this->getEntity() == 'user' ) {
 			$data->user = ( new FetchCacheUser( $this->getEntityId() ) )->toPublicAPIMap();
 		}

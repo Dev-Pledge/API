@@ -20,6 +20,8 @@ class MysqlAdapter implements Adapter {
 	 */
 	private $db;
 
+	const DUAL_PRIMARY_KEY_SEPARATOR = '-';
+
 	/**
 	 * MysqlAdapter constructor.
 	 *

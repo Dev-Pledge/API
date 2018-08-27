@@ -16,9 +16,10 @@ class TopicUuid extends Uuid {
 	 * TopicUuid constructor.
 	 *
 	 * @param string $uuid
+	 * @param null|string $prefix
 	 */
-	public function __construct( string $uuid ) {
-		parent::__construct( $uuid, 'top' );
+	public function __construct( string $uuid, ?string $prefix = 'top' ) {
+		parent::__construct( $uuid, $prefix );
 	}
 
 	/**

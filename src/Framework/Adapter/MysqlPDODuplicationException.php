@@ -8,6 +8,7 @@ namespace DevPledge\Framework\Adapter;
  * @package DevPledge\Framework\Adapter
  */
 class MysqlPDODuplicationException extends \Exception {
+
 	protected $inputMap;
 	protected $PDOException;
 	protected $map;
