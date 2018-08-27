@@ -4,6 +4,7 @@ namespace DevPledge\Domain;
 
 
 use DevPledge\Domain\Fetcher\FetchCacheUser;
+use DevPledge\Domain\Fetcher\FetchTopic;
 
 /**
  * Class Follow
@@ -57,6 +58,9 @@ class Follow extends AbstractDomainDualUuid {
 		$data->follow_entity = null;
 		if ( $this->getEntity() == 'user' ) {
 			$data->user = ( new FetchCacheUser( $this->getEntityId() ) )->toPublicAPIMap();
+		}
+		if ( $this->getEntity() == 'topic' ) {
+			$data->topic = ( new FetchTopic( $this->getEntityId() ) )->toAPIMap();
 		}
 
 		return $data;

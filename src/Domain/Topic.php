@@ -12,10 +12,21 @@ use DevPledge\Uuid\TopicUuid;
  * @package DevPledge\Domain
  */
 class Topic implements PersistMappable {
-
+	/**
+	 * @var string
+	 */
 	protected $name;
+	/**
+	 * @var null | string
+	 */
 	protected $parentName;
+	/**
+	 * @var null | string
+	 */
 	protected $description;
+	/**
+	 * @var null | string
+	 */
 	protected $example;
 	/**
 	 * @var TopicUuid
@@ -98,5 +109,62 @@ class Topic implements PersistMappable {
 	 */
 	function toAPIMapArray(): array {
 		return (array) $this->toPersistMap();
+	}
+
+	/**
+	 * @param string $name
+	 *
+	 * @return Topic
+	 */
+	public function setName( string $name ): Topic {
+		$this->name = $name;
+		return $this;
+	}
+
+	/**
+	 * @param null|string $parentName
+	 *
+	 * @return Topic
+	 */
+	public function setParentName( ?string $parentName ): Topic {
+		$this->parentName = $parentName;
+
+		return $this;
+}
+
+	/**
+	 * @param null|string $description
+	 *
+	 * @return Topic
+	 */
+	public function setDescription( ?string $description ): Topic {
+		$this->description = $description;
+
+		return $this;
+}
+
+	/**
+	 * @return null|string
+	 */
+	public function getExample(): ?string {
+		return $this->example;
+	}
+
+	/**
+	 * @param null|string $example
+	 *
+	 * @return Topic
+	 */
+	public function setExample( ?string $example ): Topic {
+		$this->example = $example;
+
+		return $this;
+}
+
+	/**
+	 * @return null|string
+	 */
+	public function getDescription(): ?string {
+		return $this->description;
 	}
 }
