@@ -33,7 +33,7 @@ class UserRepository extends AbstractRepository {
 	 * @return User
 	 */
 	public function readByUsername( string $username ): User {
-		$data = $this->adapter->read( 'users', $username, 'username' );
+		$data = $this->adapter->read( 'users', $username, 'username' ) ?? new \stdClass();
 
 		return $this->readAppendExistingPermissions( $this->factory->createFromPersistedData( $data ) );
 	}
