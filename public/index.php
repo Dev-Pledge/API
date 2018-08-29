@@ -40,6 +40,7 @@ Integrations::addExtrapolations( [
 	new ExtrapolateFactoryDependencies( __DIR__ . '/../src/Framework/FactoryDependencies', "DevPledge\\Framework\\FactoryDependencies" ),
 	new ExtrapolateRouteGroups( __DIR__ . '/../src/Framework/RouteGroups', "DevPledge\\Framework\\RouteGroups" ),
 	new ExtrapolateCommandHandlers( __DIR__ . '/../src/Application/CommandHandlers', "DevPledge\\Application\\CommandHandlers" ),
+	new \DevPledge\Integrations\Event\ExtrapolateEventHandlers( __DIR__ . '/../src/Application/EventHandlers', "DevPledge\\Application\\EventHandlers" ),
 ] );
 
 Integrations::run();

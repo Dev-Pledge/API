@@ -26,6 +26,13 @@ class Follows extends AbstractDomain {
 	}
 
 	/**
+	 * @return Follow[]
+	 */
+	public function getFollows(): array {
+		return $this->follows;
+	}
+
+	/**
 	 * @param array $follows
 	 *
 	 * @return $this

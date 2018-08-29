@@ -62,6 +62,7 @@ class FollowService {
 		$follow = $this->factory->create( $data );
 
 		$follow = $this->repo->createPersist( $follow );
+		$this->cacheUserFollowIds( $follow->getUserId() );
 
 		return $follow;
 	}
@@ -72,9 +73,17 @@ class FollowService {
 	 * @param string $followId
 	 *
 	 * @return int|null
+	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	public function delete( string $followId ): ?int {
-		return $this->repo->delete( $followId );
+		$follow = $this->read( $followId );
+
+		$delete = $this->repo->delete( $followId );
+		if ( $delete ) {
+			$this->cacheUserFollowIds( $follow->getUserId() );
+		}
+
+		return $delete;
 	}
 
 	/**
@@ -135,6 +144,39 @@ class FollowService {
 		}
 
 		return new Follows( [] );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	protected function cacheUserFollowIds( string $userId ) {
+		$Follows = $this->readAll( $userId );
+
+		$followIds = [];
+
+		$follows = $Follows->getFollows();
+
+		foreach ( $follows as $follow ) {
+			$followIds[] = $follow->getEntityId();
+		}
+		$this->cache->set( 'follows:' . $userId, $followIds );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return array
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function getCachedUserFollowsIds( string $userId ): array {
+		$follows = $this->cache->get( 'follows:' . $userId );
+		if ( is_array( $follows ) ) {
+			return $follows;
+		}
+
+		return [];
 	}
 
 }

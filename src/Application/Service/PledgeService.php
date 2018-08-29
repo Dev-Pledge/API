@@ -4,12 +4,16 @@
 namespace DevPledge\Application\Service;
 
 
+use DevPledge\Application\Events\CreatedDomainEvent;
+use DevPledge\Application\Events\DeletedDomainEvent;
+use DevPledge\Application\Events\UpdatedDomainEvent;
 use DevPledge\Application\Factory\PledgeFactory;
 use DevPledge\Application\Repository\PledgeRepository;
 use DevPledge\Domain\Payment;
 use DevPledge\Domain\Pledge;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
+use DevPledge\Integrations\Command\Dispatch;
 
 /**
  * Class PledgeService
@@ -67,6 +71,8 @@ class PledgeService {
 
 		$pledge = $this->repo->createPersist( $pledge );
 
+		Dispatch::event( new CreatedDomainEvent( $pledge, $pledge->getProblemId() ) );
+
 		return $pledge;
 	}
 
@@ -81,7 +87,13 @@ class PledgeService {
 	public function update( Pledge $pledge, \stdClass $rawUpdateData ): Pledge {
 		$pledge = $this->factory->update( $pledge, $rawUpdateData );
 
-		return $this->repo->update( $pledge );
+		$pledge = $this->repo->update( $pledge );
+		/**
+		 * TODO figure out how we separate creates and update into the feed
+		 */
+		Dispatch::event( new UpdatedDomainEvent( $pledge, $pledge->getProblemId() ) );
+
+		return $pledge;
 	}
 
 	/**
@@ -99,7 +111,11 @@ class PledgeService {
 	 * @return int|null
 	 */
 	public function delete( string $pledgeId ): ?int {
-		return $this->repo->delete( $pledgeId );
+		$pledge  = $this->read( $pledgeId );
+		$deleted = $this->repo->delete( $pledgeId );
+		if ( $deleted ) {
+			Dispatch::event( new DeletedDomainEvent( $pledge ) );
+		}
 	}
 
 	/**

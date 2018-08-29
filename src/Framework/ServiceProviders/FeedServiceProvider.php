@@ -5,6 +5,8 @@ namespace DevPledge\Framework\ServiceProviders;
 
 use DevPledge\Application\Service\FeedService;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\RedisServiceProvider;
 use Slim\Container;
 
 /**
@@ -25,7 +27,7 @@ class FeedServiceProvider extends AbstractServiceProvider {
 	 * @return FeedService
 	 */
 	public function __invoke( Container $container ) {
-		return new FeedService();
+		return new FeedService( CacheServiceProvider::getService());
 	}
 
 	/**

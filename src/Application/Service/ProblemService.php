@@ -3,11 +3,15 @@
 namespace DevPledge\Application\Service;
 
 
+use DevPledge\Application\Events\CreatedDomainEvent;
+use DevPledge\Application\Events\DeletedDomainEvent;
+use DevPledge\Application\Events\UpdatedDomainEvent;
 use DevPledge\Application\Factory\ProblemFactory;
 use DevPledge\Application\Repository\ProblemRepository;
 use DevPledge\Domain\Problem;
 use DevPledge\Domain\Problems;
 use DevPledge\Integrations\Cache\Cache;
+use DevPledge\Integrations\Command\Dispatch;
 
 /**
  * Class ProblemService
@@ -72,6 +76,8 @@ class ProblemService {
 
 		$problem = $this->repo->createPersist( $problem );
 
+		Dispatch::event( new CreatedDomainEvent( $problem ) );
+
 		return $problem;
 	}
 
@@ -84,8 +90,11 @@ class ProblemService {
 	 */
 	public function update( Problem $problem, \stdClass $rawUpdateData ): Problem {
 		$problem = $this->factory->update( $problem, $rawUpdateData );
+		$problem = $this->repo->update( $problem );
 
-		return $this->repo->update( $problem );
+		Dispatch::event( new UpdatedDomainEvent( $problem ) );
+
+		return $problem;
 	}
 
 	/**
@@ -103,7 +112,16 @@ class ProblemService {
 	 * @return int|null
 	 */
 	public function delete( string $problemId ): ?int {
-		return $this->repo->delete( $problemId );
+
+		$problem = $this->read( $problemId );
+
+		$deleted = $this->repo->delete( $problemId );
+
+		if ( $deleted ) {
+			Dispatch::event( new DeletedDomainEvent( $problem ) );
+		}
+
+		return $deleted;
 	}
 
 	/**
