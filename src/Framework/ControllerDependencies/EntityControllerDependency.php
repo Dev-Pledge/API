@@ -11,6 +11,7 @@ namespace DevPledge\Framework\ControllerDependencies;
 
 use DevPledge\Framework\Controller\EntityController;
 use DevPledge\Integrations\ControllerDependency\AbstractControllerDependency;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Container;
 
 /**

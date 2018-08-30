@@ -15,6 +15,7 @@ use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Framework\ServiceProviders\SolutionServiceProvider;
 use DevPledge\Framework\ServiceProviders\TopicServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
+use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\TopicUuid;
 use DevPledge\Uuid\Uuid;
@@ -25,7 +26,19 @@ use DevPledge\WebSocket\ActivityFeed;
  * @package DevPledge\Application\Service
  */
 class EntityService {
+	/**
+	 * @var Cache
+	 */
+	protected $cache;
 
+	/**
+	 * EntityService constructor.
+	 *
+	 * @param Cache $cache
+	 */
+	public function __construct( Cache $cache ) {
+		$this->cache = $cache;
+	}
 
 	/**
 	 * @param string $entityId
@@ -59,13 +72,18 @@ class EntityService {
 			if ( ! in_array( $entity, $allowedEntities ) ) {
 				throw new \Exception( 'Entity not Allowed:' . $entity );
 			}
-
+			$serializeKey = 'entity:' . $entityId;
 			switch ( $entity ) {
 				case 'user':
 					$domain = UserServiceProvider::getService()->getUserFromCache( $entityId );
 					break;
 				case 'problem':
-					$domain = ProblemServiceProvider::getService()->read( $entityId );
+					if ( $serializedDomain = $this->cache->get( $serializeKey ) ) {
+						$domain = unserialize( $serializedDomain );
+					} else {
+						$domain = ProblemServiceProvider::getService()->read( $entityId );
+						$this->cache->setEx( $serializeKey, serialize( $domain ), 30 );
+					}
 					break;
 				case 'topic':
 					$domain = TopicServiceProvider::getService()->read( $entityId );

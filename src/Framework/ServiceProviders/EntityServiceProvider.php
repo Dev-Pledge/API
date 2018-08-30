@@ -5,6 +5,7 @@ namespace DevPledge\Framework\ServiceProviders;
 
 use DevPledge\Application\Service\EntityService;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Container;
 
 /**
@@ -25,7 +26,7 @@ class EntityServiceProvider extends AbstractServiceProvider {
 	 * @return EntityService
 	 */
 	public function __invoke( Container $container ) {
-		return new EntityService();
+		return new EntityService( CacheServiceProvider::getService() );
 	}
 
 	/**
