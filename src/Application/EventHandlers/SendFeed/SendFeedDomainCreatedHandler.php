@@ -24,6 +24,7 @@ class SendFeedDomainCreatedHandler extends AbstractEventHandler {
 	 * @param $event UpdatedDomainEvent
 	 */
 	protected function handle( $event ) {
+
 		$domain      = $event->getDomain();
 		$parentId    = $event->getParentId();
 		$feedService = FeedServiceProvider::getService();

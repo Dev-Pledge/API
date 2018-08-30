@@ -5,11 +5,18 @@ $message = $argv[1];
 
 $cli = new \swoole_http_client( 'feed', 9501 );
 
-$cli->upgrade( '/', function ( $cli ) use ( $message ) {
-	echo $cli->body;
-	$cli->push( $message);
-	$cli->close();
+$cli->setHeaders( [ 'origin' => 'api' ] );
+
+$cli->on( 'message', function ( swoole_http_client $client, swoole_websocket_frame $frame ) {
+
 } );
 
 
+$cli->upgrade( '/', function ( swoole_http_client $client ) use ( $message ) {
+
+	$client->push( $message );
+	sleep( 10 );
+	$client->close();
+
+} );
 

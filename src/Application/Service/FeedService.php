@@ -35,9 +35,7 @@ class FeedService {
 	 */
 	public function send( \stdClass $data ): FeedService {
 
-		$data->origin = 'api';
 		$t            = json_encode( $data );
-
 		shell_exec( 'php ' . Integrations::getBaseDir() . '/sendfeed.php "' . addslashes( $t ) . '" > /dev/null 2>/dev/null &' );
 
 		return $this;
@@ -97,7 +95,7 @@ class FeedService {
 					unset( $array[ $Bkey ] );
 				}
 			}
-			
+
 		};
 
 		$set = function ( &$array, $key ) use ( $spread, $parentId, $unset ) {
