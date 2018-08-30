@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Framework\Controller\EntityController;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
 /**
@@ -10,18 +11,18 @@ use DevPledge\Integrations\Route\AbstractRouteGroup;
  * @package DevPledge\Framework\RouteGroups
  */
 class EntityRouteGroup extends AbstractRouteGroup {
+	/**
+	 * EntityRouteGroup constructor.
+	 */
 	public function __construct() {
 		parent::__construct( '/entity' );
 	}
 
-	// TODO: Implement __wakeup() met
-
+	/**
+	 *
+	 */
 	protected function callableInGroup() {
 		$app = $this->getApp();
-		$app->post( '/getForFeed', function ( $request, $response ) {
-			$v = $request->getParsedBody();
-			var_dump( $v );
-
-		} );
+		$app->post( '/getForFeed', EntityController::class . ':getFeedEntities' );
 	}
 }

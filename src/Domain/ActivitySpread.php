@@ -165,4 +165,14 @@ class ActivitySpread {
 		return $this->parentId;
 	}
 
+	/**
+	 * @return \stdClass
+	 */
+	public function toAPIMap():\stdClass {
+		return (object) [
+			'type'   => $this->getDomain()->getUuid()->getEntity(),
+			'entity' => $this->getDomain()->toPublicAPIMap()
+		];
+	}
+
 }

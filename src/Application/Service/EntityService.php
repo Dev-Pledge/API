@@ -5,6 +5,7 @@ namespace DevPledge\Application\Service;
 
 
 use DevPledge\Application\Mapper\PersistMappable;
+use DevPledge\Domain\FeedEntity;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\OrganisationServiceProvider;
 use DevPledge\Framework\ServiceProviders\PaymentMethodServiceProvider;
@@ -14,8 +15,10 @@ use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Framework\ServiceProviders\SolutionServiceProvider;
 use DevPledge\Framework\ServiceProviders\TopicServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
+use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\TopicUuid;
 use DevPledge\Uuid\Uuid;
+use DevPledge\WebSocket\ActivityFeed;
 
 /**
  * Class EntityService
@@ -93,5 +96,54 @@ class EntityService {
 
 		return $domain;
 	}
+
+	/**
+	 * @param string $function
+	 * @param string $entityId
+	 * @param null|string $entityParentId
+	 *
+	 * @return FeedEntity|null
+	 */
+	public function getFeedEntity( string $function, string $entityId, ?string $entityParentId = null ): ?FeedEntity {
+		try {
+			$domain       = $this->read( $entityId );
+			$parentDomain = null;
+			if ( ! is_null( $entityParentId ) ) {
+				$parentDomain = $this->read( $entityParentId );
+			}
+
+			return new FeedEntity( $function, $domain, $parentDomain );
+		} catch ( \TypeError | InvalidArgumentException $exception ) {
+			Sentry::get()->captureException( $exception );
+		}
+
+		return null;
+	}
+
+	/**
+	 * @param \stdClass $data
+	 *
+	 * @return \stdClass
+	 */
+	public function getFeedEntities( \stdClass $data ): \stdClass {
+		$returnArray = [];
+		if ( isset( $data->entities ) && is_array( $data->entities ) ) {
+			foreach ( $data->entities as $entity ) {
+
+				$function       = $entity['function'] ?? 'no-function';
+				$entityId       = $entity['id'] ?? null;
+				$entityParentId = $entity['parent_id'] ?? null;
+				$feedEntity     = $this->getFeedEntity( $function, $entityId, $entityParentId );
+				if ( ! is_null( $feedEntity ) ) {
+					$returnArray[] = $feedEntity->toAPIMap();
+				}
+			}
+		}
+		$return           = new \stdClass();
+		$return->entities = $returnArray;
+
+		return $return;
+	}
+
 
 }
