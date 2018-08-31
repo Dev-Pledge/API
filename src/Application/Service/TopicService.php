@@ -48,7 +48,7 @@ class TopicService {
 			$language( 'Go' ),
 			$language( 'C#' ),
 			$language( 'C' ),
-			$language( 'Obective C' ),
+			$language( 'Objective-C' ),
 			$language( 'Docker Compose' ),
 			$language( 'Docker File' ),
 			$language( 'Java' ),
@@ -83,7 +83,8 @@ class TopicService {
 			$tech( 'System Administration', 'Taking care of Server Technologies' ),
 			$tech( 'Ansible', 'Server Orchestration' ),
 		];
-		static::$topics  = array_merge( $parentTopics, $languageTopics, $frameworkTopics, $techTopics );
+
+		static::$topics = array_merge( $parentTopics, $languageTopics, $frameworkTopics, $techTopics );
 	}
 
 	/**
