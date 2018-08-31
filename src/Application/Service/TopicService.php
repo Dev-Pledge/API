@@ -31,7 +31,8 @@ class TopicService {
 	static protected function setUpTopics() {
 		$parentTopics    = [
 			new Topic( 'Framework' ),
-			new Topic( 'Language' )
+			new Topic( 'Language' ),
+			new Topic( 'Technology' )
 		];
 		$language        = function ( $name, $description = null, $example = null ) {
 			return new Topic( $name, 'Language', $description, $example );
@@ -48,7 +49,8 @@ class TopicService {
 			$language( 'C#' ),
 			$language( 'C' ),
 			$language( 'Obective C' ),
-			$language( 'Docker' ),
+			$language( 'Docker Compose' ),
+			$language( 'Docker File' ),
 			$language( 'Java' ),
 			$language( 'SCSS' ),
 			$language( 'SASS' ),
@@ -65,7 +67,23 @@ class TopicService {
 			$framework( 'Vue', 'JS Framework' ),
 			$framework( 'Word Press', 'PHP Framework' )
 		];
-		static::$topics  = array_merge( $parentTopics, $languageTopics, $frameworkTopics );
+		$tech            = function ( $name, $description = null, $example = null ) {
+			return new Topic( $name, 'Technology', $description, $example );
+		};
+		$techTopics      = [
+			$tech( 'Kubernetes', 'Container Orchestration' ),
+			$tech( 'Docker Swarm', 'Container Orchestration' ),
+			$tech( 'Docker', 'Container' ),
+			$tech( 'Apache', 'Server Technologies' ),
+			$tech( 'Nginx', 'PHP Framework' ),
+			$tech( 'Web Sockets', 'Protocol' ),
+			$tech( 'TCP', 'Protocol' ),
+			$tech( 'SSL', 'Security Protocol' ),
+			$tech( 'Swoole', 'Server Technologies' ),
+			$tech( 'System Administration', 'Taking care of Server Technologies' ),
+			$tech( 'Ansible', 'Server Orchestration' ),
+		];
+		static::$topics  = array_merge( $parentTopics, $languageTopics, $frameworkTopics, $techTopics );
 	}
 
 	/**
