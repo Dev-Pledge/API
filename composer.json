@@ -25,12 +25,11 @@
     "jrsaunders/fixerexchangerates": "^2.0",
     "league/omnipay": "^3.0",
     "omnipay/stripe": "^3.0",
-    "spomky-labs/base64url": "^1.0",
     "slim/php-view": "^2.2",
     "monolog/monolog": "^1.23",
-    "sentry/sentry": "^1.8",
     "jrsaunders/quickcache": "^1.0",
-    "predis/predis": "^1.1"
+    "predis/predis": "^1.1",
+    "robmorgan/phinx": "^0.10.6"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.8 < 6.0",
