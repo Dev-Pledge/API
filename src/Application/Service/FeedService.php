@@ -35,8 +35,8 @@ class FeedService {
 	 */
 	public function send( \stdClass $data ): FeedService {
 
-		$t            = json_encode( $data );
-		shell_exec( 'php ' . Integrations::getBaseDir() . '/sendfeed.php "' . addslashes( $t ) . '" > /dev/null 2>/dev/null &' );
+		$t = json_encode( $data );
+		shell_exec( 'php ' . Integrations::getBaseDir() . '/src/CliCommands/SendToFeed.php "' . addslashes( $t ) . '" > /dev/null 2>/dev/null &' );
 
 		return $this;
 	}
