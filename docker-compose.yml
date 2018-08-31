@@ -27,6 +27,14 @@ services:
       - sentry_network
       - cache_network
 
+  migrations:
+    image: twosee/swoole-coroutine
+    env_file:
+      - .app-dev-env
+    volumes:
+      - .:/app/src
+    command: php /app/src/test.php
+
   mysql-db:
     restart: always
     image: percona:5.7
