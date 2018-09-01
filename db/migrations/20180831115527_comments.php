@@ -36,11 +36,12 @@ class Comments extends AbstractMigration {
 			$table->addColumn( 'comment_id', 'string', [ 'limit' => 50 ] )
 			      ->addColumn( 'comment', 'text', [ 'limit' => 255 ] )
 			      ->addColumn( 'entity_id', 'string', [ 'limit' => 50 ] )
-			      ->addColumn( 'user_id', 'string', [ 'limit' => 50 ] )
+			      ->addColumn( 'user_id', 'string', [ 'limit' => 50, 'null' => true ] )
+			      ->addColumn( 'organisation_id', 'string', [ 'limit' => 50, 'null' => true ] )
 			      ->addColumn( 'modified', 'datetime' )
 			      ->addColumn( 'created', 'datetime' )
 			      ->create();
-			
+
 			$this->table( 'comments' )->addIndex( [
 				'entity_id',
 				'created'

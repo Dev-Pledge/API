@@ -6,7 +6,8 @@ CREATE TABLE comments
     PRIMARY KEY,
   comment    TINYTEXT    NOT NULL,
   entity_id  VARCHAR(50) NOT NULL,
-  user_id    VARCHAR(50) NOT NULL,
+  user_id    VARCHAR(50) NULL,
+  organisation_id VARCHAR(50) NULL,
   modified   DATETIME    NOT NULL,
   created    DATETIME    NOT NULL
 )
