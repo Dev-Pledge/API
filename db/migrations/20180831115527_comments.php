@@ -30,8 +30,8 @@ class Comments extends AbstractMigration {
 	 * with the Table class.
 	 */
 	public function change() {
-		if ( ! $this->hasTable( 'comments' ) ) {
 
+		$create = function () {
 			$table = $this->table( 'comments', [ 'id' => false, 'primary_key' => [ 'comment_id' ] ] );
 			$table->addColumn( 'comment_id', 'string', [ 'limit' => 50 ] )
 			      ->addColumn( 'comment', 'text', [ 'limit' => 255 ] )
@@ -46,7 +46,15 @@ class Comments extends AbstractMigration {
 				'entity_id',
 				'created'
 			], [ 'name' => 'comment_created_entity' ] )->save();
+		};
 
+		if ( ! $this->hasTable( 'comments' ) ) {
+
+			$create();
+
+		} else {
+			$this->table( 'comments' )->drop()->save();
+			$create();
 		}
 	}
 }
