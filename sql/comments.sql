@@ -11,8 +11,7 @@ CREATE TABLE comments
   modified   DATETIME    NOT NULL,
   created    DATETIME    NOT NULL
 )
-  ENGINE = InnoDB
-  CHARSET = utf8;
+  ENGINE = InnoDB;
 
 CREATE INDEX comment_created_entity
   ON comments (entity_id, created);
