@@ -88,9 +88,7 @@ class PledgeService {
 		$pledge = $this->factory->update( $pledge, $rawUpdateData );
 
 		$pledge = $this->repo->update( $pledge );
-		/**
-		 * TODO figure out how we separate creates and update into the feed
-		 */
+
 		Dispatch::event( new UpdatedDomainEvent( $pledge, $pledge->getProblemId() ) );
 
 		return $pledge;
@@ -116,6 +114,8 @@ class PledgeService {
 		if ( $deleted ) {
 			Dispatch::event( new DeletedDomainEvent( $pledge ) );
 		}
+
+		return $deleted;
 	}
 
 	/**

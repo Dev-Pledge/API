@@ -2,6 +2,8 @@
 
 namespace DevPledge\Application\Service;
 
+use DevPledge\Application\Events\CreatedDomainEvent;
+use DevPledge\Application\Events\UpdatedDomainEvent;
 use DevPledge\Application\Factory\SolutionFactory;
 use DevPledge\Application\Repository\SolutionRepository;
 use DevPledge\Domain\Problem;
@@ -9,6 +11,7 @@ use DevPledge\Domain\Solution;
 use DevPledge\Domain\Solutions;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
+use DevPledge\Integrations\Command\Dispatch;
 
 /**
  * Class SolutionService
@@ -51,6 +54,10 @@ class SolutionService {
 	public function create( \stdClass $data ): Solution {
 		$solution = $this->factory->create( $data );
 		$solution = $this->repo->createPersist( $solution );
+		if ( $solution->isPersistedDataFound() ) {
+
+			Dispatch::event( new CreatedDomainEvent( $solution, $solution->getProblemId() ) );
+		}
 
 		return $solution;
 	}
@@ -65,8 +72,11 @@ class SolutionService {
 	public function update( Solution $solution, \stdClass $data ): Solution {
 		$solution = $this->factory->update( $solution, $data );
 
-		return $this->repo->update( $solution );
 
+		$solution = $this->repo->update( $solution );
+		Dispatch::event( new UpdatedDomainEvent( $solution, $solution->getProblemId() ) );
+
+		return $solution;
 	}
 
 	/**
@@ -78,8 +88,14 @@ class SolutionService {
 		return $this->repo->read( $solutionId );
 	}
 
-	public function delete( string $id ): ?int {
-		return $this->repo->delete( $id );
+	public function delete( string $solutionId ): ?int {
+		$solution = $this->read( $solutionId );
+		$delete   = $this->repo->delete( $solutionId );
+		if ( $delete ) {
+			Dispatch::event( new UpdatedDomainEvent( $solution, $solution->getProblemId() ) );
+		}
+
+		return $delete;
 	}
 
 	/**

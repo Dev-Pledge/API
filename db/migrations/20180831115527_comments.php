@@ -32,8 +32,14 @@ class Comments extends AbstractMigration {
 	public function change() {
 
 		$create = function () {
-			$table = $this->table( 'comments', [ 'id' => false, 'primary_key' => [ 'comment_id' ] ] );
+			$table = $this->table( 'comments',
+				[
+					'id'          => false,
+					'primary_key' => [ 'comment_id' ]
+				]
+			);
 			$table->addColumn( 'comment_id', 'string', [ 'limit' => 50 ] )
+			      ->addColumn( 'parent_comment_id', 'string', [ 'limit' => 50, 'null' => true ] )
 			      ->addColumn( 'comment', 'text', [ 'limit' => 255 ] )
 			      ->addColumn( 'entity_id', 'string', [ 'limit' => 50 ] )
 			      ->addColumn( 'user_id', 'string', [ 'limit' => 50, 'null' => true ] )
@@ -46,6 +52,11 @@ class Comments extends AbstractMigration {
 				'entity_id',
 				'created'
 			], [ 'name' => 'comment_created_entity' ] )->save();
+
+			$this->table( 'comments' )->addIndex( [
+				'parent_comment_id',
+				'created'
+			], [ 'name' => 'comment_created_parent' ] )->save();
 		};
 
 		if ( ! $this->hasTable( 'comments' ) ) {

@@ -21,17 +21,23 @@ class Comment extends AbstractDomain {
 	 */
 	protected $organisationId;
 	/**
+	 * @var string | null
+	 */
+	protected $parentCommentId;
+
+	/**
 	 * @return \stdClass
 	 */
 	function toPersistMap(): \stdClass {
 		return (object) [
-			'comment_id'      => $this->getId(),
-			'comment'         => $this->getComment()->getContent(),
-			'user_id'         => $this->getUserId(),
-			'organisation_id' => $this->getOrganisationId(),
-			'entity_id'       => $this->getEntityId(),
-			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
-			'created'         => $this->getCreated()->format( 'Y-m-d H:i:s' )
+			'comment_id'        => $this->getId(),
+			'parent_comment_id' => $this->getParentCommentId(),
+			'comment'           => $this->getComment()->getContent(),
+			'user_id'           => $this->getUserId(),
+			'organisation_id'   => $this->getOrganisationId(),
+			'entity_id'         => $this->getEntityId(),
+			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
+			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
 	}
 
@@ -62,7 +68,7 @@ class Comment extends AbstractDomain {
 		$this->entityId = $entityId;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @return string
@@ -80,7 +86,7 @@ class Comment extends AbstractDomain {
 		$this->userId = $userId;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @return null|string
@@ -98,7 +104,7 @@ class Comment extends AbstractDomain {
 		$this->organisationId = $organisationId;
 
 		return $this;
-}
+	}
 
 	/**
 	 * @return null|string
@@ -106,4 +112,23 @@ class Comment extends AbstractDomain {
 	public function getOrganisationId(): ?string {
 		return $this->organisationId;
 	}
+
+	/**
+	 * @param null|string $parentCommentId
+	 *
+	 * @return Comment
+	 */
+	public function setParentCommentId( ?string $parentCommentId ): Comment {
+		$this->parentCommentId = $parentCommentId;
+
+		return $this;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getParentCommentId(): ?string {
+		return $this->parentCommentId;
+	}
+
 }
