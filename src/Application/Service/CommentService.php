@@ -9,6 +9,9 @@ use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Application\Repository\CommentRepository;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Comment;
+use DevPledge\Domain\Comments;
+use DevPledge\Framework\Adapter\Where;
+use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Command\Dispatch;
 
@@ -28,7 +31,7 @@ class CommentService {
 	/**
 	 * @var Cache
 	 */
-	protected $cache;
+	protected $cacheService;
 	/**
 	 * @var EntityService
 	 */
@@ -39,13 +42,13 @@ class CommentService {
 	 *
 	 * @param CommentRepository $repo
 	 * @param CommentFactory $factory
-	 * @param Cache $cache
+	 * @param Cache $cacheService
 	 * @param EntityService $entityService
 	 */
-	public function __construct( CommentRepository $repo, CommentFactory $factory, Cache $cache, EntityService $entityService ) {
+	public function __construct( CommentRepository $repo, CommentFactory $factory, Cache $cacheService, EntityService $entityService ) {
 		$this->repo          = $repo;
 		$this->factory       = $factory;
-		$this->cache         = $cache;
+		$this->cacheService  = $cacheService;
 		$this->entityService = $entityService;
 	}
 
@@ -117,15 +120,71 @@ class CommentService {
 	 * @return int|null
 	 */
 	public function delete( string $commentId ): ?int {
-		$comment  = $this->read( $commentId );
+		$comment = $this->read( $commentId );
 		$deleted = $this->repo->delete( $commentId );
 		if ( $deleted ) {
-			Dispatch::event( new DeletedDomainEvent( $comment , $comment->getEntityId()) );
+			Dispatch::event( new DeletedDomainEvent( $comment, $comment->getEntityId() ) );
 		}
 
 		return $deleted;
 	}
 
+	/**
+	 * @param string $entityId
+	 *
+	 * @return Comments
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function readAll( string $entityId ): Comments {
+
+		$key                    = 'all-cmt:' . $entityId;
+		$allCacheEntityComments = $this->cacheService->get( $key );
+
+		if ( $allCacheEntityComments ) {
+			return unserialize( $allCacheEntityComments );
+		}
+		$comments = $this->repo->readAll( $entityId, 'created' );
+
+		if ( $comments ) {
+			$allEntityComments = new Comments( $comments );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 30 );
+
+			return $allEntityComments;
+		}
+
+		return new Comments( [] );
+
+	}
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return Comments
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function readAllFromParentComment( string $commentId ): Comments {
+
+		$key                    = 'all-cmt:' . $commentId;
+		$allCacheEntityComments = $this->cacheService->get( $key );
+
+		if ( $allCacheEntityComments ) {
+			return unserialize( $allCacheEntityComments );
+		}
+		$comments = $this->repo->readAllWhere(
+			new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ),
+			'created'
+		);
+
+		if ( $comments ) {
+			$allEntityComments = new Comments( $comments );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 30 );
+
+			return $allEntityComments;
+		}
+
+		return new Comments( [] );
+
+	}
 
 
 }
