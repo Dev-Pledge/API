@@ -2,7 +2,10 @@
 
 namespace DevPledge\Domain;
 
-
+/**
+ * Class Comment
+ * @package DevPledge\Domain
+ */
 class Comment extends AbstractDomain {
 	/**
 	 * @var UserDefinedContent
@@ -24,6 +27,10 @@ class Comment extends AbstractDomain {
 	 * @var string | null
 	 */
 	protected $parentCommentId;
+	/**
+	 * @var Comments
+	 */
+	protected $replies;
 
 	/**
 	 * @return \stdClass
@@ -129,6 +136,24 @@ class Comment extends AbstractDomain {
 	 */
 	public function getParentCommentId(): ?string {
 		return $this->parentCommentId;
+	}
+
+	/**
+	 * @param Comments $replies
+	 *
+	 * @return Comment
+	 */
+	public function setReplies( Comments $replies ): Comment {
+		$this->replies = $replies;
+
+		return $this;
+	}
+
+	/**
+	 * @return Comments
+	 */
+	public function getReplies(): Comments {
+		return $this->replies;
 	}
 
 }

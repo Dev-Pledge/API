@@ -2,12 +2,12 @@
 
 namespace DevPledge\Integrations\Cache;
 
-
-use phpDocumentor\Reflection\Types\Mixed_;
-use Predis\Client;
 use TomWright\JSON\Exception\JSONDecodeException;
 use TomWright\JSON\Exception\JSONEncodeException;
 use TomWright\JSON\JSON;
+use Predis\Client;
+use Predis\Collection\Iterator\HashKey;
+use Predis\Collection\Iterator\Keyspace;
 
 /**
  * Class Cache
@@ -95,6 +95,35 @@ class Cache {
 	public function getJson() {
 		return $this->json;
 	}
+
+	/**
+	 * @param string $match
+	 * @param int $count
+	 * @param \Closure|null $keyValFunction
+	 *
+	 * @return array
+	 */
+	public function matchIterate( string $match, int $count = 10, ?\Closure $keyValFunction = null ): array {
+		$returnArray = [];
+		foreach ( new Keyspace( $this->getClient(), $match, $count ) as $key ) {
+			try {
+				$value = $this->get( $key );
+			} catch ( CacheException $exception ) {
+				$value = null;
+			}
+			if ( isset( $keyValFunction ) ) {
+				if ( isset( $keyValFunction ) ) {
+					$keyValFunction( $key, $value );
+				}
+			}
+			$returnArray[] = $value;
+
+		}
+
+		return $returnArray;
+
+	}
+
 
 
 }
