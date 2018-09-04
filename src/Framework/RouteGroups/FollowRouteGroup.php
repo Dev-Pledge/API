@@ -6,9 +6,7 @@ namespace DevPledge\Framework\RouteGroups;
 use DevPledge\Framework\Controller\FollowController;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
-use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
-use Slim\Http\Request;
-use Slim\Http\Response;
+
 
 class FollowRouteGroup extends AbstractRouteGroup {
 
@@ -21,7 +19,7 @@ class FollowRouteGroup extends AbstractRouteGroup {
 
 		$app->post( '/{entity_id}', FollowController::class . ':createFollow' )->add( new Authorise() );
 		$app->delete( '/{entity_id}', FollowController::class . ':deleteFollow' )->add( new Authorise() );
-		$app->get( '/{user_id}', FollowController::class . ':getUserFollows' );
-	
+		$app->get( 's/{user_id}', FollowController::class . ':getUserFollows' );
+
 	}
 }
