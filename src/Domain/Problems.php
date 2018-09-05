@@ -64,7 +64,7 @@ class Problems extends AbstractDomain {
 		$data->problems = [];
 		if ( $this->problems ) {
 			foreach ( $this->problems as $problem ) {
-				$data->problems[] = $problem->toAPIMap();
+				$data->problems[] = $problem->toAPIMapWithComments();
 			}
 		}
 

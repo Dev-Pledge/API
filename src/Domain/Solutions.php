@@ -76,7 +76,7 @@ class Solutions extends AbstractDomain {
 		$data->solutions = [];
 		if ( $this->solutions ) {
 			foreach ( $this->solutions as $solution ) {
-				$data->solutions[] = $solution->toAPIMap();
+				$data->solutions[] = $solution->toAPIMapWithComments();
 			}
 		}
 
