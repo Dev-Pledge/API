@@ -1,0 +1,37 @@
+<?php
+
+namespace DevPledge\Application\EventHandlers\Cache;
+
+
+use DevPledge\Application\Events\UpdatedDomainEvent;
+use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
+use DevPledge\Integrations\Event\AbstractEventHandler;
+use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
+
+/**
+ * Class ClearCacheUpdatedHandler
+ * @package DevPledge\Application\EventHandlers\Cache
+ */
+class ClearCacheUpdatedHandler extends AbstractEventHandler {
+
+	public function __construct() {
+		parent::__construct( UpdatedDomainEvent::class );
+	}
+
+	/**
+	 * @param $event UpdatedDomainEvent
+	 */
+	protected function handle( $event ) {
+		$domain = $event->getDomain();
+		if ( $domain instanceof Comment ) {
+			$commentService = CommentServiceProvider::getService();
+			$keys           = [];
+			$keys[]         = $commentService->getAllCommentsKey( $domain->getEntityId() );
+			$keys[]         = $commentService->getAllRepliesKey( $domain->getParentCommentId() );
+			$keys[]         = $commentService->getLastFiveCommentKey( $domain->getEntityId() );
+			$keys[]         = $commentService->getLastFiveReplyKey( $domain->getParentCommentId() );
+			CacheServiceProvider::getService()->deleteKeys( $keys );
+
+		}
+	}
+}

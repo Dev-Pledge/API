@@ -7,6 +7,8 @@ namespace DevPledge\Domain;
  * @package DevPledge\Domain
  */
 class Problem extends AbstractDomain {
+
+	use CommentsTrait;
 	/**
 	 * @var string | null
 	 */

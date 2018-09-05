@@ -3,9 +3,9 @@
 namespace DevPledge\Application\Service;
 
 
+use DevPledge\Application\Events\CreatedCommentEvent;
 use DevPledge\Application\Events\CreatedDomainEvent;
 use DevPledge\Application\Factory\CommentFactory;
-use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Application\Repository\CommentRepository;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Comment;
@@ -79,7 +79,13 @@ class CommentService {
 	 * @return AbstractDomain | null
 	 */
 	public function getCommentEntity( Comment $comment ): ?AbstractDomain {
-		$domain = $this->entityService->read( $comment->getEntityId(), [ 'user', 'pledge', 'solution', 'comment' ] );
+		$domain = $this->entityService->read( $comment->getEntityId(), [
+			'user',
+			'pledge',
+			'solution',
+			'problem',
+			'comment'
+		] );
 
 		if ( $domain instanceof AbstractDomain ) {
 			return $domain;
@@ -137,7 +143,7 @@ class CommentService {
 	 */
 	public function readAll( string $entityId ): Comments {
 
-		$key                    = 'all-cmt:' . $entityId;
+		$key                    = $this->getAllCommentsKey( $entityId );
 		$allCacheEntityComments = $this->cacheService->get( $key );
 
 		if ( $allCacheEntityComments ) {
@@ -147,7 +153,7 @@ class CommentService {
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( $comments );
-			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 30 );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
 
 			return $allEntityComments;
 		}
@@ -157,14 +163,132 @@ class CommentService {
 	}
 
 	/**
+	 * @param string $entityId
+	 * @param int $page
+	 *
+	 * @return Comments
+	 * @throws \Exception
+	 */
+	public function readCommentsPage( string $entityId, int $page = 1 ): Comments {
+		$page = ( $page >= 0 ) ? $page - 1 : 0;
+
+		$pages    = ceil( $this->countComments( $entityId ) / 5 );
+		$offset   = $pages - $page;
+		$comments = $this->repo->readAll( $entityId, 'created', false, 5, $offset );
+		if ( $comments ) {
+			return new Comments( $comments );
+		}
+
+		return new Comments( [] );
+	}
+
+	/**
+	 * @param string $commentId
+	 * @param int $page
+	 *
+	 * @return Comments
+	 * @throws \Exception
+	 */
+	public function readRepliesPage( string $commentId, int $page = 1 ): Comments {
+		$page = ( $page >= 0 ) ? $page - 1 : 0;
+
+		$pages    = ceil( $this->countReplies( $commentId ) / 5 );
+		$offset   = $pages - $page;
+		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', false, 5, $offset );
+		if ( $comments ) {
+			return new Comments( $comments );
+		}
+
+		return new Comments( [] );
+	}
+
+	/**
+	 * @param string $entityId
+	 *
+	 * @return string
+	 */
+	public function getAllCommentsKey( string $entityId ): string {
+		return 'all-cmt:' . $entityId;
+	}
+
+	/**
+	 * @param string $entityId
+	 *
+	 * @return Comments
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function readLastFiveComments( string $entityId ): Comments {
+		$key                    = $this->getLastFiveCommentKey( $entityId );
+		$allCacheEntityComments = $this->cacheService->get( $key );
+
+		if ( $allCacheEntityComments ) {
+			return unserialize( $allCacheEntityComments );
+		}
+		$comments = $this->repo->readAll( $entityId, 'created', true, 5 );
+
+		if ( $comments ) {
+			$allEntityComments = new Comments( array_reverse( $comments ) );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
+
+			return $allEntityComments;
+		}
+
+		return new Comments( [] );
+	}
+
+	/**
+	 * @param string $entityId
+	 *
+	 * @return string
+	 */
+	public function getLastFiveCommentKey( string $entityId ): string {
+		return 'l5-cmt:' . $entityId;
+	}
+
+	/**
 	 * @param string $commentId
 	 *
 	 * @return Comments
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
-	public function readAllFromParentComment( string $commentId ): Comments {
+	public function readLastFiveReplies( string $commentId ): Comments {
+		$key                    = $this->getLastFiveReplyKey( $commentId );
+		$allCacheEntityComments = $this->cacheService->get( $key );
 
-		$key                    = 'all-cmt:' . $commentId;
+		if ( $allCacheEntityComments ) {
+			return unserialize( $allCacheEntityComments );
+		}
+		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', true, 5 );
+
+		if ( $comments ) {
+			$allEntityComments = new Comments( array_reverse( $comments ) );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
+
+			return $allEntityComments;
+		}
+
+		return new Comments( [] );
+	}
+
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return string
+	 */
+	public function getLastFiveReplyKey( string $commentId ): string {
+		return 'l5-rpl:' . $commentId;
+	}
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return Comments
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function readAllReplies( string $commentId ): Comments {
+
+		$key                    = $this->getAllRepliesKey( $commentId );
 		$allCacheEntityComments = $this->cacheService->get( $key );
 
 		if ( $allCacheEntityComments ) {
@@ -177,12 +301,69 @@ class CommentService {
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( $comments );
-			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 30 );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
 
 			return $allEntityComments;
 		}
 
 		return new Comments( [] );
+
+	}
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return string
+	 */
+	public function getAllRepliesKey( string $commentId ): string {
+		return 'all-rpl:' . $commentId;
+	}
+
+	/**
+	 * @param string $entityId
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function countComments( string $entityId ): int {
+
+		return $this->repo->countAllInAllColumn( $entityId );
+
+	}
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function countReplies( string $commentId ): int {
+
+		return $this->repo->countAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ) );
+
+	}
+
+	/**
+	 * @param $userId
+	 *
+	 * @return Comments
+	 * @throws \Exception
+	 */
+	public function getUserStatuses( $userId ): Comments {
+		/**
+		 * @var $comments Comment[]
+		 */
+		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'user_id', $userId ) ] ), 'created', true );
+		$statuses = [];
+		if ( $comments ) {
+			foreach ( $comments as $comment ) {
+				if ( $comment->getEntityId() == $comment->getId() ) {
+					$statuses[] = $comment;
+				}
+			}
+		}
+
+		return new Comments( $statuses );
 
 	}
 

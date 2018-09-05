@@ -124,6 +124,24 @@ class Cache {
 
 	}
 
+	/**
+	 * @param $key
+	 *
+	 * @return int
+	 */
+	public function delete( string $key ): int {
+
+		return $this->client->del( [ $key ] );
+	}
+
+	/**
+	 * @param array $keys
+	 *
+	 * @return int
+	 */
+	public function deleteKeys( array $keys ): int {
+		return $this->client->del( $keys );
+	}
 
 
 }

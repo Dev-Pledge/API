@@ -167,6 +167,15 @@ abstract class AbstractRepository {
 	}
 
 	/**
+	 * @param Wheres $wheres
+	 *
+	 * @return int
+	 */
+	public function countAllWhere( Wheres $wheres ): int {
+		return $this->adapter->count( $this->getResource(), $wheres );
+	}
+
+	/**
 	 * @param string $allColumnId
 	 *
 	 * @return int

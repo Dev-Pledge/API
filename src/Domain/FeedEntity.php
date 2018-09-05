@@ -27,14 +27,14 @@ class FeedEntity {
 	}
 
 	/**
-	 * @return AbstractDomain
+	 * @return AbstractDomain | CommentsTrait
 	 */
 	public function getDomain(): AbstractDomain {
 		return $this->domain;
 	}
 
 	/**
-	 * @return AbstractDomain | null
+	 * @return AbstractDomain | null | CommentsTrait
 	 */
 	public function getParentDomain(): ?AbstractDomain {
 		return $this->parentDomain;
@@ -53,20 +53,35 @@ class FeedEntity {
 	public function toAPIMap(): \stdClass {
 		$data             = [];
 		$data['function'] = $this->getFunction();
-		$data['entity']   = [
-			'type' => $this->getDomain()->getUuid()->getEntity(),
-			'data' => $this->getDomain()->toPublicAPIMap()
-		];
+		if ( in_array( CommentsTrait::class, class_uses( $this->getDomain() ) ) ) {
 
+			$data['entity'] = [
+				'type' => $this->getDomain()->getUuid()->getEntity(),
+				'data' => $this->getDomain()->toAPIMapWithComments()
+			];
+		} else {
+			$data['entity'] = [
+				'type' => $this->getDomain()->getUuid()->getEntity(),
+				'data' => $this->getDomain()->toPublicAPIMap()
+			];
+		}
 
 		if ( $this->getParentDomain() instanceof AbstractDomain ) {
-			$data['parent_entity'] = [
-				'type' => $this->getParentDomain()->getUuid()->getEntity(),
-				'data' => $this->getParentDomain()->toPublicAPIMap()
-			];
+			if ( in_array( CommentsTrait::class, class_uses( $this->getParentDomain() ) ) ) {
+				$data['parent_entity'] = [
+					'type' => $this->getParentDomain()->getUuid()->getEntity(),
+					'data' => $this->getParentDomain()->toAPIMapWithComments()
+				];
+			} else {
+				$data['parent_entity'] = [
+					'type' => $this->getParentDomain()->getUuid()->getEntity(),
+					'data' => $this->getParentDomain()->toPublicAPIMap()
+				];
+			}
 		} else {
 			$data['parent_entity'] = null;
 		}
+
 
 		return (object) $data;
 	}

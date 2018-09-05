@@ -13,7 +13,7 @@ use DevPledge\Uuid\Uuid;
  */
 class User extends AbstractDomain {
 
-
+	use CommentsTrait;
 	/**
 	 * @var string | null
 	 */
@@ -190,8 +190,9 @@ class User extends AbstractDomain {
 
 	/**
 	 * @return \stdClass
+	 * @throws \Exception
 	 */
-	public function toPublicAPIMap():\stdClass {
+	public function toPublicAPIMap(): \stdClass {
 		$data = parent::toAPIMap();
 		unset( $data->email );
 		unset( $data->hashed_password );

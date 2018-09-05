@@ -5,8 +5,10 @@ namespace DevPledge\Application\Service;
 
 
 use DevPledge\Application\Mapper\PersistMappable;
+use DevPledge\Domain\CommentsTrait;
 use DevPledge\Domain\FeedEntity;
 use DevPledge\Domain\InvalidArgumentException;
+use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
 use DevPledge\Framework\ServiceProviders\OrganisationServiceProvider;
 use DevPledge\Framework\ServiceProviders\PaymentMethodServiceProvider;
 use DevPledge\Framework\ServiceProviders\PaymentServiceProvider;
@@ -19,7 +21,6 @@ use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\TopicUuid;
 use DevPledge\Uuid\Uuid;
-use DevPledge\WebSocket\ActivityFeed;
 
 /**
  * Class EntityService
@@ -52,8 +53,10 @@ class EntityService {
 		$allowedEntities = [
 			'user',
 			'problem',
+			'pledge',
 			'topic',
-			'solution'
+			'solution',
+			'comment'
 		]
 	): PersistMappable {
 
@@ -103,12 +106,15 @@ class EntityService {
 				case 'payment_method':
 					$domain = PaymentMethodServiceProvider::getService()->read( $entityId );
 					break;
+				case 'comment':
+					$domain = CommentServiceProvider::getService()->read( $entityId );
+					break;
 			}
 			if ( $domain === null ) {
 				throw new \Exception( 'Entity Not Found' );
 			}
 		} catch ( \Exception | \TypeError | \InvalidArgumentException $exception ) {
-			throw new InvalidArgumentException( 'Error Getting Entity Domain', 'entity_id' );
+			throw new InvalidArgumentException( 'Error Getting ' . $entity . ' Entity Domain', 'entity_id' );
 		}
 
 
@@ -153,10 +159,11 @@ class EntityService {
 				$entityParentId = $entity['parent_id'] ?? null;
 				$feedEntity     = $this->getFeedEntity( $function, $entityId, $entityParentId );
 				if ( ! is_null( $feedEntity ) ) {
-					$returnArray[] = $feedEntity->toAPIMap();
+						$returnArray[] = $feedEntity->toAPIMap();
 				}
 			}
 		}
+
 		$return           = new \stdClass();
 		$return->entities = $returnArray;
 

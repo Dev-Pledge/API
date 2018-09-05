@@ -7,6 +7,8 @@ namespace DevPledge\Domain;
  * @package DevPledge\Domain
  */
 class Comment extends AbstractDomain {
+
+	use CommentsTrait;
 	/**
 	 * @var UserDefinedContent
 	 */
@@ -30,7 +32,11 @@ class Comment extends AbstractDomain {
 	/**
 	 * @var Comments
 	 */
-	protected $replies;
+	protected $lastFiveReplies;
+	/**
+	 * @var Count
+	 */
+	protected $totalReplies;
 
 	/**
 	 * @return \stdClass
@@ -46,6 +52,15 @@ class Comment extends AbstractDomain {
 			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
 			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
+	}
+
+	function toAPIMap(): \stdClass {
+		$data = parent::toAPIMap();
+		$this->appendCommentDataToAPIData( $data );
+		$data->last_five_replies = $this->getLastFiveReplies()->toAPIMapArray();
+		$data->total_replies     = $this->getTotalReplies()->getCount();
+
+		return $data;
 	}
 
 	/**
@@ -81,7 +96,7 @@ class Comment extends AbstractDomain {
 	 * @return string
 	 */
 	public function getEntityId(): string {
-		return $this->entityId;
+		return isset( $this->entityId ) ? $this->entityId : $this->getId();
 	}
 
 	/**
@@ -138,22 +153,42 @@ class Comment extends AbstractDomain {
 		return $this->parentCommentId;
 	}
 
+
 	/**
-	 * @param Comments $replies
+	 * @return Count
+	 */
+	public function getTotalReplies(): Count {
+		return isset( $this->totalReplies ) ? $this->totalReplies : new Count( 0 );
+	}
+
+	/**
+	 * @param Comments $lastFiveReplies
 	 *
 	 * @return Comment
 	 */
-	public function setReplies( Comments $replies ): Comment {
-		$this->replies = $replies;
+	public function setLastFiveReplies( Comments $lastFiveReplies ): Comment {
+		$this->lastFiveReplies = $lastFiveReplies;
 
 		return $this;
 	}
 
 	/**
 	 * @return Comments
+	 * @throws \Exception
 	 */
-	public function getReplies(): Comments {
-		return $this->replies;
+	public function getLastFiveReplies(): Comments {
+		return isset( $this->lastFiveReplies ) ? $this->lastFiveReplies : new Comments( [] );
+	}
+
+	/**
+	 * @param Count $totalReplies
+	 *
+	 * @return Comment
+	 */
+	public function setTotalReplies( Count $totalReplies ): Comment {
+		$this->totalReplies = $totalReplies;
+
+		return $this;
 	}
 
 }

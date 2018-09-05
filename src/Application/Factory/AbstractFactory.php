@@ -3,7 +3,10 @@
 namespace DevPledge\Application\Factory;
 
 use DevPledge\Domain\AbstractDomain;
+use DevPledge\Domain\CommentsTrait;
 use DevPledge\Domain\Data;
+use DevPledge\Domain\Fetcher\FetchCommentCount;
+use DevPledge\Domain\Fetcher\FetchLastFiveComments;
 use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\Uuid;
 
@@ -179,6 +182,7 @@ abstract class AbstractFactory {
 			            ->setUuid( true )
 			            ->setData()
 			            ->setMethodsToProductObject()
+			            ->setCommentsData()
 			            ->setCreatedModified()
 			            ->getProductObject();
 
@@ -201,6 +205,7 @@ abstract class AbstractFactory {
 			            ->setUuid()
 			            ->setData()
 			            ->setMethodsToProductObject()
+			            ->setCommentsData()
 			            ->setCreatedModified()
 			            ->getProductObject();
 		} catch ( FactoryException $exception ) {
@@ -224,6 +229,7 @@ abstract class AbstractFactory {
 			            ->setUuid()
 			            ->setData()
 			            ->setMethodsToProductObject()
+			            ->setCommentsData()
 			            ->setCreatedModified()
 			            ->getProductObject();
 		} catch ( FactoryException $exception ) {
@@ -268,6 +274,20 @@ abstract class AbstractFactory {
 				Data::class
 			);
 
+	}
+
+	protected function setCommentsData() {
+		try {
+			if ( in_array( CommentsTrait::class, class_uses( $this->getProductObject() ) ) ) {
+				$this
+					->setMethodToProductObject( $this->primaryIdColumn, 'setLastFiveComments', FetchLastFiveComments::class )
+					->setMethodToProductObject( $this->primaryIdColumn, 'setTotalComments', FetchCommentCount::class );
+			}
+		} catch ( \TypeError | \Exception $exception ) {
+			Sentry::get()->captureException( $exception );
+		}
+
+		return $this;
 	}
 
 	/**

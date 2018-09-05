@@ -76,4 +76,12 @@ class Comments extends AbstractDomain {
 	public function toAPIMapArray(): array {
 		return $this->toAPIMap()->comments;
 	}
+
+	/**
+	 * @return Comment[]
+	 */
+	public function getComments(){
+		return $this->comments;
+	}
+
 }

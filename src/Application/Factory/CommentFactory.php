@@ -3,8 +3,13 @@
 namespace DevPledge\Application\Factory;
 
 
+use DevPledge\Domain\Fetcher\FetchLastFiveReplies;
 use DevPledge\Domain\UserDefinedContent;
 
+/**
+ * Class CommentFactory
+ * @package DevPledge\Application\Factory
+ */
 class CommentFactory extends AbstractFactory {
 
 	/**
