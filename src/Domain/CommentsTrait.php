@@ -80,7 +80,7 @@ trait CommentsTrait {
 	 * @throws \Exception
 	 */
 	public function toAPIMapWithComments(): \stdClass {
-		$data = clone( $this->toPublicAPIMap() );
+		$data = $this->toPublicAPIMap();
 
 		return $this->appendCommentDataToAPIData( $data );
 	}
