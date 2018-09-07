@@ -92,6 +92,7 @@ class CurlRequest {
 
 	protected $curlCallbacks = array();
 
+	protected $setDataToString = false;
 
 	public function __construct( $url, $data = array(), $init = false ) {
 		$this->setUrl( $url )->setData( $data );
@@ -166,7 +167,7 @@ class CurlRequest {
 	public function init() {
 		$ch = curl_init();
 		curl_setopt( $ch, CURLOPT_URL, $this->getUrl() );
-		if ( count( $this->getData() ) && $this->isPost() ) {
+		if ( count( $this->getData( true ) ) && $this->isPost() ) {
 			curl_setopt( $ch, CURLOPT_POSTFIELDS, $this->getData() );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, 0 );
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
@@ -174,11 +175,11 @@ class CurlRequest {
 				curl_setopt( $ch, CURLOPT_SSLVERSION, $sslVersion );
 			}
 			curl_setopt( $ch, CURLOPT_SSL_VERIFYHOST, 0 );
-		} elseif ( count( $this->getData() ) && strpos( $this->getUrl(), '?' ) === false ) {
+		} elseif ( count( $this->getData( true ) ) && strpos( $this->getUrl(), '?' ) === false ) {
 			if ( ! $this->isJsonEncodeData() ) {
 				curl_setopt( $ch, CURLOPT_URL, $this->getUrl() . '?' . http_build_query( $this->getData() ) );
 			}
-		} elseif ( count( $this->getData() ) ) {
+		} elseif ( count( $this->getData( true ) ) ) {
 			if ( ! $this->isJsonEncodeData() ) {
 				curl_setopt( $ch, CURLOPT_URL, $this->getUrl() . '&' . http_build_query( $this->getData() ) );
 			}
@@ -231,7 +232,7 @@ class CurlRequest {
 		$this->doCurlCallbacks( $ch );
 
 		curl_close( $ch );
-
+		$this->processAnyError();
 		return $this;
 	}
 
@@ -416,6 +417,24 @@ class CurlRequest {
 	}
 
 	/**
+	 * @param bool $setDataToString
+	 *
+	 * @return CurlRequest
+	 */
+	public function setSetDataToString( $setDataToString ) {
+		$this->setDataToString = $setDataToString;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isSetDataToString() {
+		return $this->setDataToString;
+	}
+
+	/**
 	 * @return bool
 	 */
 	public function isError() {
@@ -561,14 +580,23 @@ class CurlRequest {
 	}
 
 	/**
-	 * @return array | string
+	 * @param bool $raw
+	 *
+	 * @return array|string
 	 */
-	public function getData() {
+	public function getData( $raw = false ) {
 
 		$data = isset( $this->data ) ? $this->data : array();
+		if ( $raw ) {
+			return $data;
+		}
 		if ( $this->isJsonEncodeData() ) {
 			return \json_encode( $data );
 		} else {
+			if ( $this->setDataToString ) {
+				return http_build_query( $data );
+			}
+
 			return $data;
 		}
 	}
