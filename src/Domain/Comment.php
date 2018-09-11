@@ -66,9 +66,9 @@ class Comment extends AbstractDomain {
 		$data->last_five_replies = $this->getLastFiveReplies()->toAPIMapArray();
 		$data->total_replies     = $this->getTotalReplies()->getCount();
 		if ( $this->isStatus() ) {
-			$data->topics    = $this->getTopics()->toArray();
-			$data->is_status = true;
+			$data->topics = $this->getTopics()->toArray();
 		}
+		$data->comment_type = $this->getCommentType();
 
 		return $data;
 	}
@@ -209,6 +209,20 @@ class Comment extends AbstractDomain {
 	}
 
 	/**
+	 * @return bool
+	 */
+	public function isReply(): bool {
+		return (bool) isset( $this->parentCommentId );
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isCommentOnEntity(): bool {
+		return (bool) ( ! $this->isReply() && ! $this->isStatus() && isset( $this->entityId ) );
+	}
+
+	/**
 	 * @return Topics
 	 */
 	public function getTopics(): Topics {
@@ -225,6 +239,20 @@ class Comment extends AbstractDomain {
 		$this->topics = $topics;
 
 		return $this;
+	}
+
+	public function getCommentType() {
+		if ( $this->isStatus() ) {
+			return 'status';
+		}
+		if ( $this->isReply() ) {
+			return 'reply';
+		}
+		if ( $this->isCommentOnEntity() ) {
+			return 'comment_on_entity';
+		}
+
+		return 'comment';
 	}
 
 }
