@@ -26,7 +26,7 @@ class CommentRouteGroup extends AbstractRouteGroup {
 //
 //		$app->get( 's/{entity_id}/page/{page}' );
 //		$app->get( '/replies/{comment_id}/page/{page}' );
-//		$app->post( '/reply/{comment_id}' );
+		$app->post( '/reply/{comment_id}' ,CommentController::class . ':createReply' );
 		$app->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity' );
 		$app->post( 'Status', CommentStatusController::class . ':createStatus' );
 //		$app->get( 's/contextual/{comment_id}' );
