@@ -11,7 +11,8 @@ CREATE TABLE permissions
   CONSTRAINT permissions_user_id_resource_resource_id_uindex
   UNIQUE (user_id, resource, resource_id)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX permissions_user_id_resource_index
   ON permissions (user_id, resource);

@@ -7,7 +7,8 @@ CREATE TABLE topic_problem_maps
   created    DATETIME     NOT NULL,
   PRIMARY KEY (topic, problem_id)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX topic_index
   ON topic_problem_maps (topic);

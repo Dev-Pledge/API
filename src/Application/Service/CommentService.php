@@ -67,7 +67,7 @@ class CommentService {
 		$comment = $this->repo->createPersist( $comment );
 		if ( $comment->isPersistedDataFound() ) {
 
-			Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
+			//	Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
 		}
 
 		return $comment;
@@ -224,6 +224,7 @@ class CommentService {
 		if ( $allCacheEntityComments ) {
 			return unserialize( $allCacheEntityComments );
 		}
+
 		$comments = $this->repo->readAll( $entityId, 'created', true, 5 );
 
 		if ( $comments ) {
@@ -365,6 +366,33 @@ class CommentService {
 
 		return new Comments( $statuses );
 
+	}
+
+	/**
+	 * @param string $commentId
+	 *
+	 * @return Comments
+	 * @throws \Exception
+	 */
+	public function getContextualComments( string $commentId ): Comments {
+		$comment = $this->read( $commentId );
+		if ( ( $parentCommentId = $comment->getParentCommentId() ) !== null ) {
+			$comments   = $this->repo->readAllWhere(
+				new Wheres( [
+					new Where( 'parent_comment_id', $parentCommentId ),
+					( new Where( 'created', $comment->getCreated()->format( 'Y-m-d H:i:s' ) ) )->lessThan()
+				] ),
+				'created',
+				true,
+				4
+			);
+			$comments   = array_reverse( $comments );
+			$comments[] = $comment;
+
+			return new Comments( $comments );
+		}
+
+		return new Comments( [ $comment ] );
 	}
 
 

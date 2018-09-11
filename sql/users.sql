@@ -29,5 +29,6 @@ CREATE TABLE users
   CONSTRAINT users_google_id_uindex
   UNIQUE (google_id)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 

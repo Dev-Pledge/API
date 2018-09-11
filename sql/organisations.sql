@@ -13,4 +13,5 @@ CREATE TABLE organisations
   CONSTRAINT organisations_name_uindex
   UNIQUE (name)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;

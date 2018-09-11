@@ -2,6 +2,8 @@
 
 namespace DevPledge\Application\Repository;
 
+use DevPledge\Domain\Comment;
+
 /**
  * Class TopicsCommentRepository
  * @package DevPledge\Application\Repository

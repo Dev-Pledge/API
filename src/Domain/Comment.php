@@ -39,6 +39,11 @@ class Comment extends AbstractDomain {
 	protected $totalReplies;
 
 	/**
+	 * @var Topics
+	 */
+	protected $topics;
+
+	/**
 	 * @return \stdClass
 	 */
 	function toPersistMap(): \stdClass {
@@ -56,9 +61,14 @@ class Comment extends AbstractDomain {
 
 	function toAPIMap(): \stdClass {
 		$data = parent::toAPIMap();
+
 		$this->appendCommentDataToAPIData( $data );
 		$data->last_five_replies = $this->getLastFiveReplies()->toAPIMapArray();
 		$data->total_replies     = $this->getTotalReplies()->getCount();
+		if ( $this->isStatus() ) {
+			$data->topics    = $this->getTopics()->toArray();
+			$data->is_status = true;
+		}
 
 		return $data;
 	}
@@ -187,6 +197,32 @@ class Comment extends AbstractDomain {
 	 */
 	public function setTotalReplies( Count $totalReplies ): Comment {
 		$this->totalReplies = $totalReplies;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isStatus(): bool {
+		return (bool) ( $this->getId() === $this->getEntityId() );
+	}
+
+	/**
+	 * @return Topics
+	 */
+	public function getTopics(): Topics {
+
+		return isset( $this->topics ) ? $this->topics : new Topics( [] );
+	}
+
+	/**
+	 * @param Topics $topics
+	 *
+	 * @return Comment
+	 */
+	public function setTopics( Topics $topics ): Comment {
+		$this->topics = $topics;
 
 		return $this;
 	}

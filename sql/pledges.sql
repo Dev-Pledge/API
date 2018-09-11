@@ -17,7 +17,8 @@ CREATE TABLE pledges
   created         DATETIME                                 NOT NULL,
   modified        DATETIME                                 NOT NULL
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX pledges_problem_id_currency_index
   ON pledges (problem_id, currency);

@@ -12,7 +12,8 @@ CREATE TABLE payment_methods
   created           DATETIME     NOT NULL,
   modified          DATETIME     NOT NULL
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX payment_methods_user_id_created_index
   ON payment_methods (user_id, created);

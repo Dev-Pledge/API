@@ -16,7 +16,8 @@ CREATE TABLE problems
   created           DATETIME               NOT NULL,
   modified          DATETIME               NOT NULL
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX problems_user_id_problem_id_index
   ON problems (user_id, problem_id);

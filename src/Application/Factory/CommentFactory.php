@@ -3,7 +3,7 @@
 namespace DevPledge\Application\Factory;
 
 
-use DevPledge\Domain\Fetcher\FetchLastFiveReplies;
+use DevPledge\Domain\Topics;
 use DevPledge\Domain\UserDefinedContent;
 
 /**
@@ -17,10 +17,12 @@ class CommentFactory extends AbstractFactory {
 	 * @throws FactoryException
 	 */
 	function setMethodsToProductObject() {
-		$this->setMethodToProductObject( 'parent_comment_id', 'setParentCommentId' )
-		     ->setMethodToProductObject( 'comment', 'setComment', UserDefinedContent::class )
-		     ->setMethodToProductObject( 'entity_id', 'setEntityId' )
-		     ->setMethodToProductObject( 'user_id', 'setUserId' )
-		     ->setMethodToProductObject( 'organisation_id', 'setOrganisationId' );
+		return $this
+			->setMethodToProductObject( 'parent_comment_id', 'setParentCommentId' )
+			->setMethodToProductObject( 'comment', 'setComment', UserDefinedContent::class )
+			->setMethodToProductObject( 'entity_id', 'setEntityId' )
+			->setMethodToProductObject( 'user_id', 'setUserId' )
+			->setMethodToProductObject( 'topics', 'setTopics', Topics::class )
+			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' );
 	}
 }

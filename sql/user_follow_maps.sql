@@ -8,7 +8,8 @@ CREATE TABLE user_follow_maps
   created   DATETIME    NOT NULL,
   PRIMARY KEY (user_id, entity_id)
 )
-  ENGINE = InnoDB;
+  ENGINE = InnoDB
+  CHARSET = utf8;
 
 CREATE INDEX user_follow_maps_user_id_entity_index
   ON user_follow_maps (user_id, entity);

@@ -3,31 +3,31 @@
 namespace DevPledge\Framework\RepositoryDependencies\Comment;
 
 
-use DevPledge\Application\Repository\CommentRepository;
+use DevPledge\Application\Repository\TopicsCommentRepository;
 use DevPledge\Framework\FactoryDependencies\CommentFactoryDependency;
 use DevPledge\Framework\ServiceProviders\AdapterServiceProvider;
 use DevPledge\Integrations\RepositoryDependency\AbstractRepositoryDependency;
 use Slim\Container;
 
 /**
- * Class CommentRepositoryDependency
+ * Class TopicsCommentRepoDependency
  * @package DevPledge\Framework\RepositoryDependencies\Comment
  */
-class CommentRepositoryDependency extends AbstractRepositoryDependency {
+class TopicsCommentRepoDependency extends AbstractRepositoryDependency {
 	/**
-	 * CommentRepositoryDependency constructor.
+	 * TopicsCommentRepoDependency constructor.
 	 */
 	public function __construct() {
-		parent::__construct( CommentRepository::class );
+		Parent::__construct( TopicsCommentRepository::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return CommentRepository
+	 * @return TopicsCommentRepository
 	 */
 	public function __invoke( Container $container ) {
-		return new CommentRepository(
+		return new TopicsCommentRepository(
 			AdapterServiceProvider::getService(),
 			CommentFactoryDependency::getFactory()
 		);
@@ -35,10 +35,9 @@ class CommentRepositoryDependency extends AbstractRepositoryDependency {
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return CommentRepository
+	 * @return TopicsCommentRepository
 	 */
 	static public function getRepository() {
 		return static::getFromContainer();
 	}
-
 }
