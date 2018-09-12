@@ -20,7 +20,7 @@ class CommentRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 		$app = $this->getApp();
-//		$app->get( '/{comment_id}' );
+		$app->get( '/{comment_id}' , CommentController::class.':getComment');
 //		$app->get( 's/{entity_id}' );
 //		$app->get( '/replies/{comment_id}' );
 //
@@ -28,7 +28,7 @@ class CommentRouteGroup extends AbstractRouteGroup {
 //		$app->get( '/replies/{comment_id}/page/{page}' );
 		$app->post( '/reply/{comment_id}' ,CommentController::class . ':createReply' );
 		$app->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity' );
-		$app->post( 'Status', CommentStatusController::class . ':createStatus' );
+
 //		$app->get( 's/contextual/{comment_id}' );
 	}
 }

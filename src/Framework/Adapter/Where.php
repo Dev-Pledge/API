@@ -16,6 +16,10 @@ class Where {
 	 */
 	protected $value;
 	/**
+	 * @var bool
+	 */
+	protected $valueAsColumn = false;
+	/**
 	 * like ,equals ,more than, less than, more than equal, less than equal
 	 * @var string
 	 */
@@ -30,7 +34,9 @@ class Where {
 		'less than equal',
 		'like at start',
 		'like at end',
-		'not'
+		'not',
+		'is null',
+		'is not null'
 	];
 
 	/**
@@ -96,8 +102,9 @@ class Where {
 	 * @return Where
 	 */
 	public function setValue( string $value ): Where {
-		$this->value = $value;
 
+		$this->value = $value;
+		
 		return $this;
 	}
 
@@ -150,6 +157,9 @@ class Where {
 		return $this->setType( 'less than equals' );
 	}
 
+	/**
+	 * @return Where
+	 */
 	public function not(): Where {
 		return $this->setType( 'not' );
 	}
@@ -157,7 +167,37 @@ class Where {
 	/**
 	 * @return Where
 	 */
+	public function isNull(): Where {
+		return $this->setType( 'is null' );
+	}
+
+	/**
+	 * @return Where
+	 */
+	public function isNotNull(): Where {
+		return $this->setType( 'is not null' );
+	}
+
+	/**
+	 * @return Where
+	 */
 	public function moreThanOrEqual(): Where {
 		return $this->setType( 'more than equals' );
+	}
+
+	/**
+	 * @return Where
+	 */
+	public function setValueAsColumn(): Where {
+		$this->valueAsColumn = true;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isValueAsColumn(): bool {
+		return $this->valueAsColumn;
 	}
 }

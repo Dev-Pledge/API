@@ -70,4 +70,11 @@ class Problems extends AbstractDomain {
 
 		return $data;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function countProblems():int{
+		return count($this->problems);
+	}
 }

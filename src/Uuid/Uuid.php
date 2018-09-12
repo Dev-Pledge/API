@@ -15,6 +15,7 @@ class Uuid {
 	protected static $entities = [
 		'permission'     => 'prm',
 		'comment'        => 'cmt',
+		'status'         => 'sts',
 		'currency'       => 'cur',
 		'kudos'          => 'kud',
 		'organisation'   => 'org',

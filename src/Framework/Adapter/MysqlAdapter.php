@@ -203,7 +203,11 @@ class MysqlAdapter implements Adapter {
 				$cleanValue = str_replace( "'", "\'", $value );
 				switch ( $where->getType() ) {
 					case 'equals':
-						$query->addWhere( $column, $value );
+						if ( $where->isValueAsColumn() ) {
+							$query->addRawWhere( "`{$column}` = `{$cleanValue}` " );
+						} else {
+							$query->addWhere( $column, $value );
+						}
 						break;
 					case 'like':
 						$likeValue = new Like( 'contains', $value );
@@ -218,19 +222,30 @@ class MysqlAdapter implements Adapter {
 						$query->addWhere( $column, $likeValue );
 						break;
 					case 'more than':
-						$query->addRawWhere( " `{$column}` > '{$cleanValue}' " );
+						$rawSql = $where->isValueAsColumn() ? " `{$column}` > `{$cleanValue}` " : " `{$column}` > '{$cleanValue}' ";
+						$query->addRawWhere( $rawSql );
 						break;
 					case 'more than equals':
-						$query->addRawWhere( " `{$column}` >= '{$cleanValue}' " );
+						$rawSql = $where->isValueAsColumn() ? " `{$column}` >= `{$cleanValue}` " : " `{$column}` >= '{$cleanValue}' ";
+						$query->addRawWhere( $rawSql );
 						break;
 					case 'less than':
-						$query->addRawWhere( " `{$column}` < '{$cleanValue}' " );
+						$rawSql = $where->isValueAsColumn() ? " `{$column}` < `{$cleanValue}` " : " `{$column}` < '{$cleanValue}' ";
+						$query->addRawWhere( $rawSql );
 						break;
 					case 'less than equals':
-						$query->addRawWhere( " `{$column}` <= '{$cleanValue}' " );
+						$rawSql = $where->isValueAsColumn() ? " `{$column}` <= `{$cleanValue}` " : " `{$column}` <= '{$cleanValue}' ";
+						$query->addRawWhere( $rawSql );
 						break;
 					case 'not':
-						$query->addRawWhere( " `{$column}` != '{$cleanValue}' " );
+						$rawSql = $where->isValueAsColumn() ? " `{$column}` != `{$cleanValue}` " : " `{$column}` != '{$cleanValue}' ";
+						$query->addRawWhere( $rawSql );
+						break;
+					case 'is null':
+						$query->addRawWhere( " `{$column}` IS NULL " );
+						break;
+					case 'is not null':
+						$query->addRawWhere( " `{$column}` IS NOT NULL " );
 						break;
 				}
 			}

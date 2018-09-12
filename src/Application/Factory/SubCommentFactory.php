@@ -3,15 +3,14 @@
 namespace DevPledge\Application\Factory;
 
 use DevPledge\Domain\Fetcher\FetchCacheUser;
-use DevPledge\Domain\Fetcher\FetchLastFiveReplies;
 use DevPledge\Domain\Fetcher\FetchRepliesCount;
 use DevPledge\Domain\UserDefinedContent;
 
 /**
- * Class CommentFactory
+ * Class SubCommentFactory
  * @package DevPledge\Application\Factory
  */
-class CommentFactory extends AbstractFactory {
+class SubCommentFactory extends AbstractFactory {
 
 	/**
 	 * @return AbstractFactory|void
@@ -25,7 +24,6 @@ class CommentFactory extends AbstractFactory {
 			->setMethodToProductObject( 'user_id', 'setUser', FetchCacheUser::class )
 			->setMethodToProductObject( 'entity_id', 'setEntityId' )
 			->setMethodToProductObject( 'comment_id', 'setTotalReplies', FetchRepliesCount::class )
-			->setMethodToProductObject( 'comment_id', 'setLastFiveReplies', FetchLastFiveReplies::class )
 			->setMethodToProductObject( 'organisation_id', 'setOrganisationId' );
 	}
 }

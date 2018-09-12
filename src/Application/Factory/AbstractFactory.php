@@ -16,6 +16,18 @@ use DevPledge\Uuid\Uuid;
  */
 abstract class AbstractFactory {
 	/**
+	 * @var string
+	 */
+	protected $spawnId;
+	/**
+	 * @var AbstractFactory[]
+	 */
+	protected static $spawnChildren = [];
+	/**
+	 * @var bool
+	 */
+	protected $inUse = false;
+	/**
 	 * @var \stdClass
 	 */
 	protected $rawData;
@@ -58,7 +70,7 @@ abstract class AbstractFactory {
 		if ( ! ( is_string( $primaryIdColumn ) || is_array( $primaryIdColumn ) ) ) {
 			throw new FactoryException( 'Only String or Array Accepted for $primaryIdColumn' );
 		}
-
+		$this->spawnId = uniqid();
 		$productObject = new $productObjectClassString( $uuidEntity );
 		if ( ! $productObject instanceof AbstractDomain ) {
 			throw new FactoryException( 'AbstractDomain must be used!' );
@@ -67,6 +79,56 @@ abstract class AbstractFactory {
 		$this->productObjectClassString = $productObjectClassString;
 		$this->entity                   = $uuidEntity;
 		$this->primaryIdColumn          = $primaryIdColumn;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isInUse(): bool {
+		return $this->inUse;
+	}
+
+	/**
+	 * @return AbstractFactory
+	 * @throws FactoryException
+	 */
+	protected function getThis(): AbstractFactory {
+		if ( $this->inUse ) {
+			$freeChild = false;
+			if ( static::$spawnChildren ) {
+
+				foreach ( static::$spawnChildren as &$child ) {
+					if ( ! $child->isInUse() ) {
+						$freeChild = $child;
+					}
+				}
+			}
+			if ( ! $freeChild ) {
+				static::$spawnChildren[] = $freeChild = new static( $this->productObjectClassString, $this->entity, $this->primaryIdColumn );
+			}
+
+			return $freeChild;
+		}
+
+		$this->inUse = true;
+
+		return $this;
+	}
+
+	/**
+	 * @return $this
+	 */
+	protected function endThis() {
+		$this->inUse = false;
+		if ( static::$spawnChildren ) {
+			foreach ( static::$spawnChildren as $index => &$child ) {
+				if ( ! $child->isInUse() && $this !== $child ) {
+					unset( static::$spawnChildren[ $index ] );
+				}
+			}
+		}
+
+		return $this;
 	}
 
 	/**
@@ -173,9 +235,13 @@ abstract class AbstractFactory {
 	 * @param \stdClass $rawData
 	 *
 	 * @return AbstractDomain
+	 * @throws FactoryException
 	 */
 	public function createFromPersistedData( \stdClass $rawData ) {
-
+		$that = $this->getThis();
+		if ( $that !== $this ) {
+			return $that->createFromPersistedData( $rawData );
+		}
 		try {
 			return $this->setRawData( $rawData )
 			            ->newProductObject()
@@ -184,21 +250,28 @@ abstract class AbstractFactory {
 			            ->setMethodsToProductObject()
 			            ->setCommentsData()
 			            ->setCreatedModified()
+			            ->endThis()
 			            ->getProductObject();
 
 		} catch ( FactoryException $exception ) {
 			Sentry::get()->captureException( $exception );
 		}
 
-		return $this->getProductObject();
+		return $this->endThis()->getProductObject();
 	}
+
 
 	/**
 	 * @param \stdClass $rawData
 	 *
 	 * @return AbstractDomain
+	 * @throws FactoryException
 	 */
 	public function create( \stdClass $rawData ) {
+		$that = $this->getThis();
+		if ( $that !== $this ) {
+			return $that->create( $rawData );
+		}
 		try {
 			return $this->setRawData( $rawData )
 			            ->newProductObject()
@@ -207,12 +280,13 @@ abstract class AbstractFactory {
 			            ->setMethodsToProductObject()
 			            ->setCommentsData()
 			            ->setCreatedModified()
+			            ->endThis()
 			            ->getProductObject();
 		} catch ( FactoryException $exception ) {
 			Sentry::get()->captureException( $exception );
 		}
 
-		return $this->getProductObject();
+		return $this->endThis()->getProductObject();
 	}
 
 	/**
@@ -223,6 +297,10 @@ abstract class AbstractFactory {
 	 * @throws FactoryException
 	 */
 	public function update( AbstractDomain $productObject, \stdClass $rawUpdateData ) {
+		$that = $this->getThis();
+		if ( $that !== $this ) {
+			return $that->update( $productObject, $rawUpdateData );
+		}
 		try {
 			return $this->setProductObject( $productObject )
 			            ->setRawData( $rawUpdateData )
@@ -231,12 +309,13 @@ abstract class AbstractFactory {
 			            ->setMethodsToProductObject()
 			            ->setCommentsData()
 			            ->setCreatedModified()
+			            ->endThis()
 			            ->getProductObject();
 		} catch ( FactoryException $exception ) {
 			Sentry::get()->captureException( $exception );
 		}
 
-		return $this->getProductObject();
+		return $this->endThis()->getProductObject();
 	}
 
 	/**
@@ -250,6 +329,14 @@ abstract class AbstractFactory {
 			$this->setMethodToProductObject( $this->primaryIdColumn, $this->setUuidMethod, $this->uuidClass, function ( AbstractDomain $domain ) use ( $fromPersistedData ) {
 				if ( $fromPersistedData ) {
 					$domain->setPersistedDataFound( true );
+
+					if ( $domain->getUuid()->getEntity() !== $this->entity ) {
+						throw new \TypeError(
+							'Persisted Entity Type Does not match ' .
+							$domain->getUuid()->getEntity() . ' should be ' .
+							$this->entity
+						);
+					}
 				}
 			} );
 		} catch ( \InvalidArgumentException $exception ) {
@@ -276,12 +363,27 @@ abstract class AbstractFactory {
 
 	}
 
+	/**
+	 * @return $this
+	 */
 	protected function setCommentsData() {
 		try {
-			if ( in_array( CommentsTrait::class, class_uses( $this->getProductObject() ) ) ) {
+			if (
+			in_array(
+				CommentsTrait::class,
+				class_uses( $this->getProductObject() )
+			) ) {
 				$this
-					->setMethodToProductObject( $this->primaryIdColumn, 'setLastFiveComments', FetchLastFiveComments::class )
-					->setMethodToProductObject( $this->primaryIdColumn, 'setTotalComments', FetchCommentCount::class );
+					->setMethodToProductObject(
+						$this->primaryIdColumn,
+						'setLastFiveComments',
+						FetchLastFiveComments::class
+					)
+					->setMethodToProductObject(
+						$this->primaryIdColumn,
+						'setTotalComments',
+						FetchCommentCount::class
+					);
 			}
 		} catch ( \TypeError | \Exception $exception ) {
 			Sentry::get()->captureException( $exception );
@@ -295,6 +397,7 @@ abstract class AbstractFactory {
 	 * @throws FactoryException
 	 */
 	protected function setCreatedModified() {
+
 		return $this
 			->setMethodToProductObject(
 				'created',

@@ -7,6 +7,7 @@ use DevPledge\Application\Events\CreatedCommentEvent;
 use DevPledge\Application\Events\CreatedDomainEvent;
 use DevPledge\Application\Factory\CommentFactory;
 use DevPledge\Application\Repository\CommentRepository;
+use DevPledge\Application\Repository\SubCommentRepository;
 use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Comment;
 use DevPledge\Domain\Comments;
@@ -14,6 +15,7 @@ use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Command\Dispatch;
+use DevPledge\Uuid\Uuid;
 
 /**
  * Class CommentService
@@ -24,6 +26,10 @@ class CommentService {
 	 * @var CommentRepository
 	 */
 	protected $repo;
+	/**
+	 * @var SubCommentRepository
+	 */
+	protected $subRepo;
 	/**
 	 * @var CommentFactory
 	 */
@@ -41,15 +47,17 @@ class CommentService {
 	 * CommentService constructor.
 	 *
 	 * @param CommentRepository $repo
+	 * @param SubCommentRepository $subRepo
 	 * @param CommentFactory $factory
 	 * @param Cache $cacheService
 	 * @param EntityService $entityService
 	 */
-	public function __construct( CommentRepository $repo, CommentFactory $factory, Cache $cacheService, EntityService $entityService ) {
+	public function __construct( CommentRepository $repo, SubCommentRepository $subRepo, CommentFactory $factory, Cache $cacheService, EntityService $entityService ) {
 		$this->repo          = $repo;
 		$this->factory       = $factory;
 		$this->cacheService  = $cacheService;
 		$this->entityService = $entityService;
+		$this->subRepo = $subRepo;
 	}
 
 	/**
@@ -67,7 +75,7 @@ class CommentService {
 		$comment = $this->repo->createPersist( $comment );
 		if ( $comment->isPersistedDataFound() ) {
 
-			//	Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
+			Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
 		}
 
 		return $comment;
@@ -84,7 +92,8 @@ class CommentService {
 			'pledge',
 			'solution',
 			'problem',
-			'comment'
+			'comment',
+			'status'
 		] );
 
 		if ( $domain instanceof AbstractDomain ) {
@@ -117,6 +126,7 @@ class CommentService {
 	 * @return Comment
 	 */
 	public function read( string $commentId ): Comment {
+
 		return $this->repo->read( $commentId );
 	}
 
@@ -149,7 +159,7 @@ class CommentService {
 		if ( $allCacheEntityComments ) {
 			return unserialize( $allCacheEntityComments );
 		}
-		$comments = $this->repo->readAll( $entityId, 'created' );
+		$comments = $this->subRepo->readAll( $entityId, 'created' );
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( $comments );
@@ -225,11 +235,11 @@ class CommentService {
 			return unserialize( $allCacheEntityComments );
 		}
 
-		$comments = $this->repo->readAll( $entityId, 'created', true, 5 );
+		$comments = $this->subRepo->readAll( $entityId, 'created', true, 5 );
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( array_reverse( $comments ) );
-			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
+			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 10 );
 
 			return $allEntityComments;
 		}
@@ -259,9 +269,9 @@ class CommentService {
 		if ( $allCacheEntityComments ) {
 			return unserialize( $allCacheEntityComments );
 		}
-		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', true, 5 );
-
+		$comments = $this->subRepo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', true, 5 );
 		if ( $comments ) {
+
 			$allEntityComments = new Comments( array_reverse( $comments ) );
 			$this->cacheService->setEx( $key, serialize( $allEntityComments ), 300 );
 
@@ -295,7 +305,7 @@ class CommentService {
 		if ( $allCacheEntityComments ) {
 			return unserialize( $allCacheEntityComments );
 		}
-		$comments = $this->repo->readAllWhere(
+		$comments = $this->subRepo->readAllWhere(
 			new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ),
 			'created'
 		);
@@ -344,29 +354,6 @@ class CommentService {
 
 	}
 
-	/**
-	 * @param $userId
-	 *
-	 * @return Comments
-	 * @throws \Exception
-	 */
-	public function getUserStatuses( $userId ): Comments {
-		/**
-		 * @var $comments Comment[]
-		 */
-		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'user_id', $userId ) ] ), 'created', true );
-		$statuses = [];
-		if ( $comments ) {
-			foreach ( $comments as $comment ) {
-				if ( $comment->getEntityId() == $comment->getId() ) {
-					$statuses[] = $comment;
-				}
-			}
-		}
-
-		return new Comments( $statuses );
-
-	}
 
 	/**
 	 * @param string $commentId
@@ -377,7 +364,7 @@ class CommentService {
 	public function getContextualComments( string $commentId ): Comments {
 		$comment = $this->read( $commentId );
 		if ( ( $parentCommentId = $comment->getParentCommentId() ) !== null ) {
-			$comments   = $this->repo->readAllWhere(
+			$comments   = $this->subRepo->readAllWhere(
 				new Wheres( [
 					new Where( 'parent_comment_id', $parentCommentId ),
 					( new Where( 'created', $comment->getCreated()->format( 'Y-m-d H:i:s' ) ) )->lessThan()

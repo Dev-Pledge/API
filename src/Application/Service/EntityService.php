@@ -15,6 +15,7 @@ use DevPledge\Framework\ServiceProviders\PaymentServiceProvider;
 use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
 use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Framework\ServiceProviders\SolutionServiceProvider;
+use DevPledge\Framework\ServiceProviders\StatusCommentServiceProvider;
 use DevPledge\Framework\ServiceProviders\TopicServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Cache\Cache;
@@ -56,7 +57,8 @@ class EntityService {
 			'pledge',
 			'topic',
 			'solution',
-			'comment'
+			'comment',
+			'status'
 		]
 	): PersistMappable {
 
@@ -109,6 +111,9 @@ class EntityService {
 				case 'comment':
 					$domain = CommentServiceProvider::getService()->read( $entityId );
 					break;
+				case 'status':
+					$domain = StatusCommentServiceProvider::getService()->read( $entityId );
+					break;
 			}
 			if ( $domain === null ) {
 				throw new \Exception( 'Entity Not Found' );
@@ -159,7 +164,7 @@ class EntityService {
 				$entityParentId = $entity['parent_id'] ?? null;
 				$feedEntity     = $this->getFeedEntity( $function, $entityId, $entityParentId );
 				if ( ! is_null( $feedEntity ) ) {
-						$returnArray[] = $feedEntity->toAPIMap();
+					$returnArray[] = $feedEntity->toAPIMap();
 				}
 			}
 		}

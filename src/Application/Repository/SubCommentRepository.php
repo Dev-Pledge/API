@@ -2,19 +2,17 @@
 
 namespace DevPledge\Application\Repository;
 
-use DevPledge\Domain\StatusComment;
-
 /**
- * Class TopicsCommentRepository
- * @package DevPledge\Application\Repository
+ * Class SubCommentRepository
+ * @package DevComment\Application\Repository
  */
-class TopicsCommentRepository extends AbstractTopicRepository {
+class SubCommentRepository extends AbstractRepository {
 
 	/**
 	 * @return string
 	 */
 	protected function getResource(): string {
-		return 'topic_comment_maps';
+		return 'comments';
 	}
 
 	/**
@@ -28,7 +26,7 @@ class TopicsCommentRepository extends AbstractTopicRepository {
 	 * @return string
 	 */
 	protected function getAllColumn(): string {
-		return 'comment_id';
+		return 'entity_id';
 	}
 
 	/**
@@ -37,11 +35,7 @@ class TopicsCommentRepository extends AbstractTopicRepository {
 	protected function getMapRepository(): ?AbstractRepository {
 		return null;
 	}
+	
 
-	/**
-	 * @return string
-	 */
-	protected function getDomainClass(): string {
-		return StatusComment::class;
-	}
+
 }

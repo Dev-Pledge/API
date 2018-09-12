@@ -3,9 +3,11 @@
 namespace DevPledge\Framework\Controller\Comment;
 
 use DevPledge\Application\Commands\CommentCommands\CreateStatusCommand;
+use DevPledge\Application\Service\StatusCommentService;
 use DevPledge\Domain\Comment;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\Controller\AbstractController;
+use DevPledge\Framework\ServiceProviders\StatusCommentServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
 use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
@@ -53,6 +55,32 @@ class CommentStatusController extends AbstractController {
 
 
 		return $response->withJson( $comment->toAPIMap() );
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \Exception
+	 */
+	public function getStatus( Request $request, Response $response ) {
+		$commentId      = $request->getAttribute( 'status_id' );
+		$commentService = StatusCommentServiceProvider::getService();
+
+		try {
+			$comment = $commentService->read( $commentId );
+			if ( ! $comment->isPersistedDataFound() ) {
+				throw new \Exception( 'Not Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Status not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comment->toAPIMap() );
+
 	}
 
 }

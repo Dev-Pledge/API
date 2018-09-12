@@ -30,8 +30,14 @@ class ClearCacheCreatedHandler extends AbstractEventHandler {
 			$commentService = CommentServiceProvider::getService();
 			$keys           = [];
 			$keys[]         = $commentService->getAllCommentsKey( $domain->getEntityId() );
-			$keys[]         = $commentService->getAllRepliesKey( $domain->getParentCommentId() );
 			$keys[]         = $commentService->getLastFiveCommentKey( $domain->getEntityId() );
+			if ( ! is_null( $domain->getParentCommentId() ) ) {
+				$keys[] = $commentService->getAllRepliesKey( $domain->getParentCommentId() );
+			}
+			if ( ! is_null( $domain->getParentCommentId() ) ) {
+				$keys[] = $commentService->getLastFiveReplyKey( $domain->getParentCommentId() );
+			}
+
 			CacheServiceProvider::getService()->deleteKeys( $keys );
 
 		}

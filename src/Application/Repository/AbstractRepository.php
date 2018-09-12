@@ -99,6 +99,7 @@ abstract class AbstractRepository {
 	public function read( string $id, \stdClass $data = null ): AbstractDomain {
 
 		$data = isset( $data ) ? $data : $this->adapter->read( $this->getResource(), $id, $this->getColumn() );
+
 		if ( $this->getMapRepository() !== null ) {
 			return $this->getMapRepository()->read( $id, $data );
 		}

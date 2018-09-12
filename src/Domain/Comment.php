@@ -8,7 +8,6 @@ namespace DevPledge\Domain;
  */
 class Comment extends AbstractDomain {
 
-	use CommentsTrait;
 	/**
 	 * @var UserDefinedContent
 	 */
@@ -37,7 +36,10 @@ class Comment extends AbstractDomain {
 	 * @var Count
 	 */
 	protected $totalReplies;
-
+	/**
+	 * @var User
+	 */
+	protected $user;
 	/**
 	 * @var Topics
 	 */
@@ -62,13 +64,10 @@ class Comment extends AbstractDomain {
 	function toAPIMap(): \stdClass {
 		$data = parent::toAPIMap();
 
-		$this->appendCommentDataToAPIData( $data );
 		$data->last_five_replies = $this->getLastFiveReplies()->toAPIMapArray();
 		$data->total_replies     = $this->getTotalReplies()->getCount();
-		if ( $this->isStatus() ) {
-			$data->topics = $this->getTopics()->toArray();
-		}
-		$data->comment_type = $this->getCommentType();
+		$data->comment_type      = $this->getCommentType();
+		$data->user              = $this->getUser()->toPublicAPIMap();
 
 		return $data;
 	}
@@ -88,7 +87,7 @@ class Comment extends AbstractDomain {
 	 * @return UserDefinedContent
 	 */
 	public function getComment(): UserDefinedContent {
-		return $this->comment;
+		return isset( $this->comment ) ? $this->comment : new UserDefinedContent( '' );
 	}
 
 	/**
@@ -106,7 +105,7 @@ class Comment extends AbstractDomain {
 	 * @return string
 	 */
 	public function getEntityId(): string {
-		return isset( $this->entityId ) ? $this->entityId : $this->getId();
+		return isset( $this->entityId ) ? $this->entityId : $this->getUserId();
 	}
 
 	/**
@@ -241,8 +240,11 @@ class Comment extends AbstractDomain {
 		return $this;
 	}
 
-	public function getCommentType() {
-		if ( $this->isStatus() ) {
+	/**
+	 * @return string
+	 */
+	public function getCommentType(): string {
+		if ( $this->isStatus() || $this instanceof StatusComment ) {
 			return 'status';
 		}
 		if ( $this->isReply() ) {
@@ -253,6 +255,25 @@ class Comment extends AbstractDomain {
 		}
 
 		return 'comment';
+	}
+
+
+	/**
+	 * @param User $user
+	 *
+	 * @return Comment
+	 */
+	public function setUser( ?User $user ): Comment {
+		$this->user = $user;
+
+		return $this;
+	}
+
+	/**
+	 * @return User
+	 */
+	public function getUser(): User {
+		return $this->user;
 	}
 
 }

@@ -57,6 +57,13 @@ class Comments extends AbstractMigration {
 				'parent_comment_id',
 				'created'
 			], [ 'name' => 'comment_created_parent' ] )->save();
+
+			$this->table( 'comments' )->addIndex( [
+				'user_id',
+				'entity_id',
+				'parent_comment_id',
+				'created'
+			], [ 'name' => 'comment_entity_user_id_created_parent' ] )->save();
 		};
 
 		if ( ! $this->hasTable( 'comments' ) ) {

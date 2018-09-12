@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 11/09/2018
- * Time: 10:27
- */
 
 namespace DevPledge\Application\CommandHandlers\CommentHandlers;
 
-
 use DevPledge\Application\Commands\CommentCommands\CreateReplyCommand;
 use DevPledge\Domain\CommandPermissionException;
+use DevPledge\Domain\Comment;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
@@ -30,19 +24,23 @@ class CreateReplyHandler extends AbstractCommandHandler {
 	/**
 	 * @param $command CreateReplyCommand
 	 *
-	 * @return mixed
+	 * @return Comment
+	 * @throws CommandPermissionException
 	 */
 	protected function handle( $command ) {
 		$data = new \stdClass();
 
 		$commentService = CommentServiceProvider::getService();
+		$parentComment  = $commentService->read( $command->getCommentId() );
 
-		$parentComment = $commentService->read( $command->getCommentId() );
 		if ( $parentComment->isPersistedDataFound() ) {
 			$data->parent_comment_id = $parentComment->getId();
 			$data->entity_id         = $parentComment->getEntityId();
 		} else {
-			throw new InvalidArgumentException( 'Parent Comment ' . $command->getCommentId() . ' does not exist!', 'comment_id' );
+			throw new InvalidArgumentException(
+				'Parent Comment ' . $command->getCommentId() . ' does not exist!',
+				'comment_id'
+			);
 		}
 
 		$data->user_id = $command->getUser()->getId();
@@ -54,6 +52,7 @@ class CreateReplyHandler extends AbstractCommandHandler {
 			CommandPermissionException::tryOrganisationPermission( $command->getUser(), $data->organisation_id, 'create' );
 			$data->user_id = null;
 		}
+
 		$data->comment = $command->getReplyComment();
 
 		if ( ! strlen( $data->comment ) ) {

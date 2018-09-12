@@ -7,6 +7,7 @@ use DevPledge\Application\Commands\CommentCommands\CreateStatusCommand;
 use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
+use DevPledge\Framework\ServiceProviders\StatusCommentServiceProvider;
 use DevPledge\Integrations\Command\AbstractCommandHandler;
 
 /**
@@ -24,7 +25,7 @@ class CreateStatusHandler extends AbstractCommandHandler {
 	/**
 	 * @param $command CreateStatusCommand
 	 *
-	 * @return \DevPledge\Domain\Comment
+	 * @return \DevPledge\Domain\StatusComment
 	 * @throws CommandPermissionException
 	 */
 	protected function handle( $command ) {
@@ -50,7 +51,7 @@ class CreateStatusHandler extends AbstractCommandHandler {
 		/**
 		 * NO entity id is required as it will auto generate to be the comment id by default!
 		 */
-		return CommentServiceProvider::getService()->create(
+		return StatusCommentServiceProvider::getService()->create(
 			$data
 		);
 	}

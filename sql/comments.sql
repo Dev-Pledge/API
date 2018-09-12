@@ -20,3 +20,6 @@ CREATE INDEX comment_created_parent
 
 CREATE INDEX comment_created_entity
   ON comments (entity_id, created);
+
+CREATE INDEX comment_entity_user_id_created_parent
+  ON comments (user_id, entity_id, parent_comment_id, created);

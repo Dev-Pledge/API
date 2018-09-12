@@ -7,6 +7,7 @@ use DevPledge\Application\Commands\CommentCommands\CreateCommentCommand;
 use DevPledge\Application\Commands\CommentCommands\CreateReplyCommand;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\Controller\AbstractController;
+use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
 use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
@@ -35,8 +36,8 @@ class CommentController extends AbstractController {
 		}
 
 		try {
-			if(is_null($entityId)){
-				throw new InvalidArgumentException('Missing Entity Id','entity_id');
+			if ( is_null( $entityId ) ) {
+				throw new InvalidArgumentException( 'Missing Entity Id', 'entity_id' );
 			}
 			/**
 			 * @var $comment Comment
@@ -73,8 +74,8 @@ class CommentController extends AbstractController {
 		}
 
 		try {
-			if(is_null($commentId)){
-				throw new InvalidArgumentException('Missing Comment Id','comment_id');
+			if ( is_null( $commentId ) ) {
+				throw new InvalidArgumentException( 'Missing Comment Id', 'comment_id' );
 			}
 			/**
 			 * @var $comment Comment
@@ -97,5 +98,30 @@ class CommentController extends AbstractController {
 
 
 		return $response->withJson( $comment->toAPIMap() );
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
+	public function getComment( Request $request, Response $response ) {
+		$commentId      = $request->getAttribute( 'comment_id' );
+		$commentService = CommentServiceProvider::getService();
+
+		try {
+			$comment = $commentService->read( $commentId );
+			if ( ! $comment->isPersistedDataFound() ) {
+				throw new \Exception( 'Not Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Comment not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comment->toAPIMap() );
+
 	}
 }

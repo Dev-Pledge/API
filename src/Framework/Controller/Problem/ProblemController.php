@@ -13,6 +13,7 @@ use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\RepositoryDependencies\ProblemRepositoryDependency;
 use DevPledge\Framework\ServiceProviders\ProblemServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
+use http\Exception;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -26,12 +27,18 @@ class ProblemController extends AbstractController {
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \Exception
 	 */
 	public function getProblem( Request $request, Response $response ) {
-		$id             = $request->getAttribute( 'id' );
+		$problemId = $request->getAttribute( 'problem_id' );
+
 		$problemService = ProblemServiceProvider::getService();
-		$problem        = $problemService->read( $id );
-		if ( is_null( $problem ) ) {
+		try {
+			$problem = $problemService->read( $problemId );
+			if ( !$problem->isPersistedDataFound() ) {
+				throw new \Exception( 'Not Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
 			return $response->withJson(
 				[ 'error' => 'Problem not found!' ]
 				, 401 );
@@ -116,7 +123,7 @@ class ProblemController extends AbstractController {
 		$userId         = $request->getAttribute( 'user_id' );
 		$problemService = ProblemServiceProvider::getService();
 		$problems       = $problemService->readAll( $userId );
-		if ( is_null( $problems ) ) {
+		if ( $problems->countProblems()==0) {
 			return $response->withJson(
 				[ 'error' => 'Problems not found!' ]
 				, 401 );

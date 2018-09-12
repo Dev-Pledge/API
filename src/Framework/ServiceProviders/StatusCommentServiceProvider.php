@@ -3,36 +3,34 @@
 namespace DevPledge\Framework\ServiceProviders;
 
 
-use DevPledge\Application\Service\CommentService;
-use DevPledge\Framework\FactoryDependencies\CommentFactoryDependency;
-use DevPledge\Framework\RepositoryDependencies\Comment\CommentRepositoryDependency;
-use DevPledge\Framework\RepositoryDependencies\Comment\SubCommentRepoDependency;
+use DevPledge\Application\Service\StatusCommentService;
+use DevPledge\Framework\FactoryDependencies\StatusCommentFactoryDependency;
+use DevPledge\Framework\RepositoryDependencies\Comment\StatusCommentRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Container;
 
 /**
- * Class CommentServiceProvider
+ * Class StatusCommentServiceProvider
  * @package DevPledge\Framework\ServiceProviders
  */
-class CommentServiceProvider extends AbstractServiceProvider {
+class StatusCommentServiceProvider extends AbstractServiceProvider {
 	/**
 	 * CommentServiceProvider constructor.
 	 */
 	public function __construct() {
-		parent::__construct( CommentService::class );
+		parent::__construct( StatusCommentService::class );
 	}
 
 	/**
 	 * @param Container $container
 	 *
-	 * @return CommentService
+	 * @return StatusCommentService
 	 */
 	public function __invoke( Container $container ) {
-		return new CommentService(
-			CommentRepositoryDependency::getRepository(),
-			SubCommentRepoDependency::getRepository(),
-			CommentFactoryDependency::getFactory(),
+		return new StatusCommentService(
+			StatusCommentRepositoryDependency::getRepository(),
+			StatusCommentFactoryDependency::getFactory(),
 			CacheServiceProvider::getService(),
 			EntityServiceProvider::getService()
 		);
@@ -40,7 +38,7 @@ class CommentServiceProvider extends AbstractServiceProvider {
 
 	/**
 	 * usually return static::getFromContainer();
-	 * @return CommentService
+	 * @return StatusCommentService
 	 */
 	static public function getService() {
 		return static::getFromContainer();

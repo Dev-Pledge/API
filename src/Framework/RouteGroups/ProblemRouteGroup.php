@@ -30,7 +30,7 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 		$this->getApp()->patch( '/{problem_id}', ProblemController::class . ':updateProblem' )
 		     ->add( $createProblemsMiddleWare );
 
-		$this->getApp()->get( '/{id}', ProblemController::class . ':getProblem' );
+		$this->getApp()->get( '/{problem_id}', ProblemController::class . ':getProblem' );
 
 		$this->getApp()->get( 's/user/{user_id}', ProblemController::class . ':getUserProblems' );
 
