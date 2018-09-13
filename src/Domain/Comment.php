@@ -204,7 +204,7 @@ class Comment extends AbstractDomain {
 	 * @return bool
 	 */
 	public function isStatus(): bool {
-		return (bool) ( $this->getId() === $this->getEntityId() );
+		return (bool) ( $this->getUserId() === $this->getEntityId() || $this instanceof StatusComment );
 	}
 
 	/**
