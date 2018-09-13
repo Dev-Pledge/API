@@ -111,7 +111,6 @@ class EntityService {
 					$domain = CommentServiceProvider::getService()->read( $entityId );
 					break;
 				case 'status':
-
 					$domain = StatusCommentServiceProvider::getService()->read( $entityId );
 					break;
 			}
@@ -119,7 +118,7 @@ class EntityService {
 				throw new \Exception( 'Entity Not Found' );
 			}
 		} catch ( \Exception | \TypeError | \InvalidArgumentException $exception ) {
-			throw new InvalidArgumentException( 'Error Getting ' . $entity . ' Entity Domain', 'entity_id' );
+			throw new InvalidArgumentException( 'Error Getting ' . $entity . ' Entity Domain '.$exception->getMessage() , 'entity_id ' );
 		}
 
 
@@ -143,7 +142,7 @@ class EntityService {
 
 			return new FeedEntity( $function, $domain, $parentDomain );
 		} catch ( \TypeError | InvalidArgumentException $exception ) {
-			Sentry::get()->captureException( $exception );
+			//entity not found - ignore
 		}
 
 		return null;
@@ -168,7 +167,7 @@ class EntityService {
 					}
 				} catch ( \Exception | \TypeError $exception ) {
 					Sentry::get()->captureException( $exception );
-					
+
 				}
 			}
 		}
