@@ -158,13 +158,17 @@ class EntityService {
 		$returnArray = [];
 		if ( isset( $data->entities ) && is_array( $data->entities ) ) {
 			foreach ( $data->entities as $entity ) {
-
-				$function       = $entity['function'] ?? 'no-function';
-				$entityId       = $entity['id'] ?? null;
-				$entityParentId = $entity['parent_id'] ?? null;
-				$feedEntity     = $this->getFeedEntity( $function, $entityId, $entityParentId );
-				if ( ! is_null( $feedEntity ) ) {
-					$returnArray[] = $feedEntity->toAPIMap();
+				try {
+					$function       = $entity['function'] ?? 'no-function';
+					$entityId       = $entity['id'] ?? null;
+					$entityParentId = $entity['parent_id'] ?? null;
+					$feedEntity     = $this->getFeedEntity( $function, $entityId, $entityParentId );
+					if ( ! is_null( $feedEntity ) ) {
+						$returnArray[] = $feedEntity->toAPIMap();
+					}
+				} catch ( \Exception | \TypeError $exception ) {
+					Sentry::get()->captureException( $exception );
+					
 				}
 			}
 		}
