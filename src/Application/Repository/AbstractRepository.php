@@ -95,6 +95,7 @@ abstract class AbstractRepository {
 	 * @param \stdClass|null $data
 	 *
 	 * @return AbstractDomain
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function read( string $id, \stdClass $data = null ): AbstractDomain {
 
@@ -116,6 +117,7 @@ abstract class AbstractRepository {
 	 * @param array|null $dataArray
 	 *
 	 * @return array|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function readAll( string $idForAll, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
 		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAll( $this->getResource(), $idForAll, $this->getAllColumn(), $orderByColumn, $reverseOrderBy, $limit, $offset );
@@ -142,6 +144,7 @@ abstract class AbstractRepository {
 	 * @param array|null $dataArray
 	 *
 	 * @return array|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function readAllWhere( Wheres $wheres, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
 		$dataArray = isset( $dataArray ) ? $dataArray : $this->adapter->readAllWhere( $this->getResource(), $wheres, $orderByColumn, $reverseOrderBy, $limit, $offset, $offset );

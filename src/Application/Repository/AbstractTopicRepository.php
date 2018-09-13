@@ -65,15 +65,14 @@ abstract class AbstractTopicRepository extends AbstractRepository {
 	 * @param \stdClass|null $data
 	 *
 	 * @return AbstractDomain
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function read( string $id, \stdClass $data = null ): AbstractDomain {
 
 		$topicData = $this->adapter->readAll( $this->getResource(), $id, $this->getAllColumn() );
 
-		if ( $topicData ) {
-			if ( is_null( $data ) ) {
-				$data = new \stdClass();
-			}
+		if ( $topicData && $data ) {
+
 			$data->topics = [];
 			foreach ( $topicData as $topic ) {
 				$data->topics[] = $topic->topic;
@@ -92,6 +91,7 @@ abstract class AbstractTopicRepository extends AbstractRepository {
 	 * @param array|null $dataArray
 	 *
 	 * @return array|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function readAll( string $idForAll, ?string $orderByColumn = null, bool $reverseOrderBy = false, ?int $limit = null, ?int $offset = null, array $dataArray = null ): ?array {
 

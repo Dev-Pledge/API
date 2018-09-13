@@ -122,6 +122,7 @@ class StatusCommentService {
 	 * @param string $commentId
 	 *
 	 * @return StatusComment
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function read( string $commentId ): StatusComment {
 		return $this->repo->read( $commentId );
@@ -131,6 +132,7 @@ class StatusCommentService {
 	 * @param string $commentId
 	 *
 	 * @return int|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function delete( string $commentId ): ?int {
 		$comment = $this->read( $commentId );

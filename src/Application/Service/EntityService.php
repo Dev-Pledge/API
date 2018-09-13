@@ -111,6 +111,7 @@ class EntityService {
 					$domain = CommentServiceProvider::getService()->read( $entityId );
 					break;
 				case 'status':
+
 					$domain = StatusCommentServiceProvider::getService()->read( $entityId );
 					break;
 			}
