@@ -62,8 +62,7 @@ class Comment extends AbstractDomain {
 	}
 
 	function toAPIMap(): \stdClass {
-		$data = parent::toAPIMap();
-
+		$data                    = parent::toAPIMap();
 		$data->last_five_replies = $this->getLastFiveReplies()->toAPIMapArray();
 		$data->total_replies     = $this->getTotalReplies()->getCount();
 		$data->comment_type      = $this->getCommentType();
