@@ -2,12 +2,6 @@
 
 namespace DevPledge\Application\Repository;
 
-use DevPledge\Framework\Adapter\Where;
-use DevPledge\Framework\Adapter\WhereNot;
-use DevPledge\Framework\Adapter\WhereNull;
-use DevPledge\Framework\Adapter\Wheres;
-use DevPledge\Integrations\Sentry;
-
 /**
  * Class CommentRepository
  * @package DevComment\Application\Repository

@@ -95,16 +95,19 @@ abstract class AbstractFactory {
 	protected function getThis(): AbstractFactory {
 		if ( $this->inUse ) {
 			$freeChild = false;
-			if ( static::$spawnChildren ) {
+			$class     = get_called_class();
+			if ( isset( static::$spawnChildren[ $class ] ) ) {
 
-				foreach ( static::$spawnChildren as &$child ) {
+				foreach ( static::$spawnChildren[ $class ] as &$child ) {
 					if ( ! $child->isInUse() ) {
 						$freeChild = $child;
 					}
 				}
+			} else {
+				static::$spawnChildren[ $class ] = [];
 			}
 			if ( ! $freeChild ) {
-				static::$spawnChildren[] = $freeChild = new static( $this->productObjectClassString, $this->entity, $this->primaryIdColumn );
+				static::$spawnChildren[ $class ][] = $freeChild = new static( $this->productObjectClassString, $this->entity, $this->primaryIdColumn );
 			}
 
 			return $freeChild;
@@ -120,10 +123,11 @@ abstract class AbstractFactory {
 	 */
 	protected function endThis() {
 		$this->inUse = false;
-		if ( static::$spawnChildren ) {
-			foreach ( static::$spawnChildren as $index => &$child ) {
+		$class       = get_called_class();
+		if ( static::$spawnChildren[ $class ] ) {
+			foreach ( static::$spawnChildren[ $class ] as $index => &$child ) {
 				if ( ! $child->isInUse() && $this !== $child ) {
-					unset( static::$spawnChildren[ $index ] );
+					unset( static::$spawnChildren[ $class ][ $index ] );
 				}
 			}
 		}

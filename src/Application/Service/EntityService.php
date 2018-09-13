@@ -55,7 +55,6 @@ class EntityService {
 			'user',
 			'problem',
 			'pledge',
-			'topic',
 			'solution',
 			'comment',
 			'status'

@@ -71,6 +71,9 @@ abstract class AbstractTopicRepository extends AbstractRepository {
 		$topicData = $this->adapter->readAll( $this->getResource(), $id, $this->getAllColumn() );
 
 		if ( $topicData ) {
+			if ( is_null( $data ) ) {
+				$data = new \stdClass();
+			}
 			$data->topics = [];
 			foreach ( $topicData as $topic ) {
 				$data->topics[] = $topic->topic;
