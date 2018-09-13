@@ -62,6 +62,12 @@ class CommentController extends AbstractController {
 		return $response->withJson( $comment->toAPIMap() );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
 	public function createReply( Request $request, Response $response ) {
 		$commentId = $request->getAttribute( 'comment_id' );
 		$user      = $this->getUserFromRequest( $request );
@@ -133,8 +139,10 @@ class CommentController extends AbstractController {
 	 * @return Response
 	 */
 	public function getEntityComments( Request $request, Response $response ) {
+
 		$entityId       = $request->getAttribute( 'entity_id' );
 		$commentService = CommentServiceProvider::getService();
+
 		try {
 			$comments = $commentService->readAll( $entityId );
 			if ( $comments->countComments() == 0 ) {
@@ -149,18 +157,77 @@ class CommentController extends AbstractController {
 		return $response->withJson( $comments->toAPIMap() );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
 	public function getEntityCommentsByPage( Request $request, Response $response ) {
+
 		$entityId       = $request->getAttribute( 'entity_id' );
-		$page           = $request->getAttribute( 'page' );
+		$page           = $request->getAttribute( 'page' ) ?? 1;
 		$commentService = CommentServiceProvider::getService();
+
 		try {
+
 			$comments = $commentService->readCommentsPage( $entityId, $page );
+
 			if ( $comments->countComments() == 0 ) {
 				throw new \Exception( 'No Comments Found!' );
 			}
+
 		} catch ( \Exception | \TypeError $exception ) {
 			return $response->withJson(
 				[ 'error' => 'Comments not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comments->toAPIMap() );
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
+	public function getCommentRepliesByPage( Request $request, Response $response ) {
+
+		$commentId      = $request->getAttribute( 'comment_id' );
+		$page           = $request->getAttribute( 'page' ) ?? 1;
+		$commentService = CommentServiceProvider::getService();
+
+		try {
+
+			$comments = $commentService->readRepliesPage( $commentId, $page );
+
+			if ( $comments->countComments() == 0 ) {
+				throw new \Exception( 'No Replies Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Replies not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comments->toAPIMap() );
+	}
+
+	public function getContextualComments(Request $request, Response $response ){
+		$commentId      = $request->getAttribute( 'comment_id' );
+		$commentService = CommentServiceProvider::getService();
+
+		try {
+
+			$comments = $commentService->getContextualComments( $commentId );
+
+			if ( $comments->countComments() == 0 ) {
+				throw new \Exception( 'No Contextual Comments Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Contextual Comments not found!' ]
 				, 401 );
 		}
 

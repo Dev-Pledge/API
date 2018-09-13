@@ -389,6 +389,20 @@ class CommentService {
 			$comments[] = $comment;
 
 			return new Comments( $comments );
+		} else if ( $comment->getEntityId() !== $comment->getUserId() ) {
+			$comments   = $this->subRepo->readAllWhere(
+				new Wheres( [
+					new Where( 'entity_id', $comment->getEntityId() ),
+					( new Where( 'created', $comment->getCreated()->format( 'Y-m-d H:i:s' ) ) )->lessThan()
+				] ),
+				'created',
+				true,
+				4
+			);
+			$comments   = array_reverse( $comments );
+			$comments[] = $comment;
+
+			return new Comments( $comments );
 		}
 
 		return new Comments( [ $comment ] );
