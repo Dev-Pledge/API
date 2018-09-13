@@ -12,6 +12,7 @@ use DevPledge\Domain\AbstractDomain;
 use DevPledge\Domain\Comment;
 use DevPledge\Domain\Comments;
 use DevPledge\Framework\Adapter\Where;
+use DevPledge\Framework\Adapter\WhereNot;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Command\Dispatch;
@@ -57,7 +58,7 @@ class CommentService {
 		$this->factory       = $factory;
 		$this->cacheService  = $cacheService;
 		$this->entityService = $entityService;
-		$this->subRepo = $subRepo;
+		$this->subRepo       = $subRepo;
 	}
 
 	/**
@@ -235,7 +236,7 @@ class CommentService {
 			return unserialize( $allCacheEntityComments );
 		}
 
-		$comments = $this->subRepo->readAll( $entityId, 'created', true, 5 );
+		$comments = $this->subRepo->readAllWhere( $this->entityWheres( $entityId), 'created', true, 5 );
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( array_reverse( $comments ) );
@@ -245,6 +246,19 @@ class CommentService {
 		}
 
 		return new Comments( [] );
+	}
+
+	/**
+	 * @param string $entityId
+	 *
+	 * @return Wheres
+	 * @throws \Exception
+	 */
+	protected function entityWheres( string $entityId ):Wheres {
+		return new Wheres( [
+			new Where( 'entity_id', $entityId ),
+			( new WhereNot( 'user_id', 'entity_id' ) )->setValueAsColumn()
+		] );
 	}
 
 	/**
@@ -338,7 +352,7 @@ class CommentService {
 	 */
 	public function countComments( string $entityId ): int {
 
-		return $this->repo->countAllInAllColumn( $entityId );
+		return $this->repo->countAllWhere($this->entityWheres( $entityId) );
 
 	}
 

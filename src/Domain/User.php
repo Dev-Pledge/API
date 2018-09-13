@@ -13,7 +13,7 @@ use DevPledge\Uuid\Uuid;
  */
 class User extends AbstractDomain {
 
-	use CommentsTrait;
+	//use CommentsTrait;
 	/**
 	 * @var string | null
 	 */

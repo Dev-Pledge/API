@@ -7,6 +7,7 @@ use DevPledge\Domain\CommentsTrait;
 use DevPledge\Domain\Data;
 use DevPledge\Domain\Fetcher\FetchCommentCount;
 use DevPledge\Domain\Fetcher\FetchLastFiveComments;
+use DevPledge\Domain\StatusComment;
 use DevPledge\Integrations\Sentry;
 use DevPledge\Uuid\Uuid;
 
@@ -15,6 +16,7 @@ use DevPledge\Uuid\Uuid;
  * @package DevPledge\Application\Factory
  */
 abstract class AbstractFactory {
+
 	/**
 	 * @var string
 	 */
@@ -95,7 +97,7 @@ abstract class AbstractFactory {
 	protected function getThis(): AbstractFactory {
 		if ( $this->inUse ) {
 			$freeChild = false;
-			$class     = get_called_class();
+			$class     = get_class( $this );
 			if ( isset( static::$spawnChildren[ $class ] ) ) {
 
 				foreach ( static::$spawnChildren[ $class ] as &$child ) {
@@ -107,7 +109,7 @@ abstract class AbstractFactory {
 				static::$spawnChildren[ $class ] = [];
 			}
 			if ( ! $freeChild ) {
-				static::$spawnChildren[ $class ][] = $freeChild = new static( $this->productObjectClassString, $this->entity, $this->primaryIdColumn );
+				static::$spawnChildren[ $class ][] = $freeChild = new $class( $this->productObjectClassString, $this->entity, $this->primaryIdColumn );
 			}
 
 			return $freeChild;
@@ -335,9 +337,11 @@ abstract class AbstractFactory {
 					$domain->setPersistedDataFound( true );
 
 					if ( $domain->getUuid()->getEntity() !== $this->entity ) {
+						ob_start();
+						var_dump( $this->rawData );
 						throw new \TypeError(
 							'Persisted Entity Type `' . $domain->getUuid()->getEntity() . '` Does not match ' .
-							$this->entity
+							$this->entity . ' -- ' . get_class( $this ) . ob_get_clean()
 						);
 					}
 				}
@@ -372,10 +376,11 @@ abstract class AbstractFactory {
 	protected function setCommentsData() {
 		try {
 			if (
-			in_array(
-				CommentsTrait::class,
-				class_uses( $this->getProductObject() )
-			) ) {
+				in_array(
+					CommentsTrait::class,
+					class_uses( $this->getProductObject() )
+				)
+			) {
 				$this
 					->setMethodToProductObject(
 						$this->primaryIdColumn,
