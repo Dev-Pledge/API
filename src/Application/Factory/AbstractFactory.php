@@ -336,8 +336,7 @@ abstract class AbstractFactory {
 
 					if ( $domain->getUuid()->getEntity() !== $this->entity ) {
 						throw new \TypeError(
-							'Persisted Entity Type Does not match ' .
-							$domain->getUuid()->getEntity() . ' should be ' .
+							'Persisted Entity Type `' . $domain->getUuid()->getEntity() . '` Does not match ' .
 							$this->entity
 						);
 					}

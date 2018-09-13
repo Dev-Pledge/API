@@ -29,7 +29,7 @@ class StatusCommentRepository extends AbstractRepository {
 	 * @return string
 	 */
 	protected function getAllColumn(): string {
-		return 'entity_id';
+		return 'comment_id';
 	}
 
 	/**
