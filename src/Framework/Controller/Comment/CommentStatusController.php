@@ -3,7 +3,6 @@
 namespace DevPledge\Framework\Controller\Comment;
 
 use DevPledge\Application\Commands\CommentCommands\CreateStatusCommand;
-use DevPledge\Application\Service\StatusCommentService;
 use DevPledge\Domain\Comment;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Framework\Controller\AbstractController;
@@ -43,12 +42,12 @@ class CommentStatusController extends AbstractController {
 				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
 				, 401 );
 		} catch ( \TypeError | \Exception $exception ) {
+
 			Sentry::get()->captureException( $exception );
 
 			return $response->withJson(
 				[
-					'error' => 'Server Error ' . $exception->getMessage(),
-					'trace' => $exception->getTraceAsString()
+					'error' => 'Server Error Status failed to create'
 				]
 				, 500 );
 		}
@@ -81,6 +80,26 @@ class CommentStatusController extends AbstractController {
 
 		return $response->withJson( $comment->toAPIMap() );
 
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \Exception
+	 */
+	public function getUserStatuses( Request $request, Response $response ) {
+		$userId        = $request->getAttribute( 'user_id' );
+		$statusService = StatusCommentServiceProvider::getService();
+		$comments      = $statusService->getUserStatuses( $userId );
+		if ( $comments->countComments() == 0 ) {
+			return $response->withJson(
+				[ 'error' => 'Statuses not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comments->toAPIMap() );
 	}
 
 }

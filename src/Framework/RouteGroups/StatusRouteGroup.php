@@ -16,12 +16,13 @@ class StatusRouteGroup extends AbstractRouteGroup {
 	 * StatusRouteGroup constructor.
 	 */
 	public function __construct() {
-		parent::__construct( '/status', [ new Authorise() ] );
+		parent::__construct( '/status' );
 	}
 
 	protected function callableInGroup() {
 		$app = $this->getApp();
 		$app->get( '/{status_id}', CommentStatusController::class . ':getStatus' );
-		$app->post( '/create', CommentStatusController::class . ':createStatus' );
+		$app->post( '/create', CommentStatusController::class . ':createStatus' )->add( new Authorise() );
+		$app->get( 'es/user/{user_id}', CommentStatusController::class . ':getUserStatuses' );
 	}
 }

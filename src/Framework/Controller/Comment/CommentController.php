@@ -86,6 +86,7 @@ class CommentController extends AbstractController {
 				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
 				, 401 );
 		} catch ( \TypeError | \Exception $exception ) {
+
 			Sentry::get()->captureException( $exception );
 
 			return $response->withJson(
@@ -123,5 +124,46 @@ class CommentController extends AbstractController {
 
 		return $response->withJson( $comment->toAPIMap() );
 
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
+	public function getEntityComments( Request $request, Response $response ) {
+		$entityId       = $request->getAttribute( 'entity_id' );
+		$commentService = CommentServiceProvider::getService();
+		try {
+			$comments = $commentService->readAll( $entityId );
+			if ( $comments->countComments() == 0 ) {
+				throw new \Exception( 'No Comments Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Comments not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comments->toAPIMap() );
+	}
+
+	public function getEntityCommentsByPage( Request $request, Response $response ) {
+		$entityId       = $request->getAttribute( 'entity_id' );
+		$page           = $request->getAttribute( 'page' );
+		$commentService = CommentServiceProvider::getService();
+		try {
+			$comments = $commentService->readCommentsPage( $entityId, $page );
+			if ( $comments->countComments() == 0 ) {
+				throw new \Exception( 'No Comments Found!' );
+			}
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson(
+				[ 'error' => 'Comments not found!' ]
+				, 401 );
+		}
+
+		return $response->withJson( $comments->toAPIMap() );
 	}
 }

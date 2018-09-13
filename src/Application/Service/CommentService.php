@@ -13,6 +13,7 @@ use DevPledge\Domain\Comment;
 use DevPledge\Domain\Comments;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\WhereNot;
+use DevPledge\Framework\Adapter\WhereNull;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Command\Dispatch;
@@ -181,13 +182,11 @@ class CommentService {
 	 * @throws \Exception
 	 */
 	public function readCommentsPage( string $entityId, int $page = 1 ): Comments {
-		$page = ( $page >= 0 ) ? $page - 1 : 0;
-
-		$pages    = ceil( $this->countComments( $entityId ) / 5 );
-		$offset   = $pages - $page;
-		$comments = $this->repo->readAll( $entityId, 'created', false, 5, $offset );
+		$page     = $page - 1;
+		$offset   = $page * 5;
+		$comments = $this->repo->readAllWhere( $this->entityWheres( $entityId ), 'created', true, 5, $offset );
 		if ( $comments ) {
-			return new Comments( $comments );
+			return new Comments( array_reverse( $comments ) );
 		}
 
 		return new Comments( [] );
@@ -201,13 +200,11 @@ class CommentService {
 	 * @throws \Exception
 	 */
 	public function readRepliesPage( string $commentId, int $page = 1 ): Comments {
-		$page = ( $page >= 0 ) ? $page - 1 : 0;
-
-		$pages    = ceil( $this->countReplies( $commentId ) / 5 );
-		$offset   = $pages - $page;
-		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', false, 5, $offset );
+		$page     = $page - 1;
+		$offset   = $page * 5;
+		$comments = $this->repo->readAllWhere( new Wheres( [ new Where( 'parent_comment_id', $commentId ) ] ), 'created', true, 5, $offset );
 		if ( $comments ) {
-			return new Comments( $comments );
+			return new Comments( array_reverse( $comments ) );
 		}
 
 		return new Comments( [] );
@@ -236,7 +233,7 @@ class CommentService {
 			return unserialize( $allCacheEntityComments );
 		}
 
-		$comments = $this->subRepo->readAllWhere( $this->entityWheres( $entityId), 'created', true, 5 );
+		$comments = $this->subRepo->readAllWhere( $this->entityWheres( $entityId ), 'created', true, 5 );
 
 		if ( $comments ) {
 			$allEntityComments = new Comments( array_reverse( $comments ) );
@@ -254,10 +251,11 @@ class CommentService {
 	 * @return Wheres
 	 * @throws \Exception
 	 */
-	protected function entityWheres( string $entityId ):Wheres {
+	protected function entityWheres( string $entityId ): Wheres {
 		return new Wheres( [
 			new Where( 'entity_id', $entityId ),
-			( new WhereNot( 'user_id', 'entity_id' ) )->setValueAsColumn()
+			( new WhereNot( 'user_id', 'entity_id' ) )->setValueAsColumn(),
+			new WhereNull( 'parent_comment_id' )
 		] );
 	}
 
@@ -352,7 +350,7 @@ class CommentService {
 	 */
 	public function countComments( string $entityId ): int {
 
-		return $this->repo->countAllWhere($this->entityWheres( $entityId) );
+		return $this->repo->countAllWhere( $this->entityWheres( $entityId ) );
 
 	}
 

@@ -34,7 +34,7 @@ class Comments extends AbstractDomain {
 		foreach ( $comments as $comment ) {
 			if ( ! $comment instanceof Comment ) {
 				ob_start();
-				var_dump($comment);
+				var_dump( $comment );
 				$x = ob_get_clean();
 				throw new \Exception( 'Not Comment ' . $x );
 			}
@@ -85,6 +85,13 @@ class Comments extends AbstractDomain {
 	 */
 	public function getComments() {
 		return $this->comments;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function countComments(): int {
+		return count( $this->comments );
 	}
 
 }
