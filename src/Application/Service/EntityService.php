@@ -57,7 +57,8 @@ class EntityService {
 			'pledge',
 			'solution',
 			'comment',
-			'status'
+			'status',
+            'topic'
 		]
 	): PersistMappable {
 
