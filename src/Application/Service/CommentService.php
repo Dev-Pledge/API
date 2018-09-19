@@ -75,10 +75,8 @@ class CommentService {
 		$comment = $this->factory->create( $data );
 
 		$comment = $this->repo->createPersist( $comment );
-		if ( $comment->isPersistedDataFound() ) {
 
-			Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
-		}
+		Dispatch::event( new CreatedDomainEvent( $comment, $comment->getEntityId() ) );
 
 		return $comment;
 	}

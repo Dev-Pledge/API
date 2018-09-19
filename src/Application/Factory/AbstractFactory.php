@@ -126,7 +126,7 @@ abstract class AbstractFactory {
 	protected function endThis() {
 		$this->inUse = false;
 		$class       = get_called_class();
-		if ( static::$spawnChildren[ $class ] ) {
+		if ( isset(static::$spawnChildren[ $class ]) ) {
 			foreach ( static::$spawnChildren[ $class ] as $index => &$child ) {
 				if ( ! $child->isInUse() && $this !== $child ) {
 					unset( static::$spawnChildren[ $class ][ $index ] );

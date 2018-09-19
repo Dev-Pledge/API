@@ -21,7 +21,7 @@ class SendFeedDomainCreatedHandler extends AbstractEventHandler {
 	}
 
 	/**
-	 * @param $event UpdatedDomainEvent
+	 * @param $event CreatedDomainEvent
 	 */
 	protected function handle( $event ) {
 
