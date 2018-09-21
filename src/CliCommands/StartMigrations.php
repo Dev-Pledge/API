@@ -1,6 +1,11 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
-echo 'starting migrations' . PHP_EOL;
+date_default_timezone_set('UTC');
+echo 'starting migrations!' . PHP_EOL;
+$now = new \DateTime( 'now' );
+echo '--';
+echo $now->format( 'Y-m-d H:i:s' );
+echo PHP_EOL;
 $isThere = null;
 while ( $isThere === null ) {
 	echo 'trying DB...' . PHP_EOL;
