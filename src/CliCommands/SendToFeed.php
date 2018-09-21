@@ -15,7 +15,7 @@ $cli->on( 'message', function ( swoole_http_client $client, swoole_websocket_fra
 $cli->upgrade( '/', function ( swoole_http_client $client ) use ( $message ) {
 
 	$client->push( $message );
-	sleep( 10 );
+	sleep( 5 );
 	$client->close();
 
 } );
