@@ -17,8 +17,8 @@ class FollowRouteGroup extends AbstractRouteGroup {
 	protected function callableInGroup() {
 
 
-		$this->post( '/{entity_id}', FollowController::class . ':createFollow' )->add( new Authorise() );
-		$this->delete( '/{entity_id}', FollowController::class . ':deleteFollow' )->add( new Authorise() );
+		$this->post( '/{entity_id}', FollowController::class . ':createFollow', null, null, new Authorise() );
+		$this->delete( '/{entity_id}', FollowController::class . ':deleteFollow', null, null, new Authorise() );
 		$this->get( 's/{user_id}', FollowController::class . ':getUserFollows' );
 
 	}

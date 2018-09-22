@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: johnsaunders
- * Date: 21/08/2018
- * Time: 19:16
- */
 
 namespace DevPledge\Framework\RouteGroups;
 

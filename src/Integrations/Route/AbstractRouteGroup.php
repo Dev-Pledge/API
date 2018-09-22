@@ -55,34 +55,89 @@ abstract class AbstractRouteGroup extends AbstractAppAccess {
 
 	}
 
-	final public function get( $pattern, $callable, $exampleResponse = null ) {
-		AvailableRoutes::AddRoute( new AvailableRoute( 'get', $this->getPattern() . $pattern, null, $exampleResponse ) );
+	/**
+	 * @param AbstractMiddleware|null $middleWare
+	 *
+	 * @return array|AbstractMiddleware[]
+	 */
+	private function mergeMiddleWare( ?AbstractMiddleware $middleWare = null ) {
 
-		return $this->getApp()->get( $pattern, $callable );
+		if ( isset( $this->middleware ) && isset( $middleWare ) ) {
+			return array_merge( $this->middleware, [ $middleWare ] );
+		}
+		if ( isset( $this->middleware ) && ! isset( $middleWare ) ) {
+			return $this->middleware;
+		}
+		if ( ! isset( $this->middleware ) && isset( $middleWare ) ) {
+			return [ $middleWare ];
+		}
+		if ( ! isset( $this->middleware ) && ! isset( $middleWare ) ) {
+			return [];
+		}
 	}
 
-	final public function post( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
-		AvailableRoutes::AddRoute( new AvailableRoute( 'post', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+	final public function get( $pattern, $callable, ?\Closure $exampleResponse = null, ?AbstractMiddleware $middleWare = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'get', $this->getPattern() . $pattern, null, $exampleResponse, $this->mergeMiddleWare( $middleWare )
+		) );
 
-		return $this->getApp()->post( $pattern, $callable );
+		$route = $this->getApp()->get( $pattern, $callable );
+		if ( isset( $middleWare ) ) {
+			$route->add( $middleWare );
+		}
+
+		return $route;
 	}
 
-	final public function patch( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
-		AvailableRoutes::AddRoute( new AvailableRoute( 'patch', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+	/**
+	 * @param $pattern
+	 * @param $callable
+	 * @param null $exampleRequest
+	 * @param null $exampleResponse
+	 * @param AbstractMiddleware|null $middleWare
+	 *
+	 * @return \Slim\Interfaces\RouteInterface
+	 */
+	final public function post( $pattern, $callable, ?\Closure $exampleRequest = null, ?\Closure $exampleResponse = null, ?AbstractMiddleware $middleWare = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'post', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse, $this->mergeMiddleWare( $middleWare ) ) );
+		$route = $this->getApp()->post( $pattern, $callable );
+		if ( isset( $middleWare ) ) {
+			$route->add( $middleWare );
+		}
 
-		return $this->getApp()->patch( $pattern, $callable );
+		return $route;
 	}
 
-	final public function delete( $pattern, $callable, $exampleResponse = null ) {
-		AvailableRoutes::AddRoute( new AvailableRoute( 'delete', $this->getPattern() . $pattern, null, $exampleResponse ) );
+	final public function patch( $pattern, $callable, ?\Closure $exampleRequest = null, ?\Closure $exampleResponse = null, ?AbstractMiddleware $middleWare = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'patch', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse, $this->mergeMiddleWare( $middleWare ) ) );
 
-		return $this->getApp()->delete( $pattern, $callable );
+		$route = $this->getApp()->patch( $pattern, $callable );
+		if ( isset( $middleWare ) ) {
+			$route->add( $middleWare );
+		}
+
+		return $route;
 	}
 
-	final public function put( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
-		AvailableRoutes::AddRoute( new AvailableRoute( 'put', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+	final public function delete( $pattern, $callable, ?\Closure $exampleResponse = null, ?AbstractMiddleware $middleWare = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'delete', $this->getPattern() . $pattern, null, $exampleResponse, $this->mergeMiddleWare( $middleWare ) ) );
 
-		return $this->getApp()->put( $pattern, $callable );
+		$route = $this->getApp()->delete( $pattern, $callable );
+		if ( isset( $middleWare ) ) {
+			$route->add( $middleWare );
+		}
+
+		return $route;
+	}
+
+	final public function put( $pattern, $callable, ?\Closure $exampleRequest = null, ?\Closure $exampleResponse = null, ?AbstractMiddleware $middleWare = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'put', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse, $this->mergeMiddleWare( $middleWare ) ) );
+
+		$route = $this->getApp()->put( $pattern, $callable );
+		if ( isset( $middleWare ) ) {
+			$route->add( $middleWare );
+		}
+
+		return $route;
 	}
 
 	abstract protected function callableInGroup();

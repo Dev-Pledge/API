@@ -22,7 +22,7 @@ class StatusRouteGroup extends AbstractRouteGroup {
 	protected function callableInGroup() {
 
 		$this->get( '/{status_id}', CommentStatusController::class . ':getStatus' );
-		$this->post( '/create', CommentStatusController::class . ':createStatus' )->add( new Authorise() );
+		$this->post( '/create', CommentStatusController::class . ':createStatus', null, null, new Authorise() );
 		$this->get( 'es/user/{user_id}', CommentStatusController::class . ':getUserStatuses' );
 	}
 }

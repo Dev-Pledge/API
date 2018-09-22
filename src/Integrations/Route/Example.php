@@ -10,12 +10,12 @@ interface Example {
 	/**
 	 * @return null|\stdClass
 	 */
-	public static function getExampleResponse(): ?\stdClass;
+	public static function getExampleResponse(): ?\Closure;
 
 	/**
 	 * @return null|\stdClass
 	 */
-	public static function getExampleRequest(): ?\stdClass;
+	public static function getExampleRequest(): ?\Closure;
 
 	/**
 	 * @return mixed

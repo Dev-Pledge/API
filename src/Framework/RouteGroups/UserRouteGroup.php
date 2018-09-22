@@ -38,23 +38,23 @@ class UserRouteGroup extends AbstractRouteGroup {
 		);
 		$this->post(
 			'/updatePassword/{user_id}',
-			UserUpdateController::class . ':updatePassword'
-		)->add( new UserPermission() );
+			UserUpdateController::class . ':updatePassword', null, null, new UserPermission()
+		);
 
 		$this->patch(
 			'/{user_id}',
-			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse()
-		)->add( new UserPermission() );
+			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse(), new UserPermission()
+		);
 
 		$this->post(
 			'createStripePaymentMethod/{user_id}',
 			PayController::class . ':createUserStripePaymentMethod'
-		)->add( new UserPermission() );
+			, null, null, new UserPermission() );
 
 		$this->get(
 			'paymentMethods/{user_id}',
-			PayController::class . ':getUserPaymentMethods'
-		)->add( new UserPermission() );
+			PayController::class . ':getUserPaymentMethods', null, null, new UserPermission()
+		);
 
 
 	}

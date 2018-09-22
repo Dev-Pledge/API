@@ -88,22 +88,26 @@ class Problem extends AbstractDomain implements Example {
 		];
 	}
 
-	public static function getExampleRequest(): \stdClass {
-		return (object) [
-			'title'             => 'My Problems Title',
-			'description'       => 'Description of Problem',
-			'specification'     => 'Outline of Specification Needed',
-			'active_datetime'   => '2018-01-01 01:00:00',
-			'deadline_datetime' => '2018-01-01 01:00:00',
-			'topics'            => [ 'PHP', 'JS' ]
-		];
+	public static function getExampleRequest(): \Closure {
+		return function () {
+			return (object) [
+				'title'             => 'My Problems Title',
+				'description'       => 'Description of Problem',
+				'specification'     => 'Outline of Specification Needed',
+				'active_datetime'   => '2018-01-01 01:00:00',
+				'deadline_datetime' => '2018-01-01 01:00:00',
+				'topics'            => [ 'PHP', 'JS' ]
+			];
+		};
 	}
 
 	/**
 	 * @return null|\stdClass
 	 */
-	public static function getExampleResponse(): ?\stdClass {
-		return static::getExampleInstance()->toApiMap();
+	public static function getExampleResponse(): \Closure {
+		return function () {
+			return static::getExampleInstance()->toApiMap();
+		};
 	}
 
 	/**

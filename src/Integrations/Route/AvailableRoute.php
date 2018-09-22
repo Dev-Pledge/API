@@ -2,26 +2,32 @@
 
 namespace DevPledge\Integrations\Route;
 
-
+/**
+ * Class AvailableRoute
+ * @package DevPledge\Integrations\Route
+ */
 class AvailableRoute implements \JsonSerializable {
 	protected $type;
 	protected $fullPattern;
 	protected $request;
 	protected $response;
+	protected $middleWares = [];
 
 	/**
 	 * AvailableRoute constructor.
 	 *
-	 * @param $type
-	 * @param $fullPattern
-	 * @param null $request
-	 * @param null $response
+	 * @param string $type
+	 * @param string $fullPattern
+	 * @param \Closure|null $request
+	 * @param \Closure|null $response
+	 * @param array $middleWares
 	 */
-	public function __construct( string $type, string $fullPattern, \stdClass $request = null, \stdClass $response = null ) {
+	public function __construct( string $type, string $fullPattern, ?\Closure $request = null, ?\Closure $response = null, array $middleWares = [] ) {
 		$this->type        = $type;
 		$this->fullPattern = $fullPattern;
 		$this->response    = $response;
 		$this->request     = $request;
+		$this->middleWares = $middleWares;
 	}
 
 	public function getType(): string {
@@ -36,17 +42,28 @@ class AvailableRoute implements \JsonSerializable {
 	}
 
 	/**
-	 * @return null|\stdClass|string
+	 * @return \Closure|null
 	 */
-	public function getRequest(): ?\stdClass {
-		return $this->request;
+	public function getRequest(): ?\Closure {
+		return isset( $this->request ) ? $this->request : function () {
+			if ( $this->getType() != 'GET' ) {
+				return 'coming soon';
+			}
+
+			return null;
+		};
 	}
 
 	/**
-	 * @return null|\stdClass|string
+	 * @return \Closure|null
 	 */
-	public function getResponse(): ?\stdClass {
-		return $this->response;
+	public function getResponse(): ?\Closure {
+
+		return isset( $this->response ) ? $this->response : function () {
+
+			return 'coming soon';
+
+		};
 	}
 
 	/**
@@ -57,11 +74,30 @@ class AvailableRoute implements \JsonSerializable {
 	 * @since 5.4.0
 	 */
 	public function jsonSerialize() {
+		$authRequirements = null;
+		$middleWares      = $this->getMiddleWares();
+		foreach ( $middleWares as $middleWare ) {
+			if ( $middleWare instanceof MiddleWareAuthRequirement ) {
+				if ( is_null( $authRequirements ) ) {
+					$authRequirements = [];
+				}
+				$authRequirements = array_merge( $authRequirements, $middleWare->getAuthRequirement() );
+			}
+		}
+
 		return [
 			'http'             => $this->getType(),
 			'path'             => $this->getFullPattern(),
-			'example_request'  => $this->getRequest(),
-			'example_response' => $this->getResponse()
+			'example_request'  => $this->getRequest()(),
+			'example_response' => $this->getResponse()(),
+			'requirements'     => $authRequirements
 		];
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getMiddleWares(): array {
+		return $this->middleWares;
 	}
 }

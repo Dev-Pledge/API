@@ -197,20 +197,24 @@ class Solution extends AbstractDomain implements Example {
 	}
 
 	/**
-	 * @return null|\stdClass
+	 * @return \Closure|null
 	 */
-	public static function getExampleResponse(): ?\stdClass {
-		return static::getExampleInstance()->toAPIMap();
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
 	}
 
 	/**
-	 * @return null|\stdClass
+	 * @return \Closure|null
 	 */
-	public static function getExampleRequest(): ?\stdClass {
-		return (object) [
-			'name'                 => 'My Super Solution name',
-			'open_source_location' => 'https://mylinktogithub.com/mycoolsolution'
-		];
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return (object) [
+				'name'                 => 'My Super Solution name',
+				'open_source_location' => 'https://mylinktogithub.com/mycoolsolution'
+			];
+		};
 	}
 
 	/**
@@ -222,7 +226,7 @@ class Solution extends AbstractDomain implements Example {
 			$example = new static( 'solution' );
 			$example
 				->setProblemId( Problem::getExampleInstance()->getId() )
-				->setUserId( User::getExampleInstance()->getId())
+				->setUserId( User::getExampleInstance()->getId() )
 				->setName( 'My Super Solution name' )
 				->setOpenSourceLocation( 'https://mylinktogithub.com/mycoolsolution' )
 				->setUser( User::getExampleInstance() );

@@ -23,11 +23,9 @@ class AuthRouteGroup extends AbstractRouteGroup {
 
 		$this->post( '/login', AuthController::class . ':login' );
 
-		$this->post( '/refresh', AuthController::class . ':refresh' )
-		     ->add( new Refresh() );
+		$this->post( '/refresh', AuthController::class . ':refresh', null, null, new Refresh() );
 
-		$this->get( '/payload', AuthController::class . ':outputTokenPayload' )
-		     ->add( new Present() );
+		$this->get( '/payload', AuthController::class . ':outputTokenPayload', null, new Present() );
 	}
 
 

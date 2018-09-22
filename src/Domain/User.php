@@ -222,10 +222,12 @@ class User extends AbstractDomain implements Example {
 	}
 
 
-	public static function getExampleResponse(): ?\stdClass {
-		$example = static::getExampleInstance();
+	public static function getExampleResponse(): \Closure {
+		return function () {
+			$example = static::getExampleInstance();
 
-		return $example->toAPIMap();
+			return $example->toAPIMap();
+		};
 	}
 
 
@@ -234,6 +236,7 @@ class User extends AbstractDomain implements Example {
 	 */
 	public static function getExampleInstance() {
 		static $example;
+
 		if ( ! isset( $example ) ) {
 			$example = new static( 'user' );
 			$example
@@ -246,13 +249,15 @@ class User extends AbstractDomain implements Example {
 	}
 
 	/**
-	 * @return null|\stdClass
+	 * @return \Closure
 	 */
-	public static function getExampleRequest(): ?\stdClass {
-		return (object) [
-			'name'     => 'Johnny DevHead',
-			'email'    => 'johnndevhead@gmail.com',
-			'username' => 'JohnnyDevHead'
-		];
+	public static function getExampleRequest(): \Closure {
+		return function () {
+			return (object) [
+				'name'     => 'Johnny DevHead',
+				'email'    => 'johnndevhead@gmail.com',
+				'username' => 'JohnnyDevHead'
+			];
+		};
 	}
 }

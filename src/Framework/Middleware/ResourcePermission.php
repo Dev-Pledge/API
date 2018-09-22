@@ -4,6 +4,7 @@ namespace DevPledge\Framework\Middleware;
 
 
 use DevPledge\Domain\Permission;
+use DevPledge\Integrations\Route\MiddleWareAuthRequirement;
 use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -12,7 +13,7 @@ use Slim\Http\Response;
  * Class Permission
  * @package DevPledge\Framework\Middleware
  */
-class ResourcePermission extends AbstractUserMiddleware {
+class ResourcePermission extends AbstractUserMiddleware implements MiddleWareAuthRequirement {
 	/**
 	 * @var
 	 */
@@ -28,7 +29,7 @@ class ResourcePermission extends AbstractUserMiddleware {
 	 * @param string $resource
 	 * @param string $action
 	 */
-	public function __construct( string $resource, string $action) {
+	public function __construct( string $resource, string $action ) {
 		try {
 			if ( ! in_array( $action, Permission::ACTION_TYPES ) ) {
 				throw new \Exception( 'Action has to be ' . join( ', ', Permission::ACTION_TYPES ) );
@@ -82,4 +83,10 @@ class ResourcePermission extends AbstractUserMiddleware {
 	}
 
 
+	public function getAuthRequirement(): ?array {
+		return [
+			'Header Required: Authorization: Bearer {access_token}',
+			$this->resource . ' must have ' . $this->action . ' permission'
+		];
+	}
 }

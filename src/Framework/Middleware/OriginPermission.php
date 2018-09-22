@@ -4,6 +4,7 @@ namespace DevPledge\Framework\Middleware;
 
 
 use DevPledge\Integrations\Middleware\AbstractMiddleware;
+use DevPledge\Integrations\Route\MiddleWareAuthRequirement;
 use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -12,7 +13,7 @@ use Slim\Http\Response;
  * Class OriginPermission
  * @package DevPledge\Framework\Middleware
  */
-class OriginPermission extends AbstractMiddleware {
+class OriginPermission extends AbstractMiddleware implements MiddleWareAuthRequirement {
 
 	/**
 	 * @param Request $request
@@ -54,5 +55,11 @@ class OriginPermission extends AbstractMiddleware {
 		$response = $next( $request, $response );
 
 		return $response;
+	}
+
+	public function getAuthRequirement(): ?array {
+		return [
+			'Header Required: Origin-Auth: {origin_token}'
+		];
 	}
 }

@@ -3,6 +3,7 @@
 namespace DevPledge\Integrations\Middleware\JWT;
 
 use DevPledge\Integrations\Middleware\AbstractMiddleware;
+use DevPledge\Integrations\Route\MiddleWareAuthRequirement;
 use DevPledge\Integrations\Security\JWT\JWT;
 use DevPledge\Integrations\Security\JWT\Token;
 use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
@@ -13,7 +14,7 @@ use Slim\Http\Response;
  * Class Present
  * @package DevPledge\Integrations\Middleware\JWT
  */
-class Present extends AbstractMiddleware {
+class Present extends AbstractMiddleware implements MiddleWareAuthRequirement {
 	/**
 	 * @param Request $request
 	 * @param Response $response
@@ -60,5 +61,10 @@ class Present extends AbstractMiddleware {
 		return $response;
 	}
 
+	public function getAuthRequirement(): ?array {
+		return [
+			'Header Required: Authorization: Bearer {access_token}'
+		];
+	}
 
 }

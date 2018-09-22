@@ -3,6 +3,7 @@
 namespace DevPledge\Integrations\Middleware\JWT;
 
 use DevPledge\Integrations\Middleware\AbstractMiddleware;
+use DevPledge\Integrations\Route\MiddleWareAuthRequirement;
 use DevPledge\Integrations\Security\JWT\JWT;
 use DevPledge\Integrations\Security\JWT\Token;
 use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
@@ -13,7 +14,7 @@ use Slim\Http\Response;
  * Class Refresh
  * @package DevPledge\Integrations\Middleware\JWT
  */
-class Refresh extends AbstractMiddleware {
+class Refresh extends AbstractMiddleware implements MiddleWareAuthRequirement {
 	/**
 	 * @param Request $request
 	 * @param Response $response
@@ -62,4 +63,9 @@ class Refresh extends AbstractMiddleware {
 	}
 
 
+	public function getAuthRequirement(): ?\stdClass {
+		return (object)[
+			'header'=> 'Authorization: Bearer {access_token}'
+		];
+	}
 }
