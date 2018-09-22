@@ -23,6 +23,6 @@ class OrganisationRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$this->getApp()->get( '/{id}', OrganisationController::class . ':getOrganisation' );
+		$this->get( '/{id}', OrganisationController::class . ':getOrganisation' );
 	}
 }

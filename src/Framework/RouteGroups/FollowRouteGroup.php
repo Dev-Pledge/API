@@ -15,11 +15,11 @@ class FollowRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$app = $this->getApp();
 
-		$app->post( '/{entity_id}', FollowController::class . ':createFollow' )->add( new Authorise() );
-		$app->delete( '/{entity_id}', FollowController::class . ':deleteFollow' )->add( new Authorise() );
-		$app->get( 's/{user_id}', FollowController::class . ':getUserFollows' );
+
+		$this->post( '/{entity_id}', FollowController::class . ':createFollow' )->add( new Authorise() );
+		$this->delete( '/{entity_id}', FollowController::class . ':deleteFollow' )->add( new Authorise() );
+		$this->get( 's/{user_id}', FollowController::class . ':getUserFollows' );
 
 	}
 }

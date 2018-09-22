@@ -4,6 +4,7 @@ namespace DevPledge\Framework\RouteGroups;
 
 
 use DevPledge\Integrations\Route\AbstractRouteGroup;
+use DevPledge\Integrations\Route\AvailableRoutes;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -20,8 +21,8 @@ class ServerRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$app = $this->getApp();
-		$app->get( '/datetime', function ( Request $request, Response $response ) {
+
+		$this->get( '/datetime', function ( Request $request, Response $response ) {
 			$now = new \DateTime();
 
 			return $response->withJson( [
@@ -31,6 +32,10 @@ class ServerRouteGroup extends AbstractRouteGroup {
 				'unix_timestamp' => time()
 			] );
 		} );
-		
+
+		$this->get( '/methods', function ( Request $request, Response $response ) {
+			return $response->withJson( AvailableRoutes::get() );
+		} );
+
 	}
 }

@@ -23,34 +23,34 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->getApp()->post(
+		$this->post(
 			'/createFromEmailPassword',
 			UserCreateController::class . ':createUserFromEmailPassword'
 		);
-		$this->getApp()->post(
+		$this->post(
 			'/createFromGitHub',
 			UserCreateController::class . ':createUserFromGitHub'
 		);
-		$this->getApp()->post(
+		$this->post(
 			'/checkUsernameAvailability',
 			UserCreateController::class . ':checkUsernameAvailability'
 		);
-		$this->getApp()->post(
+		$this->post(
 			'/updatePassword/{user_id}',
 			UserUpdateController::class . ':updatePassword'
 		)->add( new UserPermission() );
 
-		$this->getApp()->patch(
+		$this->patch(
 			'/{user_id}',
 			UserUpdateController::class . ':update'
 		)->add( new UserPermission() );
 
-		$this->getApp()->post(
+		$this->post(
 			'createStripePaymentMethod/{user_id}',
 			PayController::class . ':createUserStripePaymentMethod'
 		)->add( new UserPermission() );
 
-		$this->getApp()->get(
+		$this->get(
 			'paymentMethods/{user_id}',
 			PayController::class . ':getUserPaymentMethods'
 		)->add( new UserPermission() );

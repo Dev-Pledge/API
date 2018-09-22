@@ -19,7 +19,7 @@ class PublicUserRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->getApp()->get(
+		$this->get(
 			'/user/{username}',
 			UserController::class . ':getProfileInfoByUsername'
 		);

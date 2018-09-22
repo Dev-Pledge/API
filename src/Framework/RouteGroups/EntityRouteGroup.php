@@ -18,7 +18,7 @@ class EntityRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$app = $this->getApp();
-		$app->post( '/getForFeed', EntityController::class . ':getFeedEntities' );
+
+		$this->post( '/getForFeed', EntityController::class . ':getFeedEntities' );
 	}
 }

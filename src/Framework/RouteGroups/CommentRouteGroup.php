@@ -19,15 +19,14 @@ class CommentRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$app = $this->getApp();
-		$app->get( '/{comment_id}', CommentController::class . ':getComment' );
-		$app->get( 's/{entity_id}', CommentController::class . ':getEntityComments' );
-		$app->get( '/replies/{comment_id}', CommentController::class . ':getCommentReplies' );
-		$app->get( 's/{entity_id}/page/{page}', CommentController::class . ':getEntityCommentsByPage' );
-		$app->get( '/replies/{comment_id}/page/{page}', CommentController::class . ':getCommentRepliesByPage' );
-		$app->post( '/reply/{comment_id}', CommentController::class . ':createReply' )->add( new Authorise() );
-		$app->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity' )->add( new Authorise() );
 
-		$app->get( 's/contextual/{comment_id}',  CommentController::class . ':getContextualComments');
+		$this->get( '/{comment_id}', CommentController::class . ':getComment' );
+		$this->get( 's/{entity_id}', CommentController::class . ':getEntityComments' );
+		$this->get( '/replies/{comment_id}', CommentController::class . ':getCommentReplies' );
+		$this->get( 's/{entity_id}/page/{page}', CommentController::class . ':getEntityCommentsByPage' );
+		$this->get( '/replies/{comment_id}/page/{page}', CommentController::class . ':getCommentRepliesByPage' );
+		$this->post( '/reply/{comment_id}', CommentController::class . ':createReply' )->add( new Authorise() );
+		$this->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity' )->add( new Authorise() );
+		$this->get( 's/contextual/{comment_id}',  CommentController::class . ':getContextualComments');
 	}
 }

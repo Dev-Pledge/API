@@ -24,20 +24,20 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 
 		$createProblemsMiddleWare = new ResourcePermission( 'problems', 'create' );
 
-		$this->getApp()->post( '/create', ProblemController::class . ':createProblem' )
+		$this->post( '/create', ProblemController::class . ':createProblem' )
 		     ->add( $createProblemsMiddleWare );
 
-		$this->getApp()->patch( '/{problem_id}', ProblemController::class . ':updateProblem' )
+		$this->patch( '/{problem_id}', ProblemController::class . ':updateProblem' )
 		     ->add( $createProblemsMiddleWare );
 
-		$this->getApp()->get( '/{problem_id}', ProblemController::class . ':getProblem' );
+		$this->get( '/{problem_id}', ProblemController::class . ':getProblem' );
 
-		$this->getApp()->get( 's/user/{user_id}', ProblemController::class . ':getUserProblems' );
+		$this->get( 's/user/{user_id}', ProblemController::class . ':getUserProblems' );
 
-		$this->getApp()->post( '/{problem_id}/solution', SolutionController::class . ':createSolution' )
+		$this->post( '/{problem_id}/solution', SolutionController::class . ':createSolution' )
 		     ->add( new ResourcePermission( 'solutions', 'create' ) );
 
-		$this->getApp()->post( '/{problem_id}/pledge', PledgeController::class . ':createPledge' )->add( new Authorise() );
+		$this->post( '/{problem_id}/pledge', PledgeController::class . ':createPledge' )->add( new Authorise() );
 
 	}
 }

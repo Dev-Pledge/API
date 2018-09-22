@@ -20,8 +20,8 @@ class PayRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$this->getApp()->post( '/pledge/{pledge_id}/stripeToken', PayController::class . ':payPledgeWithStripeToken' );
-		$this->getApp()->post( '/pledge/{pledge_id}/paymentMethod', PayController::class . ':payPledgeWithPaymentMethod' );
+		$this->post( '/pledge/{pledge_id}/stripeToken', PayController::class . ':payPledgeWithStripeToken' );
+		$this->post( '/pledge/{pledge_id}/paymentMethod', PayController::class . ':payPledgeWithPaymentMethod' );
 		
 	}
 }

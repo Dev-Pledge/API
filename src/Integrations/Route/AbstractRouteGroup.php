@@ -22,6 +22,7 @@ abstract class AbstractRouteGroup extends AbstractAppAccess {
 	 */
 	protected $rootPattern = '';
 
+
 	/**
 	 * AbstractRouteGroup constructor.
 	 *
@@ -36,9 +37,8 @@ abstract class AbstractRouteGroup extends AbstractAppAccess {
 
 
 	final public function __invoke() {
-		$app  = $this->getApp();
-		$that = $this;
-
+		$app   = $this->getApp();
+		$that  = $this;
 		$group = $app->group( $this->getRootPattern(), function () use ( $app, $that ) {
 			$app->group( $that->getPattern(),
 				function () use ( $that ) {
@@ -53,6 +53,36 @@ abstract class AbstractRouteGroup extends AbstractAppAccess {
 			}
 		}
 
+	}
+
+	final public function get( $pattern, $callable, $exampleResponse = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'get', $this->getPattern() . $pattern, null, $exampleResponse ) );
+
+		return $this->getApp()->get( $pattern, $callable );
+	}
+
+	final public function post( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'post', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+
+		return $this->getApp()->post( $pattern, $callable );
+	}
+
+	final public function patch( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'patch', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+
+		return $this->getApp()->patch( $pattern, $callable );
+	}
+
+	final public function delete( $pattern, $callable, $exampleResponse = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'delete', $this->getPattern() . $pattern, null, $exampleResponse ) );
+
+		return $this->getApp()->delete( $pattern, $callable );
+	}
+
+	final public function put( $pattern, $callable, $exampleRequest = null, $exampleResponse = null ) {
+		AvailableRoutes::AddRoute( new AvailableRoute( 'put', $this->getPattern() . $pattern, $exampleRequest, $exampleResponse ) );
+
+		return $this->getApp()->put( $pattern, $callable );
 	}
 
 	abstract protected function callableInGroup();

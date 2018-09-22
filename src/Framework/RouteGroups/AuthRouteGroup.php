@@ -21,15 +21,13 @@ class AuthRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$app = $this->getApp();
+		$this->post( '/login', AuthController::class . ':login' );
 
-		$app->post( '/login', AuthController::class . ':login' );
+		$this->post( '/refresh', AuthController::class . ':refresh' )
+		     ->add( new Refresh() );
 
-		$app->post( '/refresh', AuthController::class . ':refresh' )
-		    ->add( new Refresh() );
-
-		$app->get( '/payload', AuthController::class . ':outputTokenPayload' )
-		    ->add( new Present() );
+		$this->get( '/payload', AuthController::class . ':outputTokenPayload' )
+		     ->add( new Present() );
 	}
 
 

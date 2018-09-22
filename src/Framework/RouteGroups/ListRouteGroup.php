@@ -25,7 +25,7 @@ class ListRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$app = $this->getApp();
-		$app->get( '/topics', ListController::class . ':getTopics' );
+
+		$this->get( '/topics', ListController::class . ':getTopics' );
 	}
 }
