@@ -2,11 +2,13 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+
 /**
  * Class Problem
  * @package DevPledge\Domain
  */
-class Problem extends AbstractDomain {
+class Problem extends AbstractDomain implements Example {
 
 	use CommentsTrait;
 	/**
@@ -84,6 +86,24 @@ class Problem extends AbstractDomain {
 			'modified'          => $this->getModified()->format( 'Y-m-d H:i:s' ),
 			'created'           => $this->getCreated()->format( 'Y-m-d H:i:s' )
 		];
+	}
+
+	public static function getExampleRequest(): \stdClass {
+		return (object) [
+			'title'             => 'My Problems Title',
+			'description'       => 'Description of Problem',
+			'specification'     => 'Outline of Specification Needed',
+			'active_datetime'   => '2018-01-01 01:00:00',
+			'deadline_datetime' => '2018-01-01 01:00:00',
+			'topics'            => [ 'PHP', 'JS' ]
+		];
+	}
+
+	/**
+	 * @return null|\stdClass
+	 */
+	public static function getExampleResponse(): ?\stdClass {
+		return static::getExampleInstance()->toApiMap();
 	}
 
 	/**
@@ -356,5 +376,23 @@ class Problem extends AbstractDomain {
 		$this->latestPledges = $latestPledges;
 
 		return $this;
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'problem' );
+			$example
+				->setTitle( 'My Problems Title' )
+				->setDescription( 'Description of Problem' )
+				->setSpecification( 'Outline of Specification Needed' )
+				->setSolutions( new Solutions( [ Solution::getExampleInstance() ] ) )
+				->setUser( User::getExampleInstance() );
+		}
+
+		return $example;
 	}
 }

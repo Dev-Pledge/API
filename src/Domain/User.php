@@ -4,6 +4,7 @@ namespace DevPledge\Domain;
 
 use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\PreferredUserAuth\UsernameEmailPassword;
+use DevPledge\Integrations\Route\Example;
 use DevPledge\Uuid\Uuid;
 
 
@@ -11,7 +12,7 @@ use DevPledge\Uuid\Uuid;
  * Class User
  * @package DevPledge\Domain
  */
-class User extends AbstractDomain {
+class User extends AbstractDomain implements Example {
 
 	//use CommentsTrait;
 	/**
@@ -221,4 +222,37 @@ class User extends AbstractDomain {
 	}
 
 
+	public static function getExampleResponse(): ?\stdClass {
+		$example = static::getExampleInstance();
+
+		return $example->toAPIMap();
+	}
+
+
+	/**
+	 * @return User
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'user' );
+			$example
+				->setName( 'Johnny DevHead' )
+				->setEmail( 'johnndevhead@gmail.com' )
+				->setUsername( 'JohnnyDevHead' );
+		}
+
+		return $example;
+	}
+
+	/**
+	 * @return null|\stdClass
+	 */
+	public static function getExampleRequest(): ?\stdClass {
+		return (object) [
+			'name'     => 'Johnny DevHead',
+			'email'    => 'johnndevhead@gmail.com',
+			'username' => 'JohnnyDevHead'
+		];
+	}
 }

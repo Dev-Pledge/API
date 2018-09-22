@@ -4,6 +4,7 @@ namespace DevPledge\Domain;
 
 
 use DevPledge\Application\Mapper\PersistMappable;
+use DevPledge\Integrations\Route\Example;
 use DevPledge\Uuid\Uuid;
 
 /**
@@ -184,5 +185,6 @@ abstract class AbstractDomain implements PersistMappable {
 	public function toPersistMapArray(): array {
 		return (array) $this->toPersistMap();
 	}
+
 
 }

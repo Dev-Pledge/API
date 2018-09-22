@@ -2,11 +2,14 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+use DevPledge\Uuid\Uuid;
+
 /**
  * Class Solution
  * @package DevPledge\Domain
  */
-class Solution extends AbstractDomain {
+class Solution extends AbstractDomain implements Example {
 
 	use CommentsTrait;
 	/**
@@ -191,5 +194,40 @@ class Solution extends AbstractDomain {
 		$data->user = $this->getUser()->toPublicAPIMap();
 
 		return $data;
+	}
+
+	/**
+	 * @return null|\stdClass
+	 */
+	public static function getExampleResponse(): ?\stdClass {
+		return static::getExampleInstance()->toAPIMap();
+	}
+
+	/**
+	 * @return null|\stdClass
+	 */
+	public static function getExampleRequest(): ?\stdClass {
+		return (object) [
+			'name'                 => 'My Super Solution name',
+			'open_source_location' => 'https://mylinktogithub.com/mycoolsolution'
+		];
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'solution' );
+			$example
+				->setProblemId( Problem::getExampleInstance()->getId() )
+				->setUserId( User::getExampleInstance()->getId())
+				->setName( 'My Super Solution name' )
+				->setOpenSourceLocation( 'https://mylinktogithub.com/mycoolsolution' )
+				->setUser( User::getExampleInstance() );
+		}
+
+		return $example;
 	}
 }

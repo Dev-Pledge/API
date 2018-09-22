@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\Auth\PayController;
 use DevPledge\Framework\Controller\User\UserController;
 use DevPledge\Framework\Controller\User\UserCreateController;
@@ -42,7 +43,7 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 		$this->patch(
 			'/{user_id}',
-			UserUpdateController::class . ':update'
+			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse()
 		)->add( new UserPermission() );
 
 		$this->post(

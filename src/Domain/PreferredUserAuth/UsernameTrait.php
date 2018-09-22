@@ -32,4 +32,5 @@ trait UsernameTrait {
 			throw new PreferredUserAuthValidationException( 'Username must be longer than 5 characters and contain no special characters or spaces - underscores are just fine though', 'username' );
 		}
 	}
+
 }

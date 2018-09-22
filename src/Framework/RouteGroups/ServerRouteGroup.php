@@ -36,6 +36,9 @@ class ServerRouteGroup extends AbstractRouteGroup {
 		$this->get( '/methods', function ( Request $request, Response $response ) {
 			return $response->withJson( AvailableRoutes::get() );
 		} );
-
+		
+		$this->get( '/endpoints', function ( Request $request, Response $response ) {
+			return $response->withJson( AvailableRoutes::get() );
+		} );
 	}
 }
