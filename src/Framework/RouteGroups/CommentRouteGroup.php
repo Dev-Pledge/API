@@ -2,6 +2,7 @@
 
 namespace DevPledge\Framework\RouteGroups;
 
+use DevPledge\Domain\Comment;
 use DevPledge\Framework\Controller\Comment\CommentController;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
@@ -20,13 +21,13 @@ class CommentRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->get( '/{comment_id}', CommentController::class . ':getComment' );
+		$this->get( '/{comment_id}', CommentController::class . ':getComment', Comment::getExampleResponse() );
 		$this->get( 's/{entity_id}', CommentController::class . ':getEntityComments' );
 		$this->get( '/replies/{comment_id}', CommentController::class . ':getCommentReplies' );
 		$this->get( 's/{entity_id}/page/{page}', CommentController::class . ':getEntityCommentsByPage' );
 		$this->get( '/replies/{comment_id}/page/{page}', CommentController::class . ':getCommentRepliesByPage' );
-		$this->post( '/reply/{comment_id}', CommentController::class . ':createReply', null, null, new Authorise() );
-		$this->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity', null, null, new Authorise() );
+		$this->post( '/reply/{comment_id}', CommentController::class . ':createReply', Comment::getExampleRequest(), Comment::getExampleResponse(), new Authorise() );
+		$this->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity', Comment::getExampleResponse(), Comment::getExampleResponse(), new Authorise() );
 		$this->get( 's/contextual/{comment_id}', CommentController::class . ':getContextualComments' );
 	}
 }

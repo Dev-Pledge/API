@@ -86,7 +86,7 @@ class ResourcePermission extends AbstractUserMiddleware implements MiddleWareAut
 	public function getAuthRequirement(): ?array {
 		return [
 			'Header Required: Authorization: Bearer {access_token}',
-			$this->resource . ' must have ' . $this->action . ' permission'
+			'User must have "' . $this->action . '" on "' . $this->resource . '" ' . ' permission'
 		];
 	}
 }

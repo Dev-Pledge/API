@@ -59,7 +59,7 @@ class OriginPermission extends AbstractMiddleware implements MiddleWareAuthRequi
 
 	public function getAuthRequirement(): ?array {
 		return [
-			'Header Required: Origin-Auth: {origin_token}'
+			'Header Required: "Origin-Auth: {origin_token}"'
 		];
 	}
 }

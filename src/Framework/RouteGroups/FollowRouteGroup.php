@@ -18,7 +18,7 @@ class FollowRouteGroup extends AbstractRouteGroup {
 
 
 		$this->post( '/{entity_id}', FollowController::class . ':createFollow', null, null, new Authorise() );
-		$this->delete( '/{entity_id}', FollowController::class . ':deleteFollow', null, null, new Authorise() );
+		$this->delete( '/{entity_id}', FollowController::class . ':deleteFollow', null, new Authorise() );
 		$this->get( 's/{user_id}', FollowController::class . ':getUserFollows' );
 
 	}

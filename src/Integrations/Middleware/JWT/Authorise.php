@@ -63,7 +63,7 @@ class Authorise extends AbstractMiddleware implements MiddleWareAuthRequirement 
 
 	public function getAuthRequirement(): ?array {
 		return [
-			'Header Required: Authorization: Bearer {access_token}'
+			'Header Required: "Authorization: Bearer {access_token}"'
 		];
 	}
 }

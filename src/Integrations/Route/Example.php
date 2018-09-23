@@ -8,12 +8,12 @@ namespace DevPledge\Integrations\Route;
  */
 interface Example {
 	/**
-	 * @return null|\stdClass
+	 * @return null|\Closure
 	 */
 	public static function getExampleResponse(): ?\Closure;
 
 	/**
-	 * @return null|\stdClass
+	 * @return null|\Closure
 	 */
 	public static function getExampleRequest(): ?\Closure;
 

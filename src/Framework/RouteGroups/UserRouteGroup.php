@@ -53,7 +53,7 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 		$this->get(
 			'paymentMethods/{user_id}',
-			PayController::class . ':getUserPaymentMethods', null, null, new UserPermission()
+			PayController::class . ':getUserPaymentMethods', null,  new UserPermission()
 		);
 
 

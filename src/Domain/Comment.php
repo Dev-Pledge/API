@@ -2,11 +2,14 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+use DevPledge\Uuid\Uuid;
+
 /**
  * Class Comment
  * @package DevPledge\Domain
  */
-class Comment extends AbstractDomain {
+class Comment extends AbstractDomain implements Example {
 
 	/**
 	 * @var UserDefinedContent
@@ -275,4 +278,40 @@ class Comment extends AbstractDomain {
 		return $this->user;
 	}
 
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return (object) [
+				'comment' => 'My awesome comment!',
+				'topics'  => [ 'Docker', 'Python' ]
+			];
+		};
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'comment' );
+			$example->setEntityId( Problem::getExampleInstance()->getId() )
+			        ->setUser( User::getExampleInstance() )
+			        ->setUserId( User::getExampleInstance()->getId() )
+			        ->setComment( new UserDefinedContent('My awesome comment! http://www.google.com') );
+		}
+
+		return $example;
+	}
 }
