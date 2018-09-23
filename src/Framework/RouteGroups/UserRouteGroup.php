@@ -8,6 +8,7 @@ use DevPledge\Framework\Controller\Auth\PayController;
 use DevPledge\Framework\Controller\User\UserController;
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Framework\Controller\User\UserUpdateController;
+use DevPledge\Framework\Middleware\OriginPermission;
 use DevPledge\Framework\Middleware\UserPermission;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
@@ -18,7 +19,7 @@ use DevPledge\Integrations\Route\AbstractRouteGroup;
 class UserRouteGroup extends AbstractRouteGroup {
 
 	public function __construct() {
-		parent::__construct( '/user' );
+		parent::__construct( '/user', [ new OriginPermission() ] );
 	}
 
 
@@ -45,7 +46,6 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'/{user_id}',
 			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse(), new UserPermission()
 		);
-
 		$this->post(
 			'createStripePaymentMethod/{user_id}',
 			PayController::class . ':createUserStripePaymentMethod'
@@ -53,7 +53,7 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 		$this->get(
 			'paymentMethods/{user_id}',
-			PayController::class . ':getUserPaymentMethods', null,  new UserPermission()
+			PayController::class . ':getUserPaymentMethods', null, new UserPermission()
 		);
 
 
