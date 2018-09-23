@@ -12,10 +12,6 @@ use DevPledge\Integrations\Setting\ExtrapolateSettings;
 
 date_default_timezone_set('UTC');
 
-if ( PHP_SAPI == 'cli' ) {
-
-}
-
 require __DIR__ . '/../vendor/autoload.php';
 
 session_start();

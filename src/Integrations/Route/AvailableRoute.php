@@ -12,7 +12,6 @@ class AvailableRoute implements \JsonSerializable {
 	protected $request;
 	protected $response;
 	protected $middleWares = [];
-
 	/**
 	 * AvailableRoute constructor.
 	 *

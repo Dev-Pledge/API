@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Integrations\Integrations;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 use DevPledge\Integrations\Route\AvailableRoutes;
 use Slim\Http\Request;
@@ -36,9 +37,46 @@ class ServerRouteGroup extends AbstractRouteGroup {
 		$this->get( '/methods', function ( Request $request, Response $response ) {
 			return $response->withJson( AvailableRoutes::get() );
 		} );
-		
+
 		$this->get( '/endpoints', function ( Request $request, Response $response ) {
 			return $response->withJson( AvailableRoutes::get() );
 		} );
+
+		if ( PHP_SAPI == 'cli' ) {
+			$this->getApp()->get( '/make/readme', function ( Request $request, Response $response ) {
+				$routes = AvailableRoutes::get();
+				ob_start();
+				echo '# API Endpoints' . PHP_EOL;
+				echo '* Header Required: "Content-Type: application/json"' . PHP_EOL . PHP_EOL;
+				foreach ( $routes as $route ) {
+					$data = $route->jsonSerialize();
+					echo '* [' . $route->getType() . ' *' . $route->getFullPattern() . '* ](#' . md5( $route->getFullPattern() ) . ')  ' . PHP_EOL;
+
+				}
+
+				foreach ( $routes as $route ) {
+					$data = $route->jsonSerialize();
+					echo '## <a name="' . md5( $route->getFullPattern() ) . '"></a>' . $route->getType() . ' ' . $route->getFullPattern() . PHP_EOL;
+					if ( is_array( $data['requirements'] ) ) {
+						echo '### Requirements' . PHP_EOL;
+						foreach ( $data['requirements'] as $req ) {
+							echo '* ' . $req . PHP_EOL;
+						}
+					}
+					if ( $route->getType() != 'GET' ) {
+						echo '#### Example Request' . PHP_EOL;
+						echo '```' . PHP_EOL . \json_encode( $route->getRequest()(), JSON_PRETTY_PRINT ) . PHP_EOL . '```' . PHP_EOL;
+					}
+					echo '#### Example Response' . PHP_EOL;
+					echo '```' . PHP_EOL . \json_encode( $route->getResponse()(), JSON_PRETTY_PRINT ) . PHP_EOL . '```' . PHP_EOL . PHP_EOL;
+
+				}
+				$doc = ob_get_clean();
+
+				file_put_contents( Integrations::getBaseDir() . '/ENDPOINTS.MD', $doc );
+
+				return $response->withJson( [ 'done' => true ] );
+			} );
+		}
 	}
 }
