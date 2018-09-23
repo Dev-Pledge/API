@@ -293,8 +293,7 @@ class Comment extends AbstractDomain implements Example {
 	public static function getExampleRequest(): ?\Closure {
 		return function () {
 			return (object) [
-				'comment' => 'My awesome comment!',
-				'topics'  => [ 'Docker', 'Python' ]
+				'comment' => 'My awesome comment! http://www.google.com link to stuff'
 			];
 		};
 	}
@@ -309,7 +308,7 @@ class Comment extends AbstractDomain implements Example {
 			$example->setEntityId( Problem::getExampleInstance()->getId() )
 			        ->setUser( User::getExampleInstance() )
 			        ->setUserId( User::getExampleInstance()->getId() )
-			        ->setComment( new UserDefinedContent('My awesome comment! http://www.google.com') );
+			        ->setComment( new UserDefinedContent( 'My awesome comment! http://www.google.com link to stuff' ) );
 		}
 
 		return $example;

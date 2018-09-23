@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\StatusComment;
 use DevPledge\Framework\Controller\Comment\CommentStatusController;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
@@ -21,8 +22,8 @@ class StatusRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->get( '/{status_id}', CommentStatusController::class . ':getStatus' );
-		$this->post( '/create', CommentStatusController::class . ':createStatus', null, null, new Authorise() );
+		$this->get( '/{status_id}', CommentStatusController::class . ':getStatus', StatusComment::getExampleResponse() );
+		$this->post( '/create', CommentStatusController::class . ':createStatus', StatusComment::getExampleRequest(), StatusComment::getExampleResponse(), new Authorise() );
 		$this->get( 'es/user/{user_id}', CommentStatusController::class . ':getUserStatuses' );
 	}
 }
