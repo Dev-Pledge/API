@@ -27,7 +27,7 @@ class CommentRouteGroup extends AbstractRouteGroup {
 		$this->get( 's/{entity_id}/page/{page}', CommentController::class . ':getEntityCommentsByPage' );
 		$this->get( '/replies/{comment_id}/page/{page}', CommentController::class . ':getCommentRepliesByPage' );
 		$this->post( '/reply/{comment_id}', CommentController::class . ':createReply', Comment::getExampleRequest(), Comment::getExampleResponse(), new Authorise() );
-		$this->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity', Comment::getExampleResponse(), Comment::getExampleResponse(), new Authorise() );
+		$this->post( '/{entity_id}', CommentController::class . ':createCommentOnEntity', Comment::getExampleRequest(), Comment::getExampleResponse(), new Authorise() );
 		$this->get( 's/contextual/{comment_id}', CommentController::class . ':getContextualComments' );
 	}
 }

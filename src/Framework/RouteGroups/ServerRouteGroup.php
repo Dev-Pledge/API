@@ -49,7 +49,7 @@ class ServerRouteGroup extends AbstractRouteGroup {
 				echo '# API Endpoints' . PHP_EOL;
 				echo '* Header Required: "Content-Type: application/json"' . PHP_EOL . PHP_EOL;
 				foreach ( $routes as $route ) {
-					$data = $route->jsonSerialize();
+
 					echo '* [' . $route->getType() . ' *' . $route->getFullPattern() . '* ](#' . md5( $route->getFullPattern() ) . ')  ' . PHP_EOL;
 
 				}
