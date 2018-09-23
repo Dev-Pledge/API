@@ -3,6 +3,7 @@
 namespace DevPledge\Integrations\Setting;
 
 use Slim\Container;
+use Slim\Http\Environment;
 
 
 /**
@@ -47,6 +48,13 @@ final class Settings extends Container {
 		}
 		if ( ! isset( $this['settings']['integrations'] ) ) {
 			$this['settings']['integrations'] = new static();
+		}
+
+		if ( PHP_SAPI == 'cli' ) {
+			$argv                            = $GLOBALS['argv'];
+			array_shift($argv);
+			$pathInfo                        = implode( '/', $argv );
+			$this['environment'] = Environment::mock( [ 'REQUEST_URI' => $pathInfo] );
 		}
 
 		return $this;

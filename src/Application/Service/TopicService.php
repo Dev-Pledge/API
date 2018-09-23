@@ -19,7 +19,7 @@ class TopicService {
 	/**
 	 * @return Topic[]
 	 */
-	public function getTopics() {
+	public static function getTopics() {
 		if ( isset( static::$topics ) ) {
 			return static::$topics;
 		}
