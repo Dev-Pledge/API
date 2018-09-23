@@ -1,6 +1,6 @@
 <?php
 require __DIR__ . '/../../vendor/autoload.php';
-date_default_timezone_set('UTC');
+date_default_timezone_set( 'UTC' );
 echo 'starting migrations!' . PHP_EOL;
 $now = new \DateTime( 'now' );
 echo '--';
@@ -20,3 +20,4 @@ while ( $isThere === null ) {
 }
 echo 'go migrations go - - - ->' . PHP_EOL;
 echo shell_exec( 'cd ' . __DIR__ . '/../../ && vendor/bin/phinx migrate -e development' ) . PHP_EOL;
+echo shell_exec( 'cd ' . __DIR__ . '/../../ && php public/index.php /server/make/readme' ) . PHP_EOL;
