@@ -20,4 +20,3 @@ while ( $isThere === null ) {
 }
 echo 'go migrations go - - - ->' . PHP_EOL;
 echo shell_exec( 'cd ' . __DIR__ . '/../../ && vendor/bin/phinx migrate -e development' ) . PHP_EOL;
-echo shell_exec( 'cd ' . __DIR__ . '/../../ && php public/index.php /server/make/readme' ) . PHP_EOL;

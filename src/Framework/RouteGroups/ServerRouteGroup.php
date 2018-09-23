@@ -73,9 +73,12 @@ class ServerRouteGroup extends AbstractRouteGroup {
 				}
 				$doc = ob_get_clean();
 
-				file_put_contents( Integrations::getBaseDir() . '/ENDPOINTS.MD', $doc );
+				if ( file_put_contents( Integrations::getBaseDir() . '/ENDPOINTS.MD', $doc ) ) {
+					return $response->withJson( [ 'ENDPOINTS.MD' => 'built' ] );
+				}
 
-				return $response->withJson( [ 'done' => true ] );
+				return $response->withJson( [ 'ENDPOINTS.MD' => 'failed' ] );
+
 			} );
 		}
 	}
