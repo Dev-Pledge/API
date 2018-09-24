@@ -47,12 +47,12 @@ class UserRouteGroup extends AbstractRouteGroup {
 			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse(), new UserPermission()
 		);
 		$this->post(
-			'createStripePaymentMethod/{user_id}',
+			'/createStripePaymentMethod/{user_id}',
 			PayController::class . ':createUserStripePaymentMethod'
 			, null, null, new UserPermission() );
 
 		$this->get(
-			'paymentMethods/{user_id}',
+			'/paymentMethods/{user_id}',
 			PayController::class . ':getUserPaymentMethods', null, new UserPermission()
 		);
 
