@@ -94,7 +94,7 @@ class Follow extends AbstractDomainDualUuid implements Example {
 		static $example;
 		if ( ! isset( $example ) ) {
 			$example = new static( 'follow' );
-			$example->setDualUuid( new DualUuid( Uuid::make( 'follow' )->toString(), User::getExampleInstance()->getId() ) );
+			$example->setDualUuid( new DualUuid(User::getExampleInstance()->getId(), Problem::getExampleInstance()->getId()) );
 		}
 
 		return $example;
