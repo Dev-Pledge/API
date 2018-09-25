@@ -1,21 +1,5 @@
 # API
 
-## Entities
-
-### Organisation
-
-Organisations are companies.
-They have a name, a UUID V4 with a prefix of `org-` and a number of members, each of which can have different roles.
-
-#### Organisation Role
-
-Roles exist between a user and an organisation and can consist of `member`, `admin`.
-
-### User
-
-Users have an id which is a UUID V4 with a prefix of `usr-`.
-Users have a username, email address and password.
-
 ### JWT Token
 
 JWT tokens are created when a user is authenticated and are sent via the UI to all other backend services so as they know who is logged in, and so as they know what permissions are allowed.
