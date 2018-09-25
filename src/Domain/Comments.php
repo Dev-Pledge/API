@@ -2,11 +2,13 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+
 /**
  * Class Comments
  * @package DevComment\Domain
  */
-class Comments extends AbstractDomain {
+class Comments extends AbstractDomain implements Example {
 	/**
 	 * @var Comment[]
 	 */
@@ -94,4 +96,34 @@ class Comments extends AbstractDomain {
 		return count( $this->comments );
 	}
 
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return new \stdClass();
+		};
+	}
+
+	/**
+	 * @return Comments|mixed
+	 * @throws \Exception
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( [ Comment::getExampleInstance(), Comment::getExampleInstance() ] );
+		}
+
+		return $example;
+	}
 }
