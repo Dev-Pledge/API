@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\Pledge;
 use DevPledge\Domain\Problem;
 use DevPledge\Domain\Solution;
 use DevPledge\Framework\Controller\Pledge\PledgeController;
@@ -28,7 +29,7 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 
 		$this->post( '/create', ProblemController::class . ':createProblem', Problem::getExampleRequest(), Problem::getExampleResponse(), $createProblemsMiddleWare );
 
-		$this->patch( '/{problem_id}', ProblemController::class . ':updateProblem', Problem::getExampleRequest() ,Problem::getExampleResponse(),$createProblemsMiddleWare);
+		$this->patch( '/{problem_id}', ProblemController::class . ':updateProblem', Problem::getExampleRequest(), Problem::getExampleResponse(), $createProblemsMiddleWare );
 
 		$this->get( '/{problem_id}', ProblemController::class . ':getProblem' );
 
@@ -36,7 +37,7 @@ class ProblemRouteGroup extends AbstractRouteGroup {
 
 		$this->post( '/{problem_id}/solution', SolutionController::class . ':createSolution', Solution::getExampleRequest(), Solution::getExampleResponse(), new ResourcePermission( 'solutions', 'create' ) );
 
-		$this->post( '/{problem_id}/pledge', PledgeController::class . ':createPledge', null, null, new Authorise() );
+		$this->post( '/{problem_id}/pledge', PledgeController::class . ':createPledge', Pledge::getExampleRequest(), Pledge::getExampleResponse(), new Authorise() );
 
 	}
 }

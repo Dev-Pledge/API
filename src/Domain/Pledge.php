@@ -2,11 +2,13 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+
 /**
  * Class Pledge
  * @package DevPledge\Domain
  */
-class Pledge extends AbstractDomain {
+class Pledge extends AbstractDomain implements Example {
 	/**
 	 * @var string | null
 	 */
@@ -29,7 +31,7 @@ class Pledge extends AbstractDomain {
 	 */
 	protected $currencyValue;
 	/**
-	 * @var string
+	 * @var UserDefinedContent
 	 */
 	protected $comment;
 	/**
@@ -62,7 +64,7 @@ class Pledge extends AbstractDomain {
 			'kudos_points'    => $this->getKudosPoints(),
 			'value'           => $this->getCurrencyValue()->getValue(),
 			'currency'        => $this->getCurrencyValue()->getCurrency(),
-			'comment'         => $this->getComment(),
+			'comment'         => $this->getComment()->getContent(),
 			'data'            => $this->getData()->getJson(),
 			'payment_id'      => $this->getPaymentId(),
 			'solution_id'     => $this->getSolutionId(),
@@ -191,18 +193,18 @@ class Pledge extends AbstractDomain {
 	}
 
 	/**
-	 * @return string
+	 * @return UserDefinedContent
 	 */
-	public function getComment(): string {
-		return $this->comment;
+	public function getComment(): UserDefinedContent {
+		return isset( $this->comment ) ? $this->comment : new UserDefinedContent( '' );
 	}
 
 	/**
-	 * @param string $comment
+	 * @param UserDefinedContent $comment
 	 *
 	 * @return Pledge
 	 */
-	public function setComment( string $comment ): Pledge {
+	public function setComment( UserDefinedContent $comment ): Pledge {
 		$this->comment = $comment;
 
 		return $this;
@@ -283,4 +285,44 @@ class Pledge extends AbstractDomain {
 		return (bool) isset( $this->solutionId );
 	}
 
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return (object) [
+				'comment'  => 'A Solution for this problem will be greatly appreciated! <img src="http://monkey.com/pic.jpg" />',
+				'value'    => '2.50',
+				'currency' => 'USD'
+			];
+		};
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'pledge' );
+			$example->setCurrencyValue( new CurrencyValue( 'USD', '2.00' ) )
+			        ->setComment(
+				        new UserDefinedContent( 'A Solution for this problem will be greatly appreciated! <img src="http://monkey.com/pic.jpg" />' )
+			        )
+			        ->setUserId( User::getExampleInstance()->getId() )
+			        ->setProblemId( Problem::getExampleInstance()->getId() )
+			        ->setUser( User::getExampleInstance() );
+		}
+
+		return $example;
+	}
 }

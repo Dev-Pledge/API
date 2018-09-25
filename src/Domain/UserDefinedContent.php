@@ -25,10 +25,18 @@ class UserDefinedContent {
 	 * @return null|string
 	 */
 	public function getContent() {
+
+		return static::makeLinks( $this->strip() );
+	}
+
+	/**
+	 * @return string
+	 */
+	public function strip() {
 		$content = str_replace( [ "<br>", "<br />" ], "\r\n", $this->content );
 		$content = strip_tags( $content, '<img>' );
 
-		return static::makeLinks( $content );
+		return $content;
 	}
 
 	public function setContent( string $content ) {
