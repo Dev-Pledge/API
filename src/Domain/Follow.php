@@ -5,12 +5,15 @@ namespace DevPledge\Domain;
 
 use DevPledge\Domain\Fetcher\FetchCacheUser;
 use DevPledge\Domain\Fetcher\FetchTopic;
+use DevPledge\Integrations\Route\Example;
+use DevPledge\Uuid\DualUuid;
+use DevPledge\Uuid\Uuid;
 
 /**
  * Class Follow
  * @package DevPledge\Domain
  */
-class Follow extends AbstractDomainDualUuid {
+class Follow extends AbstractDomainDualUuid implements Example {
 
 	public function getName() {
 		return $this->name;
@@ -54,7 +57,7 @@ class Follow extends AbstractDomainDualUuid {
 	 * @return \stdClass
 	 */
 	function toAPIMap(): \stdClass {
-		$data                = parent::toAPIMap();
+		$data = parent::toAPIMap();
 		if ( $this->getEntity() == 'user' ) {
 			$data->user = ( new FetchCacheUser( $this->getEntityId() ) )->toPublicAPIMap();
 		}
@@ -66,4 +69,34 @@ class Follow extends AbstractDomainDualUuid {
 	}
 
 
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return new \stdClass();
+		};
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'follow' );
+			$example->setDualUuid( new DualUuid( Uuid::make( 'follow' )->toString(), User::getExampleInstance()->getId() ) );
+		}
+
+		return $example;
+	}
 }

@@ -2,11 +2,13 @@
 
 namespace DevPledge\Domain;
 
+use DevPledge\Integrations\Route\Example;
+
 /**
  * Class Follows
  * @package DevPledge\Domain
  */
-class Follows extends AbstractDomain {
+class Follows extends AbstractDomain implements Example {
 	/**
 	 * @var Follow[]
 	 */
@@ -76,5 +78,37 @@ class Follows extends AbstractDomain {
 		}
 
 		return $data;
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return new \stdClass();
+		};
+	}
+
+	/**
+	 * @return mixed
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$follow  = Follow::getExampleInstance();
+			$example = new static( [ $follow, $follow, $follow ] );
+		}
+
+		return $example;
 	}
 }
