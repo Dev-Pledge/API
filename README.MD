@@ -1,5 +1,7 @@
 # API
 
+[ ***All API Endpoints*** ](/ENDPOINTS.MD)
+
 ### JWT Token
 
 JWT tokens are created when a user is authenticated and are sent via the UI to all other backend services so as they know who is logged in, and so as they know what permissions are allowed.
@@ -52,5 +54,3 @@ The header should look something like this:
 ```
 Authorization: Bearer eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MjE1MDYxNjksInR0ciI6MTUyMTUwOTc2OSwiZGF0YSI6eyJuYW1lIjoiVG9tbXkgQnVtIEJ1bSIsInVzZXJuYW1lIjoidG9tIiwicGVybXMiOnsib3JnYW5pc2F0aW9ucyI6eyJjcmVhdGUiOnt9LCJyZWFkIjp7fSwidXBkYXRlIjp7fSwiZGVsZXRlIjp7fX0sIm1lbWJlcnMiOnsiY3JlYXRlIjp7fSwicmVhZCI6e30sInVwZGF0ZSI6e30sImRlbGV0ZSI6e319LCJwcm9ibGVtIjp7ImNyZWF0ZSI6e30sInJlYWQiOnt9LCJ1cGRhdGUiOnt9LCJkZWxldGUiOnt9fSwicGxlZGdlIjp7ImNyZWF0ZSI6e30sInJlYWQiOnt9LCJ1cGRhdGUiOnt9LCJkZWxldGUiOnt9fX19fQ.793a682302c81bc1f2e2e50d0b4870f0c3215eb9411d03a606894bb738dde51f
 ```
-
-[ All API Endpoints ](/ENDPOINTS.MD)
