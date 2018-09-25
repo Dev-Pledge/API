@@ -28,10 +28,12 @@ class ListRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->get( '/topics', ListController::class . ':getTopics', function () {
-			return (object) [
-				'topics' => ( new Topics( TopicServiceProvider::getService()->getTopics() ) )->toAPIMapArray()
-			];
-		} );
+		$this->get( '/topics', ListController::class . ':getTopics',
+			function () {
+				return (object) [
+					'topics' => ( new Topics( TopicServiceProvider::getService()->getTopics() ) )->toAPIMapArray()
+				];
+			}
+		);
 	}
 }
