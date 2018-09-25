@@ -16,6 +16,9 @@ class Member implements Role {
 		return 'member';
 	}
 
+	/**
+	 * @return Permissions
+	 */
 	public function getDefaultPermissions(): Permissions {
 		return new Permissions( [
 			( new Permission() )->setResource( 'problems' )->setAction( 'create' ),

@@ -3,11 +3,16 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\Role\Member;
+use DevPledge\Domain\TokenString;
+use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\Auth\AuthController;
 use DevPledge\Integrations\Integrations;
 use DevPledge\Integrations\Middleware\JWT\Present;
 use DevPledge\Integrations\Middleware\JWT\Refresh;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
+use DevPledge\Integrations\Security\JWT\Token;
+use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 
 /**
  * Class AuthRouteGroup
@@ -20,12 +25,36 @@ class AuthRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
+		$tokenExample   = function () {
+			$token = new TokenString( User::getExampleInstance(), JWTServiceProvider::getService() );
 
-		$this->post( '/login', AuthController::class . ':login' );
+			return (object) [ 'token' => $token->getTokenString() ];
+		};
+		$payloadExample = function () {
+			$obj       = new \stdClass();
+			$perms     = new Member();
+			$obj->data = (object) [ 'permissions' => $perms->getDefaultPermissions()->toAPIMapArray() ];
+			$token     = new Token( $obj );
 
-		$this->post( '/refresh', AuthController::class . ':refresh', null, null, new Refresh() );
+			return (object) [ 'payload' => $token->getData() ];
+		};
 
-		$this->get( '/payload', AuthController::class . ':outputTokenPayload', null, new Present() );
+		$this->post( '/login', AuthController::class . ':login',
+			function () {
+				return (object) [ 'username' => 'CoolGuy121', 'password' => 'myextremelySAFEpassword!z**' ];
+			},
+			$tokenExample
+		);
+
+		$this->post( '/refresh', AuthController::class . ':refresh',
+			function () {
+				return new \stdClass();
+			},
+			$tokenExample,
+			new Refresh()
+		);
+
+		$this->get( '/payload', AuthController::class . ':outputTokenPayload', $payloadExample, new Present() );
 	}
 
 
