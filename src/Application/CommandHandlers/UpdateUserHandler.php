@@ -29,9 +29,12 @@ class UpdateUserHandler extends AbstractCommandHandler {
 	 */
 	protected function handle( $command ) {
 		$data        = $command->getData();
-		$removeArray = [ 'user_id', 'created', 'modified', 'username' ];
+		$removeArray = [ 'user_id', 'created', 'modified', 'username', 'hashed_password' ];
 		foreach ( $data as $key => $value ) {
 			if ( in_array( $key, $removeArray ) ) {
+				unset( $data->{$key} );
+			}
+			if ( $value === null ) {
 				unset( $data->{$key} );
 			}
 		}
