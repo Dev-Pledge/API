@@ -314,7 +314,7 @@ class Pledge extends AbstractDomain implements Example {
 		static $example;
 		if ( ! isset( $example ) ) {
 			$example = new static( 'pledge' );
-			$example->setCurrencyValue( new CurrencyValue( 'USD', '2.00' ) )
+			$example->setCurrencyValue( new CurrencyValue( 'USD', '2.50' ) )
 			        ->setComment(
 				        new UserDefinedContent( 'A Solution for this problem will be greatly appreciated! <img src="http://monkey.com/pic.jpg" />' )
 			        )
