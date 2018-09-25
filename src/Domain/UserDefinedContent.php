@@ -34,7 +34,7 @@ class UserDefinedContent {
 	 */
 	public function strip() {
 		$content = str_replace( [ "<br>", "<br />" ], "\r\n", $this->content );
-		$content = strip_tags( $content, '<img>' );
+		$content = strip_tags( $content );
 
 		return $content;
 	}
