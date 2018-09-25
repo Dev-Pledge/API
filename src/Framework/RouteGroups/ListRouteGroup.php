@@ -9,7 +9,9 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\Topics;
 use DevPledge\Framework\Controller\ListController;
+use DevPledge\Framework\ServiceProviders\TopicServiceProvider;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
 
 /**
@@ -26,6 +28,10 @@ class ListRouteGroup extends AbstractRouteGroup {
 
 	protected function callableInGroup() {
 
-		$this->get( '/topics', ListController::class . ':getTopics' );
+		$this->get( '/topics', ListController::class . ':getTopics', function () {
+			return (object) [
+				'topics' => ( new Topics( TopicServiceProvider::getService()->getTopics() ) )->toAPIMapArray()
+			];
+		} );
 	}
 }
