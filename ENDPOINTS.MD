@@ -51,7 +51,7 @@
 #### Example Response
 ```
 {
-    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgwMDg3NDksInR0ciI6MTUzODkwODc0OSwiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLTM2NTBjMGRlLWQ3MDctNDFiNy1iNTY4LWM0ZDUxOTEyZjRkNyIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNSAyMDo1MjoyOSIsImNyZWF0ZWQiOiIyMDE4LTA5LTI1IDIwOjUyOjI5IiwicGVybWlzc2lvbnMiOltdfX0.9db266f28b7c7c6ac07460aa75644070cd7b28f837ab19bc558900108ae146f9"
+    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgxMDEzMDMsInR0ciI6MTUzOTAwMTMwMywiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLWRlNjIwZDIxLTYzMzAtNDI5YS05YmU4LWMxZGNkNjMwMDI5OSIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNiAyMjozNTowMyIsImNyZWF0ZWQiOiIyMDE4LTA5LTI2IDIyOjM1OjAzIiwicGVybWlzc2lvbnMiOltdfX0.25d2d163dcf95bd7800230b11fd0fc413d8a9fe9f60dfe255430b7e4fb34e58d"
 }
 ```
 
@@ -65,7 +65,7 @@
 #### Example Response
 ```
 {
-    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgwMDg3NDksInR0ciI6MTUzODkwODc0OSwiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLTM2NTBjMGRlLWQ3MDctNDFiNy1iNTY4LWM0ZDUxOTEyZjRkNyIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNSAyMDo1MjoyOSIsImNyZWF0ZWQiOiIyMDE4LTA5LTI1IDIwOjUyOjI5IiwicGVybWlzc2lvbnMiOltdfX0.9db266f28b7c7c6ac07460aa75644070cd7b28f837ab19bc558900108ae146f9"
+    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgxMDEzMDMsInR0ciI6MTUzOTAwMTMwMywiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLWRlNjIwZDIxLTYzMzAtNDI5YS05YmU4LWMxZGNkNjMwMDI5OSIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNiAyMjozNTowMyIsImNyZWF0ZWQiOiIyMDE4LTA5LTI2IDIyOjM1OjAzIiwicGVybWlzc2lvbnMiOltdfX0.25d2d163dcf95bd7800230b11fd0fc413d8a9fe9f60dfe255430b7e4fb34e58d"
 }
 ```
 
@@ -78,19 +78,19 @@
     "payload": {
         "permissions": [
             {
-                "permission_id": "prm-2b1302de-7fef-401d-9373-561d8802b046",
+                "permission_id": "prm-a9bd8d1b-f381-4ec2-a0f2-9d1880c38f6b",
                 "resource": "problems",
                 "resource_id": null,
                 "action": "create"
             },
             {
-                "permission_id": "prm-fcfbe82e-37c1-457c-a4d1-edf23a40c1d6",
+                "permission_id": "prm-27d2b8fc-0ea6-4d65-a1e2-7961207923a1",
                 "resource": "organisations",
                 "resource_id": null,
                 "action": "create"
             },
             {
-                "permission_id": "prm-86c3778c-c4c8-4457-bfbd-bc52a03d5e5b",
+                "permission_id": "prm-80699cbb-76e6-4d78-b74b-dfa53773af14",
                 "resource": "solutions",
                 "resource_id": null,
                 "action": "create"
@@ -104,23 +104,23 @@
 #### Example Response
 ```
 {
-    "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+    "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
     "parent_comment_id": null,
     "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "last_five_replies": [],
     "total_replies": 0,
     "comment_type": "comment_on_entity",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     }
 }
 ```
@@ -131,43 +131,43 @@
 {
     "comments": [
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         },
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         }
     ]
@@ -180,43 +180,43 @@
 {
     "comments": [
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         },
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         }
     ]
@@ -229,43 +229,43 @@
 {
     "comments": [
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         },
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         }
     ]
@@ -278,43 +278,43 @@
 {
     "comments": [
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         },
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         }
     ]
@@ -333,23 +333,23 @@
 #### Example Response
 ```
 {
-    "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+    "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
     "parent_comment_id": null,
     "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "last_five_replies": [],
     "total_replies": 0,
     "comment_type": "comment_on_entity",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     }
 }
 ```
@@ -366,23 +366,23 @@
 #### Example Response
 ```
 {
-    "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+    "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
     "parent_comment_id": null,
     "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "last_five_replies": [],
     "total_replies": 0,
     "comment_type": "comment_on_entity",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     }
 }
 ```
@@ -393,43 +393,43 @@
 {
     "comments": [
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         },
         {
-            "comment_id": "cmt-760f4884-74c2-4b18-918c-4f39867e1a5c",
+            "comment_id": "cmt-64888bcf-11c3-424e-8ad4-48296c192134",
             "parent_comment_id": null,
             "comment": "My awesome comment! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "organisation_id": null,
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "last_five_replies": [],
             "total_replies": 0,
             "comment_type": "comment_on_entity",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             }
         }
     ]
@@ -456,10 +456,10 @@
 #### Example Response
 ```
 {
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
     "entity": "problem",
-    "created": "2018-09-25 20:52:29"
+    "created": "2018-09-26 22:35:03"
 }
 ```
 
@@ -483,22 +483,22 @@
 {
     "follows": [
         {
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
             "entity": "problem",
-            "created": "2018-09-25 20:52:29"
+            "created": "2018-09-26 22:35:03"
         },
         {
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
             "entity": "problem",
-            "created": "2018-09-25 20:52:29"
+            "created": "2018-09-26 22:35:03"
         },
         {
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
-            "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+            "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
             "entity": "problem",
-            "created": "2018-09-25 20:52:29"
+            "created": "2018-09-26 22:35:03"
         }
     ]
 }
@@ -827,7 +827,7 @@
 #### Example Response
 ```
 {
-    "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+    "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
     "user_id": null,
     "organisation_id": null,
     "title": "My Problems Title",
@@ -837,37 +837,37 @@
     "active_datetime": null,
     "deadline_datetime": null,
     "deleted": 0,
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "topics": [],
     "solutions": [
         {
-            "solution_id": "sol-34d7c894-1fe1-4e16-ba3c-e59aa5bef864",
+            "solution_id": "sol-e39bd2f4-73cc-492b-8237-58c69fb90e54",
             "problem_solution_group_id": null,
             "solution_group_id": null,
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "name": "My Super Solution name",
-            "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+            "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
             "open_source_location": "https:\/\/mylinktogithub.com\/mycoolsolution",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             },
             "last_five_comments": [],
             "total_comments": 0
         }
     ],
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     },
     "pledges_count": 0,
     "pledges_value": 0,
@@ -896,7 +896,7 @@
 #### Example Response
 ```
 {
-    "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+    "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
     "user_id": null,
     "organisation_id": null,
     "title": "My Problems Title",
@@ -906,37 +906,37 @@
     "active_datetime": null,
     "deadline_datetime": null,
     "deleted": 0,
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "topics": [],
     "solutions": [
         {
-            "solution_id": "sol-34d7c894-1fe1-4e16-ba3c-e59aa5bef864",
+            "solution_id": "sol-e39bd2f4-73cc-492b-8237-58c69fb90e54",
             "problem_solution_group_id": null,
             "solution_group_id": null,
-            "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+            "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
             "name": "My Super Solution name",
-            "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+            "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
             "open_source_location": "https:\/\/mylinktogithub.com\/mycoolsolution",
-            "modified": "2018-09-25 20:52:29",
-            "created": "2018-09-25 20:52:29",
+            "modified": "2018-09-26 22:35:03",
+            "created": "2018-09-26 22:35:03",
             "user": {
-                "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+                "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
                 "name": "Johnny DevHead",
                 "username": "JohnnyDevHead",
-                "modified": "2018-09-25 20:52:29",
-                "created": "2018-09-25 20:52:29"
+                "modified": "2018-09-26 22:35:03",
+                "created": "2018-09-26 22:35:03"
             },
             "last_five_comments": [],
             "total_comments": 0
         }
     ],
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     },
     "pledges_count": 0,
     "pledges_value": 0,
@@ -970,21 +970,21 @@
 #### Example Response
 ```
 {
-    "solution_id": "sol-34d7c894-1fe1-4e16-ba3c-e59aa5bef864",
+    "solution_id": "sol-e39bd2f4-73cc-492b-8237-58c69fb90e54",
     "problem_solution_group_id": null,
     "solution_group_id": null,
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "name": "My Super Solution name",
-    "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+    "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
     "open_source_location": "https:\/\/mylinktogithub.com\/mycoolsolution",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     }
 }
 ```
@@ -1003,10 +1003,10 @@
 #### Example Response
 ```
 {
-    "pledge_id": "plg-f16692a0-7c42-4611-bc1e-0966eb83f34a",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "pledge_id": "plg-a7a8840f-ae20-4470-9ede-bc11c3d6c8b7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "problem_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
+    "problem_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
     "kudos_points": 0,
     "value": 2.5,
     "currency": "USD",
@@ -1014,14 +1014,14 @@
     "data": "{}",
     "payment_id": null,
     "solution_id": null,
-    "created": "2018-09-25 20:52:29",
-    "modified": "2018-09-25 20:52:29",
+    "created": "2018-09-26 22:35:03",
+    "modified": "2018-09-26 22:35:03",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     },
     "is_paid": false,
     "is_verified": false,
@@ -1057,23 +1057,23 @@
 #### Example Response
 ```
 {
-    "comment_id": "sts-fa5344b2-c68d-4c59-92bf-7a5589dec28b",
+    "comment_id": "sts-d93734dc-225e-4c16-a5a5-f2ec1aa4e23f",
     "parent_comment_id": null,
     "comment": "My awesome comment about php vs python! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "comment_type": "status",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     },
-    "status_id": "sts-fa5344b2-c68d-4c59-92bf-7a5589dec28b",
+    "status_id": "sts-d93734dc-225e-4c16-a5a5-f2ec1aa4e23f",
     "last_five_comments": [],
     "total_comments": 0,
     "topics": [
@@ -1099,23 +1099,23 @@
 #### Example Response
 ```
 {
-    "comment_id": "sts-fa5344b2-c68d-4c59-92bf-7a5589dec28b",
+    "comment_id": "sts-d93734dc-225e-4c16-a5a5-f2ec1aa4e23f",
     "parent_comment_id": null,
     "comment": "My awesome comment about php vs python! <a href=\"http:\/\/www.google.com\" target=\"_blank\">http:\/\/www.google.com<\/a> link to stuff",
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "organisation_id": null,
-    "entity_id": "prb-f09fb37b-5b62-445f-a3e2-43fc1d01f20d",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29",
+    "entity_id": "prb-3e7199fa-1e94-4b3e-ae72-6bc78cf6f159",
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03",
     "comment_type": "status",
     "user": {
-        "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+        "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
         "name": "Johnny DevHead",
         "username": "JohnnyDevHead",
-        "modified": "2018-09-25 20:52:29",
-        "created": "2018-09-25 20:52:29"
+        "modified": "2018-09-26 22:35:03",
+        "created": "2018-09-26 22:35:03"
     },
-    "status_id": "sts-fa5344b2-c68d-4c59-92bf-7a5589dec28b",
+    "status_id": "sts-d93734dc-225e-4c16-a5a5-f2ec1aa4e23f",
     "last_five_comments": [],
     "total_comments": 0,
     "topics": [
@@ -1140,7 +1140,11 @@
 ```
 #### Example Response
 ```
-"coming soon"
+{
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+    "username": "JohnnyDevHead",
+    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgxMDEzMDMsInR0ciI6MTUzOTAwMTMwMywiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLWRlNjIwZDIxLTYzMzAtNDI5YS05YmU4LWMxZGNkNjMwMDI5OSIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNiAyMjozNTowMyIsImNyZWF0ZWQiOiIyMDE4LTA5LTI2IDIyOjM1OjAzIiwicGVybWlzc2lvbnMiOltdfX0.25d2d163dcf95bd7800230b11fd0fc413d8a9fe9f60dfe255430b7e4fb34e58d"
+}
 ```
 
 ## <a name="5d12bfd57ed22f2195aed47aad5c5fae"></a>POST /user/createFromGitHub
@@ -1148,11 +1152,19 @@
 * Header Required: "Origin-Auth: {origin_token}"
 #### Example Request
 ```
-"coming soon"
+{
+    "code": "0987ygb2n3edieowkms23wqss2",
+    "state": "bd7892hdbkn1212asdasd",
+    "username": "VladMonkey90"
+}
 ```
 #### Example Response
 ```
-"coming soon"
+{
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
+    "username": "JohnnyDevHead",
+    "token": "eyJhbGciOiJTSEEyNTYiLCJ0eXAiOiJKV1QifQ.eyJ0dGwiOjE1MzgxMDEzMDMsInR0ciI6MTUzOTAwMTMwMywiZGF0YSI6eyJ1c2VyX2lkIjoidXNyLWRlNjIwZDIxLTYzMzAtNDI5YS05YmU4LWMxZGNkNjMwMDI5OSIsIm5hbWUiOiJKb2hubnkgRGV2SGVhZCIsImVtYWlsIjoiam9obm5kZXZoZWFkQGdtYWlsLmNvbSIsImRhdGEiOiJ7fSIsInVzZXJuYW1lIjoiSm9obm55RGV2SGVhZCIsIm1vZGlmaWVkIjoiMjAxOC0wOS0yNiAyMjozNTowMyIsImNyZWF0ZWQiOiIyMDE4LTA5LTI2IDIyOjM1OjAzIiwicGVybWlzc2lvbnMiOltdfX0.25d2d163dcf95bd7800230b11fd0fc413d8a9fe9f60dfe255430b7e4fb34e58d"
+}
 ```
 
 ## <a name="a4ca820248758b268f84bbb95ac6e4c8"></a>POST /user/checkUsernameAvailability
@@ -1197,13 +1209,13 @@
 #### Example Response
 ```
 {
-    "user_id": "usr-3650c0de-d707-41b7-b568-c4d51912f4d7",
+    "user_id": "usr-de620d21-6330-429a-9be8-c1dcd6300299",
     "name": "Johnny DevHead",
     "email": "johnndevhead@gmail.com",
     "data": "{}",
     "username": "JohnnyDevHead",
-    "modified": "2018-09-25 20:52:29",
-    "created": "2018-09-25 20:52:29"
+    "modified": "2018-09-26 22:35:03",
+    "created": "2018-09-26 22:35:03"
 }
 ```
 

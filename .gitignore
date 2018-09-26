@@ -7,4 +7,5 @@
 /.sentry-env
 /.smtp-env
 /.stripe-env
+/.github-env
 /dev_vendor/

@@ -2,6 +2,15 @@
 
 [ ***All API Endpoints*** ](/ENDPOINTS.MD)
 
+### Setup in Docker
+    
+##### Environment files used in docker-compose.yml
+
+ * Create a .sentry-env use .sentry-example-env as template...
+ * Create a .smtp-env use .smtp-example-env as template...
+ * Create a .stripe-env use .stripe-example-env as template...
+ * Create a .github-env use .github-example-env as template...
+
 ### JWT Token
 
 JWT tokens are created when a user is authenticated and are sent via the UI to all other backend services so as they know who is logged in, and so as they know what permissions are allowed.

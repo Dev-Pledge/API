@@ -166,18 +166,18 @@ class UserCreateController extends AbstractController {
 	public function createUserFromGitHub( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
 
-		$githubId    = $data['github_id'] ?? null;
-		$accessToken = $data['access_token'] ?? null;
-		$username    = $data['username'] ?? null;
+		$code     = $data['code'] ?? null;
+		$state    = $data['state'] ?? null;
+		$username = $data['username'] ?? null;
 
-		if ( isset( $githubId ) && isset( $username ) && isset( $accessToken ) ) {
-			$preferredUserAuth = new UsernameGitHub( $username, $githubId, $accessToken );
+		if ( isset( $code ) && isset( $state ) && isset( $username ) ) {
+			$preferredUserAuth = new UsernameGitHub( $username, $code, $state );
 
 			return $this->creationResponse( $preferredUserAuth, $request, $response );
 		}
 
 		return $response->withJson(
-			[ 'error' => 'Github ID, GitHub Access Token and Username not set' ]
+			[ 'error' => 'Github Code, Cross Site Forgery State and Username not all set' ]
 			, 401
 		);
 	}

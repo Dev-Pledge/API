@@ -3,35 +3,43 @@
 namespace DevPledge\Domain\PreferredUserAuth;
 
 
+use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Domain\User;
-use DevPledge\Integrations\Curl\CurlRequest;
+use DevPledge\Framework\ServiceProviders\GitHubServiceProvider;
+
 
 /**
  * Class UsernameGitHub
  * @package DevPledge\Domain\PreferredUserAuth
  */
 class UsernameGitHub implements PreferredUserAuth {
+
 	use UsernameTrait;
-	/**
-	 * @var int
-	 */
-	private $githubId;
 	/**
 	 * @var string
 	 */
-	private $accessToken;
+	private $state;
+	/**
+	 * @var string
+	 */
+	private $code;
+	/**
+	 * @var string | null;
+	 */
+	private $gitHubId;
+
 
 	/**
-	 * GitHub constructor.
+	 * UsernameGitHub constructor.
 	 *
 	 * @param string $username
-	 * @param int $gitHubId
-	 * @param string $accessToken
+	 * @param string $code
+	 * @param string $state
 	 */
-	public function __construct( string $username, int $gitHubId, string $accessToken ) {
-		$this->username    = $username;
-		$this->githubId    = $gitHubId;
-		$this->accessToken = $accessToken;
+	public function __construct( string $username, string $code, string $state ) {
+		$this->username = $username;
+		$this->code     = $code;
+		$this->state    = $state;
 	}
 
 	/**
@@ -41,20 +49,12 @@ class UsernameGitHub implements PreferredUserAuth {
 	public function validate(): void {
 
 		$this->validateUsername();
-
-		if ( ! ( strlen( $this->getGithubId() ) > 3 && is_numeric( $this->getGithubId() ) ) ) {
-			throw new PreferredUserAuthValidationException( 'Github Id is not valid' );
+		try {
+			$gitHubUser     = GitHubServiceProvider::getService()->getGitHubUserByCodeState( $this->getCode(), $this->getState() );
+			$this->gitHubId = $gitHubUser->getGitHubId();
+		} catch ( InvalidArgumentException $exception ) {
+			throw new PreferredUserAuthValidationException( $exception->getMessage(), $exception->getField() );
 		}
-		$githubCall = new CurlRequest( 'https://api.github.com/user/' . $this->githubId );
-		$response   = $githubCall->get()->setHeaders(
-			[ 'Authorization' => $this->accessToken ]
-		)->getDecodedJsonResponse();
-		if ( (
-			     isset( $response->message ) && strpos( $response->message, 'Bad Response' ) !== false
-		     ) || $githubCall->getHttpCode() == '401' ) {
-			throw new PreferredUserAuthValidationException( 'Github Access Token not Authorised', 'github' );
-		}
-
 	}
 
 	/**
@@ -67,8 +67,8 @@ class UsernameGitHub implements PreferredUserAuth {
 	/**
 	 * @return int
 	 */
-	public function getGithubId(): int {
-		return $this->githubId;
+	public function getCode(): string {
+		return $this->code;
 	}
 
 	/**
@@ -82,4 +82,20 @@ class UsernameGitHub implements PreferredUserAuth {
 			]
 		);
 	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getGitHubId(): ?string {
+		return $this->gitHubId;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getState(): string {
+		return $this->state;
+	}
+
+
 }

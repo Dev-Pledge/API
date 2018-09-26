@@ -18,7 +18,9 @@ class StripeSettings extends AbstractSetting {
 	 * @var string
 	 */
 	protected $privateApiKey;
-
+	/**
+	 * @var bool
+	 */
 	protected $testMode = false;
 
 	/**
