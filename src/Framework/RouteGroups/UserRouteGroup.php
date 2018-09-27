@@ -44,7 +44,13 @@ class UserRouteGroup extends AbstractRouteGroup {
 
 		$this->post(
 			'/createFromEmailPassword',
-			UserCreateController::class . ':createUserFromEmailPassword', null, $userCreatedExampleResponse
+			UserCreateController::class . ':createUserFromEmailPassword', function () {
+			return (object) [
+				'email'     => User::getExampleInstance()->getEmail(),
+				'password'    => 'MyPrettyBloodyAmazing!Password',
+				'username' => User::getExampleInstance()->getUsername()
+			];
+		}, $userCreatedExampleResponse
 		);
 		$this->post(
 			'/createFromGitHub',
