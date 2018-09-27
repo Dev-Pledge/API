@@ -170,6 +170,7 @@ class User extends AbstractDomain implements Example {
 			'user_id'         => $this->getId(),
 			'name'            => $this->getName(),
 			'email'           => $this->getEmail(),
+			'github_id'       => $this->getGitHubId(),
 			'data'            => $this->getData()->getJson(),
 			'username'        => $this->getUsername(),
 			'modified'        => $this->getModified()->format( 'Y-m-d H:i:s' ),
