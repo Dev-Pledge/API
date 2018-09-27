@@ -12,7 +12,6 @@ use DevPledge\Integrations\Cache\Cache;
 use DevPledge\Integrations\Curl\CurlRequest;
 
 
-
 /**
  * Class GitHubService
  * @package DevPledge\Application\Service
@@ -129,6 +128,15 @@ class GitHubService {
 		}
 
 		return null;
+	}
+
+	/**
+	 * @param string $state
+	 *
+	 * @return string
+	 */
+	public function getAuthoriseUrl( string $state ): string {
+		return $this->gitHubSettings->getAuthoriseUrl( $state );
 	}
 
 }

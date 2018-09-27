@@ -75,7 +75,7 @@ class GitHubSettings extends AbstractSetting {
 	 *
 	 * @return string
 	 */
-	public function getLoginUrl( string $state = null ) {
+	public function getAuthoriseUrl( string $state = null ) {
 		$state       = $state ?? md5( rand( 1000, 2000 ) );
 		$clientId    = $this->getClientId() ?? '';
 		$redirectUrl = urlencode( ( $this->getRedirectUrl() ?? '' ) );
