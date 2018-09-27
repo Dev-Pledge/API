@@ -65,10 +65,10 @@ class GitHubService {
 			'redirect_uri'  => $gitHubSettings->getRedirectUrl()
 		] );
 		parse_str( $gh->getResponse(), $preResponse );
-		if ( isset( $response['access_token'] ) ) {
+		if ( isset( $preResponse['access_token'] ) ) {
 			$accessToken = $preResponse['access_token'];
 		} else {
-			throw new InvalidArgumentException( 'Github Code is not valid', 'code' );
+			throw new InvalidArgumentException( 'Github Code is not valid' . print_r( $preResponse, true ), 'code' );
 		}
 		$githubCall = new CurlRequest( 'https://api.github.com/user/' );
 		$response   = $githubCall->get()->setHeaders(
