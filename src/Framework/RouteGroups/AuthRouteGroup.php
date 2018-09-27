@@ -7,6 +7,7 @@ use DevPledge\Domain\Role\Member;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\Auth\AuthController;
+use DevPledge\Framework\Middleware\OriginPermission;
 use DevPledge\Integrations\Integrations;
 use DevPledge\Integrations\Middleware\JWT\Present;
 use DevPledge\Integrations\Middleware\JWT\Refresh;
@@ -43,14 +44,16 @@ class AuthRouteGroup extends AbstractRouteGroup {
 			function () {
 				return (object) [ 'username' => 'CoolGuy121', 'password' => 'myextremelySAFEpassword!z**' ];
 			},
-			$tokenExample
+			$tokenExample,
+			new OriginPermission()
 		);
 
 		$this->post( '/githubLogin', AuthController::class . ':githubLogin',
 			function () {
 				return (object) [ 'code' => '987ygnedjdmdlajhda', 'state' => 'nd98ydahedkjabsdkjb' ];
 			},
-			$tokenExample
+			$tokenExample,
+			new OriginPermission()
 		);
 
 		$this->post( '/refresh', AuthController::class . ':refresh',
