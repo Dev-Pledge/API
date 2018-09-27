@@ -48,12 +48,12 @@ class UserRouteGroup extends AbstractRouteGroup {
 		);
 		$this->post(
 			'/createFromGitHub',
-			UserCreateController::class . ':createUserFromGitHub', function(){
-				return (object)[
-					'code'=>'0987ygb2n3edieowkms23wqss2',
-					'state'=>'bd7892hdbkn1212asdasd',
-					'username' => 'VladMonkey90'
-				];
+			UserCreateController::class . ':createUserFromGitHub', function () {
+			return (object) [
+				'code'     => '0987ygb2n3edieowkms23wqss2',
+				'state'    => 'bd7892hdbkn1212asdasd',
+				'username' => User::getExampleInstance()->getUsername()
+			];
 		}, $userCreatedExampleResponse
 		);
 		$this->post(
