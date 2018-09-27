@@ -70,9 +70,9 @@ class GitHubService {
 		} else {
 			throw new InvalidArgumentException( 'Github Code is not valid' . print_r( $preResponse, true ), 'code' );
 		}
-		$githubCall = new CurlRequest( 'https://api.github.com/user/' );
+		$githubCall = new CurlRequest( 'https://api.github.com/user' );
 		$response   = $githubCall->get()->setHeaders(
-			[ 'Authorization' => 'token ' . $accessToken ]
+			[ 'User-Agent' => 'DevPledge API', 'Authorization' => 'token ' . $accessToken ]
 		)->getDecodedJsonResponse();
 		if ( (
 			     isset( $response->message ) && strpos( $response->message, 'Bad Response' ) !== false
@@ -92,7 +92,7 @@ class GitHubService {
 				$this->cache->set( static::GITHUB_UUID_KEY . $gitHubUser->getId(), $gitHubUser->toPersistMap() );
 			}
 		} catch ( \Exception | \TypeError $exception ) {
-			throw new InvalidArgumentException( 'Github User Object Generation Failed', 'code' );
+			throw new InvalidArgumentException( 'Github User Object Generation Failed ' . $exception->getMessage() . print_r( $response ), 'code' );
 		}
 
 		return $gitHubUser;
