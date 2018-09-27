@@ -46,6 +46,13 @@ class AuthRouteGroup extends AbstractRouteGroup {
 			$tokenExample
 		);
 
+		$this->post( '/githubLogin', AuthController::class . ':githubLogin',
+			function () {
+				return (object) [ 'code' => '987ygnedjdmdlajhda', 'state' => 'nd98ydahedkjabsdkjb' ];
+			},
+			$tokenExample
+		);
+
 		$this->post( '/refresh', AuthController::class . ':refresh',
 			function () {
 				return new \stdClass();

@@ -5,8 +5,10 @@ namespace DevPledge\Framework\Controller\Auth;
 
 use DevPledge\Application\Service\UserService;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
+use DevPledge\Domain\PreferredUserAuth\UsernameGitHub;
 use DevPledge\Domain\PreferredUserAuth\UsernamePassword;
 use DevPledge\Domain\TokenString;
+use DevPledge\Framework\ServiceProviders\GitHubServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Security\JWT\JWT;
 use DevPledge\Integrations\Security\JWT\Token;
@@ -77,11 +79,25 @@ class AuthController {
 	 *
 	 * @return Response
 	 */
-	public function gitHubLogin( Request $request, Response $response ) {
-		/**
-		 * TODO implement Github
-		 */
-		return $response->withJson( [ 'error' => 'TODO implement this' ] );
+	public function githubLogin( Request $request, Response $response ) {
+		$data  = $request->getParsedBody();
+		$state = $data['state'] ?? null;
+		$code  = $data['code'] ?? null;
+
+		if ( isset( $state ) && isset( $code ) ) {
+			try {
+				$githubService = GitHubServiceProvider::getService();
+				$githubUser    = $githubService->getGitHubUserByCodeState( $code, $state );
+				$user          = UserServiceProvider::getService()->getByGitHubId( $githubUser->getGitHubId() );
+				$token         = new TokenString( $user, $this->jwt );
+
+				return $response->withJson( [ 'token' => $token->getTokenString() ] );
+			} catch ( \TypeError | \Exception $error ) {
+				return $response->withJson( [ 'error' => 'User Not Found' ], 401 );
+			}
+		}
+
+		return $response->withJson( [ 'error' => 'Invalid Github Login' ], 401 );
 	}
 
 	/**
