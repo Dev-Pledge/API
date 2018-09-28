@@ -176,8 +176,8 @@ class GitHubUser extends AbstractDomain {
 			'public_gists' => $this->getPublicGists()->getCount(),
 			'followers'    => $this->getFollowers()->getCount(),
 			'following'    => $this->getFollowing()->getCount(),
-			'created_at' => $this->getCreated()->format( 'Y-m-d H:i:s' ),
-			'updated_at' => $this->getModified()->format( 'Y-m-d H:i:s' )
+			'created_at'   => $this->getCreated()->format( 'Y-m-d H:i:s' ),
+			'updated_at'   => $this->getModified()->format( 'Y-m-d H:i:s' )
 		];
 	}
 
@@ -243,20 +243,20 @@ class GitHubUser extends AbstractDomain {
 	}
 
 	/**
-	 * @param string $gravatarId
+	 * @param string|null $gravatarId
 	 *
 	 * @return GitHubUser
 	 */
-	public function setGravatarId( string $gravatarId ): GitHubUser {
+	public function setGravatarId( ?string $gravatarId ): GitHubUser {
 		$this->gravatarId = $gravatarId;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getGravatarId(): string {
+	public function getGravatarId(): ?string {
 		return $this->gravatarId;
 	}
 
@@ -279,65 +279,65 @@ class GitHubUser extends AbstractDomain {
 	}
 
 	/**
-	 * @param string $siteAdmin
+	 * @param string|null $siteAdmin
 	 *
 	 * @return GitHubUser
 	 */
-	public function setSiteAdmin( string $siteAdmin ): GitHubUser {
+	public function setSiteAdmin( ?string $siteAdmin ): GitHubUser {
 		$this->siteAdmin = $siteAdmin;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getSiteAdmin(): string {
+	public function getSiteAdmin(): ?string {
 		return $this->siteAdmin;
 	}
 
 	/**
-	 * @param string $name
+	 * @param string|null $name
 	 *
 	 * @return GitHubUser
 	 */
-	public function setName( string $name ): GitHubUser {
+	public function setName( ?string $name ): GitHubUser {
 		$this->name = $name;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getName(): string {
+	public function getName(): ?string {
 		return $this->name;
 	}
 
 	/**
-	 * @param string $company
+	 * @param string|null $company
 	 *
 	 * @return GitHubUser
 	 */
-	public function setCompany( string $company ): GitHubUser {
+	public function setCompany( ?string $company ): GitHubUser {
 		$this->company = $company;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string|null
 	 */
-	public function getCompany(): string {
+	public function getCompany(): ?string {
 		return $this->company;
 	}
 
 	/**
-	 * @param string $blog
+	 * @param string|null $blog
 	 *
 	 * @return GitHubUser
 	 */
-	public function setBlog( string $blog ): GitHubUser {
+	public function setBlog( ?string $blog ): GitHubUser {
 		$this->blog = $blog;
 
 		return $this;
@@ -346,16 +346,16 @@ class GitHubUser extends AbstractDomain {
 	/**
 	 * @return string
 	 */
-	public function getBlog(): string {
+	public function getBlog(): ?string {
 		return $this->blog;
 	}
 
 	/**
-	 * @param string $location
+	 * @param string|null $location
 	 *
 	 * @return GitHubUser
 	 */
-	public function setLocation( string $location ): GitHubUser {
+	public function setLocation( ?string $location ): GitHubUser {
 		$this->location = $location;
 
 		return $this;
@@ -364,25 +364,25 @@ class GitHubUser extends AbstractDomain {
 	/**
 	 * @return string
 	 */
-	public function getLocation(): string {
+	public function getLocation(): ?string {
 		return $this->location;
 	}
 
 	/**
-	 * @param string $email
+	 * @param string|null $email
 	 *
 	 * @return GitHubUser
 	 */
-	public function setEmail( string $email ): GitHubUser {
+	public function setEmail( ?string $email ): GitHubUser {
 		$this->email = $email;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getEmail(): string {
+	public function getEmail(): ?string {
 		return $this->email;
 	}
 
@@ -405,20 +405,20 @@ class GitHubUser extends AbstractDomain {
 	}
 
 	/**
-	 * @param string $bio
+	 * @param string| null $bio
 	 *
 	 * @return GitHubUser
 	 */
-	public function setBio( string $bio ): GitHubUser {
+	public function setBio( ?string $bio ): GitHubUser {
 		$this->bio = $bio;
 
 		return $this;
 	}
 
 	/**
-	 * @return string
+	 * @return string | null
 	 */
-	public function getBio(): string {
+	public function getBio(): ?string {
 		return $this->bio;
 	}
 
