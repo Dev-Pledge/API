@@ -3,13 +3,16 @@
 namespace DevPledge\Application\Service;
 
 
+use DevPledge\Application\Commands\UpdateUserCommand;
 use DevPledge\Application\Factory\GitHubUserFactory;
 use DevPledge\Domain\GitHubUser;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Settings\GitHubSettings;
 use DevPledge\Integrations\Cache\Cache;
+use DevPledge\Integrations\Command\Dispatch;
 use DevPledge\Integrations\Curl\CurlRequest;
+use DevPledge\Uuid\Uuid;
 
 
 /**
@@ -90,6 +93,11 @@ class GitHubService {
 			$this->cache->set( static::GITHUB_ID_KEY . $gitHubUser->getGitHubId(), $gitHubUser->toPersistMap() );
 			if ( isset( $user ) ) {
 				$this->cache->set( static::GITHUB_UUID_KEY . $gitHubUser->getId(), $gitHubUser->toPersistMap() );
+				if($user->getGitHubId()==null) {
+					Dispatch::command( new UpdateUserCommand( $user,
+						(object) [ 'github_id' => $gitHubUser->getGitHubId() ]
+					) );
+				}
 			}
 		} catch ( \Exception | \TypeError $exception ) {
 			throw new InvalidArgumentException( 'Github User Object Generation Failed ' . $exception->getMessage() . print_r( $response ), 'code' );
