@@ -3,12 +3,12 @@
 namespace DevPledge\Framework\Controller\User;
 
 
+use DevPledge\Application\Commands\AuthoriseUserCommand;
 use DevPledge\Application\Commands\CreateUserCommand;
 use DevPledge\Domain\PreferredUserAuth\UsernameEmailPassword;
 use DevPledge\Domain\PreferredUserAuth\UsernameGitHub;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
-use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Adapter\MysqlPDODuplicationException;
 use DevPledge\Framework\Controller\AbstractController;
@@ -25,19 +25,6 @@ use Slim\Http\Response;
  * @package DevPledge\Framework\Controller\User
  */
 class UserCreateController extends AbstractController {
-	/**
-	 * @var JWT
-	 */
-	private $jwt;
-
-	/**
-	 * UserCreateController constructor.
-	 *
-	 * @param JWT $jwt
-	 */
-	public function __construct( JWT $jwt ) {
-		$this->jwt = $jwt;
-	}
 
 	/**
 	 * @param Request $request
@@ -110,7 +97,7 @@ class UserCreateController extends AbstractController {
 				, 401 );
 		}
 		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
-			$token = new TokenString( $user, $this->jwt );
+			$token = Dispatch::command( new AuthoriseUserCommand( $user, 'create'));
 
 			return $response->withJson(
 				[

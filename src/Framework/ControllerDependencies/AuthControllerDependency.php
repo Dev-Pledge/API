@@ -25,9 +25,7 @@ class AuthControllerDependency extends AbstractControllerDependency {
 	 * @return AuthController
 	 */
 	public function __invoke( Container $container ) {
-		$jwt = JWTServiceProvider::getService();
-
-		return new AuthController( $jwt );
+		return new AuthController();
 	}
 
 	/**

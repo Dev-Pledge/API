@@ -5,10 +5,13 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Application\Factory\UserFactory;
 use DevPledge\Application\Repository\UserRepository;
+
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuth;
 use DevPledge\Domain\Role\Role;
+use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Integrations\Cache\Cache;
+use DevPledge\Integrations\Security\JWT\JWT;
 
 /**
  * Class UserService
@@ -33,6 +36,10 @@ class UserService {
 	 * @var Role
 	 */
 	private $role;
+	/**
+	 * @var JWT
+	 */
+	protected $jwt;
 
 	/**
 	 * UserService constructor.
@@ -42,12 +49,13 @@ class UserService {
 	 * @param Cache $cache
 	 * @param Role $role
 	 */
-	public function __construct( UserRepository $repository, UserFactory $factory, Cache $cache, Role $role ) {
+	public function __construct( UserRepository $repository, UserFactory $factory, Cache $cache, Role $role, JWT $jwt ) {
 
 		$this->repo    = $repository;
 		$this->factory = $factory;
 		$this->cache   = $cache;
 		$this->role    = $role;
+		$this->jwt     = $jwt;
 	}
 
 	/**
@@ -165,5 +173,15 @@ class UserService {
 	public function getFactory() {
 		return $this->factory;
 	}
+
+	/**
+	 * @param User $user
+	 *
+	 * @return TokenString
+	 */
+	public function getNewTokenStringFromUser( User $user ) {
+		return new TokenString( $user, $this->jwt );
+	}
+
 
 }

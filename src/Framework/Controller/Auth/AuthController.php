@@ -3,35 +3,26 @@
 namespace DevPledge\Framework\Controller\Auth;
 
 
+use DevPledge\Application\Commands\AuthoriseUserCommand;
 use DevPledge\Application\Service\UserService;
 use DevPledge\Domain\PreferredUserAuth\PreferredUserAuthValidationException;
 use DevPledge\Domain\PreferredUserAuth\UsernameGitHub;
 use DevPledge\Domain\PreferredUserAuth\UsernamePassword;
-use DevPledge\Domain\TokenString;
+use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ServiceProviders\GitHubServiceProvider;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
-use DevPledge\Integrations\Security\JWT\JWT;
+use DevPledge\Integrations\Command\Dispatch;
 use DevPledge\Integrations\Security\JWT\Token;
+use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use TomWright\JSON\Exception\JSONEncodeException;
 
+/**
+ * Class AuthController
+ * @package DevPledge\Framework\Controller\Auth
+ */
+class AuthController extends AbstractController {
 
-class AuthController {
-
-	/**
-	 * @var JWT
-	 */
-	private $jwt;
-
-	/**
-	 * AuthController constructor.
-	 *
-	 * @param JWT $jwt
-	 */
-	public function __construct( JWT $jwt ) {
-		$this->jwt = $jwt;
-	}
 
 	/**
 	 * @param Request $request
@@ -61,7 +52,7 @@ class AuthController {
 					], 401 );
 				}
 
-				$token = new TokenString( $user, $this->jwt );
+				$token = Dispatch::command( new AuthoriseUserCommand( $user, 'login' ) );
 
 				return $response->withJson( [ 'token' => $token->getTokenString() ] );
 			} catch ( \TypeError | \Exception $error ) {
@@ -88,9 +79,10 @@ class AuthController {
 			try {
 				$githubService = GitHubServiceProvider::getService();
 				$githubUser    = $githubService->getGitHubUserByCodeState( $code, $state );
+				Sentry::get()->message( 'here1');
 				$user          = UserServiceProvider::getService()->getByGitHubId( $githubUser->getGitHubId() );
-				$token         = new TokenString( $user, $this->jwt );
-
+				$token         = Dispatch::command( new AuthoriseUserCommand( $user, 'login' ) );
+				Sentry::get()->message( 'here2');
 				return $response->withJson( [ 'token' => $token->getTokenString() ] );
 			} catch ( \TypeError | \Exception $error ) {
 				return $response->withJson( [ 'error' => 'User Not Found' ], 401 );
@@ -107,14 +99,10 @@ class AuthController {
 	 * @return Response
 	 */
 	public function refresh( Request $request, Response $response ) {
-		/**
-		 * @var Token $token
-		 */
-		$token = $request->getAttribute( Token::class );
-
+		$user = $this->getUserFromRequest( $request );
 		try {
-			$newToken = $this->jwt->generate( $token->getData() );
-		} catch ( JSONEncodeException $e ) {
+			$newToken = Dispatch::command( new AuthoriseUserCommand( $user, 'refresh' ) );
+		} catch ( \Exception | \TypeError $e ) {
 			return $response->withJson( [ 'error' => 'Could not generate token' ], 500 );
 		}
 

@@ -10,6 +10,7 @@ use DevPledge\Framework\FactoryDependencies\UserFactoryDependency;
 use DevPledge\Framework\RepositoryDependencies\User\UserRepositoryDependency;
 use DevPledge\Integrations\ServiceProvider\AbstractServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
+use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 use DevPledge\Integrations\ServiceProvider\Services\RedisServiceProvider;
 use Slim\Container;
 
@@ -34,7 +35,8 @@ class UserServiceProvider extends AbstractServiceProvider {
 			UserRepositoryDependency::getRepository(),
 			UserFactoryDependency::getFactory(),
 			CacheServiceProvider::getService(),
-			new Member()
+			new Member(),
+			JWTServiceProvider::getService()
 		);
 	}
 
