@@ -53,7 +53,7 @@ class UserPermission extends AbstractUserMiddleware implements MiddleWareAuthReq
 	public function getAuthRequirement(): ?array {
 		return [
 			'Header Required: "Authorization: Bearer {access_token}"',
-			'User must own the entity being changed'
+			'User must own the entity being accessed'
 		];
 	}
 }
