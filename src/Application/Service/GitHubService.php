@@ -90,15 +90,7 @@ class GitHubService {
 			 * @var $gitHubUser GitHubUser
 			 */
 			$gitHubUser = $this->factory->createFromPersistedData( $response );
-			$this->cache->set( static::GITHUB_ID_KEY . $gitHubUser->getGitHubId(), $gitHubUser->toPersistMap() );
-			if ( isset( $user ) ) {
-				$this->cache->set( static::GITHUB_UUID_KEY . $gitHubUser->getId(), $gitHubUser->toPersistMap() );
-				if($user->getGitHubId()==null) {
-					Dispatch::command( new UpdateUserCommand( $user,
-						(object) [ 'github_id' => $gitHubUser->getGitHubId() ]
-					) );
-				}
-			}
+			$this->updateGitHubCachedUser( $gitHubUser, $user );
 		} catch ( \Exception | \TypeError $exception ) {
 			throw new InvalidArgumentException( 'Github User Object Generation Failed ' . $exception->getMessage() . print_r( $response ), 'code' );
 		}
@@ -136,6 +128,16 @@ class GitHubService {
 		}
 
 		return null;
+	}
+
+	public function updateGitHubCachedUser( GitHubUser $gitHubUser, ?User $user = null ): GitHubService {
+		if ( isset( $user ) ) {
+			$gitHubUser->setUuid( $user->getUuid() );
+			$this->cache->set( static::GITHUB_UUID_KEY . $gitHubUser->getId(), $gitHubUser->toPersistMap() );
+		}
+		$this->cache->set( static::GITHUB_ID_KEY . $gitHubUser->getGitHubId(), $gitHubUser->toPersistMap() );
+
+		return $this;
 	}
 
 	/**

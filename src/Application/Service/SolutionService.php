@@ -133,20 +133,36 @@ class SolutionService {
 		), 'name' );
 	}
 
+
 	/**
 	 * @param Problem $problem
 	 * @param string $openSourceLocation
 	 *
 	 * @return array|null
-	 * @throws \Exception
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
-	public function getProblemSolutionWithOpenSourceLocation( Problem $problem, string $openSourceLocation ) {
+	public function getProblemSolutionWithOpenSourceLocation( Problem $problem, string $openSourceLocation ): ?array {
 		return $this->repo->readAllWhere( new Wheres(
 			[
 				new Where( 'open_source_location', trim( $openSourceLocation ) ),
 				new Where( 'problem_id', $problem->getId() )
 			]
 		), 'open_source_location' );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return Solutions
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 */
+	public function getUserSolutions( string $userId ): Solutions {
+		$solutions = $this->repo->readAllWhere( new Wheres( [ new Where( 'user_id', $userId ) ] ) );
+		if ( $solutions ) {
+			return new Solutions( $solutions );
+		}
+
+		return new Solutions( [] );
 	}
 
 }

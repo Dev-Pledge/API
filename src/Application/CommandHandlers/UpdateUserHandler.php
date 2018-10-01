@@ -22,9 +22,10 @@ class UpdateUserHandler extends AbstractCommandHandler {
 	}
 
 	/**
-	 * @param UpdateUserCommand $command
+	 * @param $command UpdateUserCommand
 	 *
 	 * @return User
+	 * @throws CommandException
 	 * @throws \DevPledge\Application\Factory\FactoryException
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */

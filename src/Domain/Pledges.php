@@ -76,4 +76,11 @@ class Pledges extends AbstractDomain {
 	public function toAPIMapArray(): array {
 		return $this->toAPIMap()->pledges;
 	}
+
+	/**
+	 * @return int
+	 */
+	public function countPledges(): int {
+		return count( $this->pledges );
+	}
 }

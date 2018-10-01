@@ -90,5 +90,11 @@ class Solutions extends AbstractDomain {
 		return $this->toAPIMap()->solutions;
 	}
 
+	/**
+	 * @return int
+	 */
+	public function countSolutions(): int {
+		return count( $this->solutions );
+	}
 
 }

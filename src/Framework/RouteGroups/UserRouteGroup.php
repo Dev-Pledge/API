@@ -3,10 +3,12 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\Pledge;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\Auth\PayController;
 
+use DevPledge\Framework\Controller\Pledge\PledgeController;
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Framework\Controller\User\UserUpdateController;
 use DevPledge\Framework\Middleware\OriginPermission;
@@ -111,6 +113,11 @@ class UserRouteGroup extends AbstractRouteGroup {
 		$this->get(
 			'/paymentMethods/{user_id}',
 			PayController::class . ':getUserPaymentMethods', null, new UserPermission()
+		);
+
+		$this->get(
+			'/pledges/{user_id}',
+			PledgeController::class . ':getUserPledges', null, new UserPermission()
 		);
 
 

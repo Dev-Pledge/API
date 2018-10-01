@@ -79,17 +79,17 @@ class AuthController extends AbstractController {
 			try {
 				$githubService = GitHubServiceProvider::getService();
 				$githubUser    = $githubService->getGitHubUserByCodeState( $code, $state );
-				Sentry::get()->message( 'here1');
 				$user          = UserServiceProvider::getService()->getByGitHubId( $githubUser->getGitHubId() );
-				$token         = Dispatch::command( new AuthoriseUserCommand( $user, 'login' ) );
-				Sentry::get()->message( 'here2');
+				$githubService->updateGitHubCachedUser( $githubUser, $user );
+				$token = Dispatch::command( new AuthoriseUserCommand( $user, 'login' ) );
+
 				return $response->withJson( [ 'token' => $token->getTokenString() ] );
 			} catch ( \TypeError | \Exception $error ) {
 				return $response->withJson( [ 'error' => 'User Not Found' ], 401 );
 			}
 		}
 
-		return $response->withJson( [ 'error' => 'Invalid Github Login' ], 401 );
+		return $response->withJson( [ 'error' => 'Invalid GitHub Login' ], 401 );
 	}
 
 	/**

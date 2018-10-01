@@ -11,6 +11,7 @@ use DevPledge\Application\Factory\PledgeFactory;
 use DevPledge\Application\Repository\PledgeRepository;
 use DevPledge\Domain\Payment;
 use DevPledge\Domain\Pledge;
+use DevPledge\Domain\Pledges;
 use DevPledge\Framework\Adapter\Where;
 use DevPledge\Framework\Adapter\Wheres;
 use DevPledge\Integrations\Command\Dispatch;
@@ -167,5 +168,30 @@ class PledgeService {
 				$this->update( $pledge, (object) [] );
 			}
 		} );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return Pledges
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 */
+	public function getUserPledges( string $userId ): Pledges {
+		$pledges = $this->repo->readAllWhere( new Wheres( [ new Where( 'user_id', $userId ) ] ) );
+		if ( $pledges ) {
+			return new Pledges( $pledges );
+		}
+
+		return new Pledges( [] );
+	}
+
+	/**
+	 * @param string $userId
+	 *
+	 * @return int
+	 * @throws \Exception
+	 */
+	public function getUserPledgesCount( string $userId ):int {
+		return $this->repo->countAllWhere( new Wheres( [ new Where( 'user_id', $userId ) ] ) );
 	}
 }

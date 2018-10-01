@@ -7,6 +7,7 @@ use DevPledge\Domain\CommandPermissionException;
 use DevPledge\Domain\InvalidArgumentException;
 use DevPledge\Domain\Pledge;
 use DevPledge\Framework\Controller\AbstractController;
+use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -53,16 +54,48 @@ class PledgeController extends AbstractController {
 		return $response->withJson( $pledge->toAPIMap() );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
 	public function makePaymentOnPledge( Request $request, Response $response ) {
 		$user      = $this->getUserFromRequest( $request );
 		$data      = $this->getStdClassFromRequest( $request );
 		$problemId = $request->getAttribute( 'problem_id' );
-
+		/**
+		 * TODO make payment on pledge logic
+		 */
 		if ( is_null( $user ) ) {
 			return $response->withJson(
 				[ 'error' => 'No User Found' ]
 				, 401 );
 		}
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 */
+	public function getUserPledges(Request $request, Response $response ){
+
+		$user = $this->getUserFromRequest( $request);
+		if ( is_null( $user ) ) {
+			return $response->withJson(
+				[ 'error' => 'No User Found' ]
+				, 401 );
+		}
+		$pledgeService = PledgeServiceProvider::getService();
+
+		$pledges = $pledgeService->getUserPledges( $user->getId());
+
+		return $response->withJson( [
+			$pledges->toAPIMap()
+		]);
 	}
 
 }

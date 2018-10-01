@@ -5,6 +5,7 @@ namespace DevPledge\Application\EventHandlers\Cache;
 
 use DevPledge\Application\Events\DeletedDomainEvent;
 use DevPledge\Framework\ServiceProviders\CommentServiceProvider;
+use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Event\AbstractEventHandler;
 use DevPledge\Integrations\ServiceProvider\Services\CacheServiceProvider;
 
@@ -38,6 +39,11 @@ class ClearCacheDeletedHandler extends AbstractEventHandler {
 			}
 			CacheServiceProvider::getService()->deleteKeys( $keys );
 
+		}
+
+		if ( is_callable( [ $domain, 'getUserId' ] ) ) {
+			$user = UserServiceProvider::getService()->getUserFromCache( $domain->getUserId() );
+			CacheServiceProvider::getService()->deleteKeys( [ 'pi:' . $user->getUsername() ] );
 		}
 	}
 }
