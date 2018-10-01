@@ -83,8 +83,8 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'/updatePassword/{user_id}',
 			UserUpdateController::class . ':updatePassword', function () {
 			return (object) [
-				'old_password',
-				'new_password'
+				'old_password' => 'myveryoldpassWord!',
+				'new_password' => 'MyVeryNewPassword33!z00'
 			];
 		},
 			$userUpdatedExampleResponse,
@@ -94,8 +94,8 @@ class UserRouteGroup extends AbstractRouteGroup {
 			'/updateGithub/{user_id}',
 			UserUpdateController::class . ':updateGithub', function () {
 			return (object) [
-				'code',
-				'state',
+				'code'  => '098ygbn23ebrhduiksmndmc',
+				'state' => 'dihndfjndhjdsms0987',
 			];
 		}, $userUpdatedExampleResponse, new UserPermission()
 		);
