@@ -34,7 +34,7 @@ class UpdateUserHandler extends AbstractCommandHandler {
 		$userService = UserServiceProvider::getService();
 		$user        = $userService->getByUserId( $oldUser->getId() );
 		$data        = $command->getData();
-		$removeArray = [ 'user_id', 'created', 'modified', 'username', 'hashed_password' ];
+		$removeArray = [ 'user_id', 'created', 'modified', 'username', 'hashed_password', 'github_id' ];
 		foreach ( $data as $key => $value ) {
 			if ( in_array( $key, $removeArray ) ) {
 				unset( $data->{$key} );
