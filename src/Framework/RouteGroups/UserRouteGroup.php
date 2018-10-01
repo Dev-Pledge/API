@@ -91,7 +91,7 @@ class UserRouteGroup extends AbstractRouteGroup {
 			new UserPermission()
 		);
 		$this->post(
-			'/updateGithub/{user_id}',
+			'/updateGitHub/{user_id}',
 			UserUpdateController::class . ':updateGithub', function () {
 			return (object) [
 				'code'  => '098ygbn23ebrhduiksmndmc',
