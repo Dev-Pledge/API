@@ -3,11 +3,9 @@
 namespace DevPledge\Framework\ControllerDependencies;
 
 
-
 use DevPledge\Framework\Controller\User\UserCreateController;
 use DevPledge\Framework\Controller\User\UserUpdateController;
 use DevPledge\Integrations\ControllerDependency\AbstractControllerDependency;
-use DevPledge\Integrations\ServiceProvider\Services\JWTServiceProvider;
 use Slim\Container;
 
 /**
@@ -25,7 +23,7 @@ class UserUpdateControllerDependency extends AbstractControllerDependency {
 	 * @return UserCreateController
 	 */
 	public function __invoke( Container $container ) {
-		return new UserUpdateController( JWTServiceProvider::getService() );
+		return new UserUpdateController();
 	}
 
 	/**

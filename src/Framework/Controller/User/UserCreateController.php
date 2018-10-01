@@ -15,6 +15,7 @@ use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ControllerDependencies\AuthControllerDependency;
 use DevPledge\Framework\ServiceProviders\UserServiceProvider;
 use DevPledge\Integrations\Command\Dispatch;
+use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Security\JWT\JWT;
 use DevPledge\Integrations\Sentry;
 use Slim\Http\Request;
@@ -80,24 +81,49 @@ class UserCreateController extends AbstractController {
 
 					} );
 				}
-				if ( $preferredUserAuth instanceof UsernameGitHub ) {
-					return AuthControllerDependency::getController()->gitHubLogin( $request, $response );
+				try {
+					if ( $preferredUserAuth instanceof UsernameGitHub && $preferredUserAuth->getGitHubId() ) {
+						new MysqlPDODuplicationException( $PDoException, $request->getParsedBody(), null, function () {
+							throw new \Exception( 'Need to try GitHub Login' );
+						} );
+
+					}
+				} catch ( \Exception $githubException ) {
+					if ( $githubException->getMessage() == 'Need to try GitHub Login' ) {
+						try {
+							$user  = UserServiceProvider::getService()->getByGitHubId( $preferredUserAuth->getGitHubId() );
+							$token = Dispatch::command( new AuthoriseUserCommand( $user, 'login' ) );
+
+							return $response->withJson(
+								[
+									'user_id'  => $user->getId(),
+									'username' => $user->getUsername(),
+									'token'    => $token->getTokenString()
+								]
+							);
+						} catch ( \Exception | \TypeError $exception ) {
+							throw new PreferredUserAuthValidationException(
+								'GitHub User may exist - redirect to login has failed!', 'code'
+							);
+						}
+					}
 				}
 
-
 				throw new PreferredUserAuthValidationException(
-					'Unable to create new user'
+					'Unable to create new user ' . $PDoException->getMessage()
 				);
 
 
 			}
 		} catch ( PreferredUserAuthValidationException $exception ) {
+
 			return $response->withJson(
 				[ 'error' => $exception->getMessage(), 'field' => $exception->getField() ]
 				, 401 );
+
 		}
 		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
-			$token = Dispatch::command( new AuthoriseUserCommand( $user, 'create'));
+			$token = Dispatch::command( new AuthoriseUserCommand( $user, 'create' ) );
 
 			return $response->withJson(
 				[

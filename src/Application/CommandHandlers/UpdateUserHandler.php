@@ -29,6 +29,10 @@ class UpdateUserHandler extends AbstractCommandHandler {
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	protected function handle( $command ) {
+
+		$oldUser     = $command->getUser();
+		$userService = UserServiceProvider::getService();
+		$user        = $userService->getByUserId( $oldUser->getId() );
 		$data        = $command->getData();
 		$removeArray = [ 'user_id', 'created', 'modified', 'username', 'hashed_password' ];
 		foreach ( $data as $key => $value ) {
@@ -40,12 +44,12 @@ class UpdateUserHandler extends AbstractCommandHandler {
 			}
 		}
 
-		if ( ! $command->getUser()->isPersistedDataFound() ) {
+		if ( ! $user->isPersistedDataFound() ) {
 			throw new CommandException( 'Can not update User Object unless updating persisted object' );
 		}
 
-		return UserServiceProvider::getService()->update(
-			$command->getUser(), $data
+		return $userService->update(
+			$user, $data
 		);
 	}
 }

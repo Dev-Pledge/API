@@ -11,7 +11,7 @@ use DevPledge\Integrations\Command\AbstractCommand;
  * @package DevPledge\Application\Commands
  */
 class AuthoriseUserCommand extends AbstractCommand {
-	const AUTH_TYPES = [ 'create', 'login', 'refresh' ];
+	const AUTH_TYPES = [ 'create', 'update', 'login', 'refresh' ];
 	/**
 	 * @var string
 	 */

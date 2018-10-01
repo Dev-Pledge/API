@@ -15,6 +15,7 @@ class MysqlPDODuplicationException extends \Exception {
 	protected $value;
 	protected $key;
 	protected $closure;
+	protected $fallbackClosure;
 
 	/**
 	 * MysqlPDODuplicationException constructor.
@@ -22,12 +23,14 @@ class MysqlPDODuplicationException extends \Exception {
 	 * @param \PDOException $PDOException
 	 * @param array|null $map
 	 * @param \Closure|null $closure
+	 * @param \Closure|null $fallbackClosure
 	 */
-	public function __construct( \PDOException $PDOException, array $map = null, \Closure $closure = null ) {
+	public function __construct( \PDOException $PDOException, array $map = null, \Closure $closure = null, \Closure $fallbackClosure = null ) {
 
-		$this->PDOException = $PDOException;
-		$this->map          = $map;
-		$this->closure      = $closure;
+		$this->PDOException    = $PDOException;
+		$this->map             = $map;
+		$this->closure         = $closure;
+		$this->fallbackClosure = $fallbackClosure;
 		parent::__construct( $this->getMessageFromPDOException(), $PDOException->getCode() );
 	}
 
@@ -55,6 +58,8 @@ class MysqlPDODuplicationException extends \Exception {
 
 				if ( ( $this->key = array_search( $this->value, $this->map ) ) && is_callable( $this->closure ) ) {
 					return call_user_func_array( $this->closure, [ $this ] );
+				} elseif ( isset( $this->fallbackClosure ) ) {
+					return call_user_func_array( $this->fallbackClosure, [ $this ] );
 				}
 
 			}

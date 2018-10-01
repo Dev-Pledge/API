@@ -3,13 +3,14 @@
 namespace DevPledge\Framework\Controller\User;
 
 
+use DevPledge\Application\Commands\AuthoriseUserCommand;
 use DevPledge\Application\Commands\UpdateUserCommand;
+use DevPledge\Application\Commands\UpdateUserGitHubCommand;
 use DevPledge\Application\Commands\UpdateUserPasswordCommand;
 use DevPledge\Domain\TokenString;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Integrations\Command\Dispatch;
-use DevPledge\Integrations\Security\JWT\JWT;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -18,25 +19,14 @@ use Slim\Http\Response;
  * @package DevPledge\Framework\Controller\User
  */
 class UserUpdateController extends AbstractController {
-	/**
-	 * @var JWT
-	 */
-	private $jwt;
 
-	/**
-	 * UserCreateController constructor.
-	 *
-	 * @param JWT $jwt
-	 */
-	public function __construct( JWT $jwt ) {
-		$this->jwt = $jwt;
-	}
 
 	/**
 	 * @param Request $request
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
 	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function update( Request $request, Response $response ) {
@@ -52,7 +42,7 @@ class UserUpdateController extends AbstractController {
 		}
 
 		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
-			$token = new TokenString( $user, $this->jwt );
+			$token = $this->getTokenString( $user );
 
 			return $response->withJson(
 				[
@@ -75,6 +65,7 @@ class UserUpdateController extends AbstractController {
 	 * @param Response $response
 	 *
 	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
 	 * @throws \TomWright\JSON\Exception\JSONEncodeException
 	 */
 	public function updatePassword( Request $request, Response $response ) {
@@ -94,12 +85,12 @@ class UserUpdateController extends AbstractController {
 			$user = Dispatch::command(
 				new UpdateUserPasswordCommand( $this->getUserFromRequest( $request ), $oldPassword, $newPassword )
 			);
-		} catch ( \Exception  | \TypeError $exception) {
+		} catch ( \Exception  | \TypeError $exception ) {
 			return $response->withJson( [ 'error' => 'unable to update user password' ], 401 );
 		}
 
 		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
-			$token = new TokenString( $user, $this->jwt );
+			$token = $this->getTokenString( $user );
 
 			return $response->withJson(
 				[
@@ -115,5 +106,58 @@ class UserUpdateController extends AbstractController {
 			[ 'error' => 'failed' ]
 			, 401
 		);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 * @throws \DevPledge\Integrations\Command\CommandException
+	 * @throws \TomWright\JSON\Exception\JSONEncodeException
+	 */
+	public function updateGithub( Request $request, Response $response ) {
+		$data  = $request->getParsedBody();
+		$code  = $data['code'] ?? null;
+		$state = $data['state'] ?? null;
+
+		try {
+			/**
+			 * @var $user User
+			 */
+			$user = Dispatch::command(
+				new UpdateUserGitHubCommand( $this->getUserFromRequest( $request ), $code, $state )
+			);
+		} catch ( \Exception  | \TypeError $exception ) {
+			return $response->withJson( [ 'error' => 'unable to update user GitHub ID' ], 401 );
+		}
+
+		if ( ( $user instanceof User ) && $user->isPersistedDataFound() ) {
+			$token = $this->getTokenString( $user );
+
+			return $response->withJson(
+				[
+					'user_id'      => $user->getId(),
+					'username'     => $user->getUsername(),
+					'updated_user' => $user->toAPIMap(),
+					'token'        => $token->getTokenString()
+				]
+			);
+		}
+
+		return $response->withJson(
+			[ 'error' => 'failed' ]
+			, 401
+		);
+	}
+
+	/**
+	 * @param User $user
+	 *
+	 * @return TokenString
+	 * @throws \DevPledge\Integrations\Command\CommandException
+	 */
+	protected function getTokenString( User $user ): TokenString {
+		return Dispatch::command( new AuthoriseUserCommand( $user, 'update' ) );
 	}
 }

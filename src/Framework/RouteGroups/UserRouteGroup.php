@@ -41,13 +41,26 @@ class UserRouteGroup extends AbstractRouteGroup {
 				'token'    => $token->getTokenString()
 			];
 		};
+		$userUpdatedExampleResponse = function () {
+			static $token;
+			$user = User::getExampleInstance();
+			if ( ! isset( $token ) ) {
+				$token = new TokenString( $user, JWTServiceProvider::getService() );
+			}
 
+			return (object) [
+				'user_id'      => $user->getId(),
+				'username'     => $user->getUsername(),
+				'updated_user' => $user->toAPIMap(),
+				'token'        => $token->getTokenString()
+			];
+		};
 		$this->post(
 			'/createFromEmailPassword',
 			UserCreateController::class . ':createUserFromEmailPassword', function () {
 			return (object) [
-				'email'     => User::getExampleInstance()->getEmail(),
-				'password'    => 'MyPrettyBloodyAmazing!Password',
+				'email'    => User::getExampleInstance()->getEmail(),
+				'password' => 'MyPrettyBloodyAmazing!Password',
 				'username' => User::getExampleInstance()->getUsername()
 			];
 		}, $userCreatedExampleResponse
@@ -68,12 +81,27 @@ class UserRouteGroup extends AbstractRouteGroup {
 		);
 		$this->post(
 			'/updatePassword/{user_id}',
-			UserUpdateController::class . ':updatePassword', null, null, new UserPermission()
+			UserUpdateController::class . ':updatePassword', function () {
+			return (object) [
+				'old_password',
+				'new_password'
+			];
+		},
+			$userUpdatedExampleResponse,
+			new UserPermission()
 		);
-
+		$this->post(
+			'/updateGithub/{user_id}',
+			UserUpdateController::class . ':updateGithub', function () {
+			return (object) [
+				'code',
+				'state',
+			];
+		}, $userUpdatedExampleResponse, new UserPermission()
+		);
 		$this->patch(
 			'/{user_id}',
-			UserUpdateController::class . ':update', User::getExampleRequest(), User::getExampleResponse(), new UserPermission()
+			UserUpdateController::class . ':update', User::getExampleRequest(), $userUpdatedExampleResponse, new UserPermission()
 		);
 		$this->post(
 			'/createStripePaymentMethod/{user_id}',
