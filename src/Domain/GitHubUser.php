@@ -283,17 +283,17 @@ class GitHubUser extends AbstractDomain {
 	 *
 	 * @return GitHubUser
 	 */
-	public function setSiteAdmin( ?string $siteAdmin ): GitHubUser {
+	public function setSiteAdmin( ?bool $siteAdmin ): GitHubUser {
 		$this->siteAdmin = $siteAdmin;
 
 		return $this;
 	}
 
 	/**
-	 * @return string|null
+	 * @return bool|null
 	 */
-	public function getSiteAdmin(): ?string {
-		return $this->siteAdmin;
+	public function getSiteAdmin(): ?bool {
+		return isset( $this->siteAdmin ) ? $this->siteAdmin : false;
 	}
 
 	/**
