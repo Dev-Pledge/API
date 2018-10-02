@@ -58,9 +58,11 @@ class CreateSolutionHandler extends AbstractCommandHandler {
 		if ( ! $problem->isPersistedDataFound() ) {
 			throw new InvalidArgumentException( 'Problem ID is not Valid', 'problem_id' );
 		}
-		if ( ! (
-			( ! is_null( $problem->getActiveDatetime() ) ) && $problem->getActiveDatetime() < ( new \DateTime() )
-		) ) {
+		$activeDateTime = $problem->getActiveDatetime();
+
+		if ( ! ( $activeDateTime instanceof \DateTime ) ||
+		     ( isset( $activeDateTime ) && $activeDateTime > ( new \DateTime() ) )
+		) {
 			throw new InvalidArgumentException( 'Problem ID is not activated yet', 'problem_id' );
 		}
 		if ( ! ( isset( $data->name ) && strlen( $data->name ) > 3 ) ) {

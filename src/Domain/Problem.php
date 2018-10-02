@@ -210,7 +210,7 @@ class Problem extends AbstractDomain implements Example {
 	 *
 	 * @return $this
 	 */
-	public function setActiveDatetime( \DateTime $activeDatetime ) {
+	public function setActiveDatetime( ?\DateTime $activeDatetime ) {
 		$this->activeDatetime = $activeDatetime;
 
 		return $this;
@@ -228,7 +228,7 @@ class Problem extends AbstractDomain implements Example {
 	 *
 	 * @return $this
 	 */
-	public function setDeadlineDatetime( \DateTime $deadlineDatetime ) {
+	public function setDeadlineDatetime( ?\DateTime $deadlineDatetime ) {
 		$this->deadlineDatetime = $deadlineDatetime;
 
 		return $this;

@@ -12,6 +12,11 @@ use DevPledge\Integrations\Sentry;
  * @package DevPledge\Domain\Fetcher
  */
 class FetchProblem extends Problem {
+	/**
+	 * FetchProblem constructor.
+	 *
+	 * @param $problemId
+	 */
 	public function __construct( $problemId ) {
 
 		parent::__construct( 'problem' );
@@ -26,6 +31,8 @@ class FetchProblem extends Problem {
 				->setCreated( $problem->getCreated() )
 				->setModified( $problem->getModified() )
 				->setDeleted( $problem->isDeleted() )
+				->setActiveDatetime( $problem->getActiveDatetime() )
+				->setDeadlineDatetime( $problem->getDeadlineDatetime() )
 				->setDescription( $problem->getDescription() )
 				->setPersistedDataFound( $problem->isPersistedDataFound() );
 
