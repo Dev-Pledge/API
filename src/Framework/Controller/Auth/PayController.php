@@ -94,6 +94,12 @@ class PayController extends AbstractController {
 		}
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
 	public function payPledgeWithStripeToken( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
 
@@ -116,6 +122,13 @@ class PayController extends AbstractController {
 		return $response->withJson( [ 'payment' => $payment->toAPIMap() ] );
 	}
 
+	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 *
+	 */
 	public function payPledgeWithPaymentMethod( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
 
