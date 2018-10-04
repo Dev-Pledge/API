@@ -5,8 +5,11 @@ namespace DevPledge\Framework\RouteGroups;
 
 use DevPledge\Framework\Controller\Auth\PayController;
 use DevPledge\Framework\Middleware\OriginPermission;
+use DevPledge\Framework\Settings\StripeSettings;
 use DevPledge\Integrations\Middleware\JWT\Authorise;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
+use Slim\Http\Request;
+use Slim\Http\Response;
 
 /**
  * Class PayRouteGroup
@@ -24,6 +27,11 @@ class PayRouteGroup extends AbstractRouteGroup {
 		$this->post( '/pledge/{pledge_id}/stripeToken', PayController::class . ':payPledgeWithStripeToken' );
 		$this->post( '/pledge/{pledge_id}/paymentMethod', PayController::class . ':payPledgeWithPaymentMethod' );
 		$this->post( '/method/stripe/create', PayController::class . ':createUserStripePaymentMethod' );
+		$this->get( '/stripe/apiKey', function ( Request $request, Response $response ) {
+			return $response->withJson( [ 'api_key' => StripeSettings::getSetting()->getPublicApiKey() ] );
+		}, function () {
+			return (object) [ 'api_key' => 'woiugbdwef923hoascdkjcn' ];
+		} );
 
 	}
 }
