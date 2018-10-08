@@ -73,10 +73,13 @@ class ProblemService {
 	public function create( \stdClass $data ): Problem {
 
 		$problem = $this->factory->create( $data );
-
+		/**
+		 * @var $problem Problem
+		 */
 		$problem = $this->repo->createPersist( $problem );
-
-		Dispatch::event( new CreatedDomainEvent( $problem ) );
+		if ( $problem->isActive() ) {
+			Dispatch::event( new CreatedDomainEvent( $problem ) );
+		}
 
 		return $problem;
 	}
@@ -91,8 +94,9 @@ class ProblemService {
 	public function update( Problem $problem, \stdClass $rawUpdateData ): Problem {
 		$problem = $this->factory->update( $problem, $rawUpdateData );
 		$problem = $this->repo->update( $problem );
-
-		Dispatch::event( new UpdatedDomainEvent( $problem ) );
+		if ( $problem->isActive() ) {
+			Dispatch::event( new UpdatedDomainEvent( $problem ) );
+		}
 
 		return $problem;
 	}
@@ -101,6 +105,7 @@ class ProblemService {
 	 * @param string $problemId
 	 *
 	 * @return Problem
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function read( string $problemId ): Problem {
 		return $this->repo->read( $problemId );
@@ -110,6 +115,7 @@ class ProblemService {
 	 * @param string $problemId
 	 *
 	 * @return int|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
 	 */
 	public function delete( string $problemId ): ?int {
 

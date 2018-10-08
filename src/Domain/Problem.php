@@ -94,6 +94,7 @@ class Problem extends AbstractDomain implements Example {
 				'title'             => 'My Problems Title',
 				'description'       => 'Description of Problem',
 				'specification'     => 'Outline of Specification Needed',
+				'make_active'       => true,
 				'active_datetime'   => '2018-01-01 01:00:00',
 				'deadline_datetime' => '2018-01-01 01:00:00',
 				'topics'            => [ 'PHP', 'JS' ]
@@ -116,6 +117,7 @@ class Problem extends AbstractDomain implements Example {
 	 */
 	public function toAPIMap(): \stdClass {
 		$data                 = parent::toAPIMap();
+		$data->is_active      = $this->isActive();
 		$data->topics         = $this->getTopics()->toArray();
 		$data->solutions      = $this->getSolutions()->toAPIMapArray();
 		$data->user           = $this->getUser()->toPublicAPIMap();
@@ -398,5 +400,17 @@ class Problem extends AbstractDomain implements Example {
 		}
 
 		return $example;
+	}
+
+	/**
+	 * @return bool
+	 */
+	public function isActive(): bool {
+		$now = new \DateTime();
+		if ( isset( $this->activeDatetime ) && $this->activeDatetime <= $now ) {
+			return true;
+		}
+
+		return false;
 	}
 }

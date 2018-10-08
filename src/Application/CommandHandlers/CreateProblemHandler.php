@@ -53,6 +53,12 @@ class CreateProblemHandler extends AbstractCommandHandler {
 			$data->user_id = null;
 		}
 
+		if ( isset( $data->make_active ) && $data->make_active == true &&
+		     ! ( isset( $data->active_datetime ) && is_string( $data->active_datetime ) )
+		) {
+			$data->active_datetime = ( new \DateTime( 'now' ) )->format( 'Y-m-d H:i:s' );
+		}
+
 		return ProblemServiceProvider::getService()->create(
 			$data
 		);

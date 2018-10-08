@@ -39,8 +39,14 @@ class UpdateProblemHandler extends AbstractCommandHandler {
 
 		if ( $problem ) {
 			CommandPermissionException::tryException( $problem, $command->getUser(), 'write' );
+			$data = $command->getData();
+			if ( isset( $data->make_active ) && $data->make_active == true &&
+			     ! ( isset( $data->active_datetime ) && is_string( $data->active_datetime ) )
+			) {
+				$data->active_datetime = ( new \DateTime( 'now' ) )->format( 'Y-m-d H:i:s' );
+			}
 
-			return $problemService->update( $problem, $command->getData() );
+			return $problemService->update( $problem, $data );
 		}
 
 		throw new InvalidArgumentException( 'Problem ID does not match a current Problem' );
