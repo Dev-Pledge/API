@@ -186,5 +186,11 @@ abstract class AbstractDomain implements PersistMappable {
 		return (array) $this->toPersistMap();
 	}
 
+	/**
+	 * @return bool
+	 */
+	public function isActive(){
+		return true;
+	}
 
 }

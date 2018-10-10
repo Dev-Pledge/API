@@ -24,11 +24,12 @@ class SendFeedDomainCreatedHandler extends AbstractEventHandler {
 	 * @param $event CreatedDomainEvent
 	 */
 	protected function handle( $event ) {
+		$domain = $event->getDomain();
 
-		$domain      = $event->getDomain();
-		$parentId    = $event->getParentId();
-		$feedService = FeedServiceProvider::getService();
-		$feedService->createdActivityFeed( $domain, $parentId );
-
+		if ( $domain->isActive() ) {
+			$parentId    = $event->getParentId();
+			$feedService = FeedServiceProvider::getService();
+			$feedService->createdActivityFeed( $domain, $parentId );
+		}
 	}
 }

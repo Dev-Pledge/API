@@ -77,9 +77,9 @@ class ProblemService {
 		 * @var $problem Problem
 		 */
 		$problem = $this->repo->createPersist( $problem );
-		if ( $problem->isActive() ) {
-			Dispatch::event( new CreatedDomainEvent( $problem ) );
-		}
+
+		Dispatch::event( new CreatedDomainEvent( $problem ) );
+
 
 		return $problem;
 	}
@@ -94,9 +94,9 @@ class ProblemService {
 	public function update( Problem $problem, \stdClass $rawUpdateData ): Problem {
 		$problem = $this->factory->update( $problem, $rawUpdateData );
 		$problem = $this->repo->update( $problem );
-		if ( $problem->isActive() ) {
-			Dispatch::event( new UpdatedDomainEvent( $problem ) );
-		}
+
+		Dispatch::event( new UpdatedDomainEvent( $problem ) );
+
 
 		return $problem;
 	}
