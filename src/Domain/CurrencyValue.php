@@ -3,6 +3,8 @@
 namespace DevPledge\Domain;
 
 use DevPledge\Framework\ServiceProviders\CurrencyServiceProvider;
+use Money\Currency;
+use Money\Money;
 
 /**
  * Class CurrencyValue
@@ -45,10 +47,18 @@ class CurrencyValue {
 	}
 
 	/**
+	 * @return Money
+	 * @throws \Exception
+	 */
+	public function getMoney() {
+		return new Money( (int) ( $this->value * 1000 ), new Currency( $this->currency ) );
+	}
+
+	/**
 	 * @return float
 	 * @throws \Exception
 	 */
-	public function getMoney(): float {
+	public function getInSiteCurrency(): float {
 		return CurrencyServiceProvider::getService()->siteSumCurrencyValues( new CurrencyValues( [ $this ] ) );
 	}
 

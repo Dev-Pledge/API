@@ -49,10 +49,10 @@ class CurrencyService {
 		$currencyValues = $currencyValues->getCurrencyValues();
 		$total          = new Money( 0, new Currency( static::SITE_CURRENCY ) );
 		foreach ( $currencyValues as $currencyValue ) {
-			$total->add( new Money( (int) ( $this->get( $currencyValue->getCurrency(), static::SITE_CURRENCY, $currencyValue->getValue() ) * 100 ), new Currency( static::SITE_CURRENCY ) ) );
+			$total->add( new Money( (int) ( $this->get( $currencyValue->getCurrency(), static::SITE_CURRENCY, $currencyValue->getValue() ) * 1000 ), new Currency( static::SITE_CURRENCY ) ) );
 		}
 
-		return (float) money_format( '%i', ( $total->getAmount() / 100 ) );
+		return (float) money_format( '%i', ( $total->getAmount() / 1000 ) );
 	}
 
 }
