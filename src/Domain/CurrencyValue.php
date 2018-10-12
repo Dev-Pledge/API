@@ -52,4 +52,5 @@ class CurrencyValue {
 		return CurrencyServiceProvider::getService()->siteSumCurrencyValues( new CurrencyValues( [ $this ] ) );
 	}
 
+
 }

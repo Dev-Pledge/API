@@ -29,7 +29,8 @@
     "monolog/monolog": "^1.23",
     "jrsaunders/quickcache": "^1.0",
     "predis/predis": "^1.1",
-    "robmorgan/phinx": "^0.10.6"
+    "robmorgan/phinx": "^0.10.6",
+    "moneyphp/money": "^3.1"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.8 < 6.0",

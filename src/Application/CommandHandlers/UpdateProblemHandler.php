@@ -44,6 +44,8 @@ class UpdateProblemHandler extends AbstractCommandHandler {
 			     ! ( isset( $data->active_datetime ) && is_string( $data->active_datetime ) )
 			) {
 				$data->active_datetime = ( new \DateTime( 'now' ) )->format( 'Y-m-d H:i:s' );
+			}else if(isset($data->make_active) && $data->make_active==false){
+				$data->active_datetime = null;
 			}
 
 			return $problemService->update( $problem, $data );

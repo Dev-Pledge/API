@@ -4,6 +4,8 @@ namespace DevPledge\Application\Service;
 
 use DevPledge\Domain\CurrencyValues;
 use FixerExchangeRates\Conversion;
+use Money\Currency;
+use Money\Money;
 
 /**
  * Class CurrencyService
@@ -45,12 +47,12 @@ class CurrencyService {
 	 */
 	public function siteSumCurrencyValues( CurrencyValues $currencyValues ) {
 		$currencyValues = $currencyValues->getCurrencyValues();
-		$total          = 0;
+		$total          = new Money( 0, new Currency( static::SITE_CURRENCY ) );
 		foreach ( $currencyValues as $currencyValue ) {
-			$total = $total + $this->get( $currencyValue->getCurrency(), static::SITE_CURRENCY, $currencyValue->getValue() );
+			$total->add( new Money( (int) ( $this->get( $currencyValue->getCurrency(), static::SITE_CURRENCY, $currencyValue->getValue() ) * 100 ), new Currency( static::SITE_CURRENCY ) ) );
 		}
 
-		return (float) money_format( '%i', $total );
+		return (float) money_format( '%i', ( $total->getAmount() / 100 ) );
 	}
 
 }
