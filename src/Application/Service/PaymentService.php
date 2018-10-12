@@ -188,7 +188,7 @@ class PaymentService {
 			return $this->handleGatewayResponse(
 				$this->gateway->purchase(
 					[
-						'amount'   => $currencyValue->getMoney()->getAmount(),
+						'amount'   => $currencyValue->getValue(),
 						'currency' => $currencyValue->getCurrency(),
 						'card'     => $formData
 					]
@@ -215,7 +215,7 @@ class PaymentService {
 		try {
 			return $this->handleGatewayResponse(
 				$this->gateway->purchase( [
-					'amount'   => $currencyValue->getMoney()->getAmount(),
+					'amount'   => $currencyValue->getValue(),
 					'currency' => $currencyValue->getCurrency(),
 					'token'    => $token,
 				] )->send(), $successFunction, $currencyValue );
@@ -288,7 +288,7 @@ class PaymentService {
 
 		return $this->handleGatewayResponse(
 			$this->gateway->purchase( [
-				'amount'        => $currencyValue->getMoney()->getAmount(),
+				'amount'        => $currencyValue->getValue(),
 				'currency'      => $currencyValue->getCurrency(),
 				'cardReference' => $paymentMethod->getCardReference(),
 				//		'customerReference'=> $paymentMethod->getCardReference(),

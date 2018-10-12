@@ -22,6 +22,6 @@ class PaymentFactory extends AbstractFactory {
 			->setMethodToProductObject( 'reference', 'setReference' )
 			->setMethodToProductObject( 'gateway', 'setGateway' )
 			->setMethodToProductObject( 'refunded', 'setRefunded' )
-			->setMethodToProductObject( [ 'value', 'currency' ], 'setCurrencyValue', CurrencyValue::class );
+			->setMethodToProductObject( [ 'currency', 'value' ], 'setCurrencyValue', CurrencyValue::class );
 	}
 }
