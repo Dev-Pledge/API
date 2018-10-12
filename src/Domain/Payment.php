@@ -3,12 +3,13 @@
 namespace DevPledge\Domain;
 
 use DevPledge\Application\Service\CurrencyService;
+use DevPledge\Integrations\Route\Example;
 
 /**
  * Class Payment
  * @package DevPledge\Domain
  */
-class Payment extends AbstractDomain {
+class Payment extends AbstractDomain implements Example {
 	/**
 	 * @var string | null
 	 */
@@ -167,5 +168,41 @@ class Payment extends AbstractDomain {
 	 */
 	public function getRefunded() {
 		return (int) ( $this->refunded ? 1 : 0 );
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return (object) [
+				'token' => '98yg3nrkfud8ew92okKnrfmcU8ujNmT'
+			];
+		};
+	}
+
+	/**
+	 * @return Payment
+	 */
+	public static function getExampleInstance() {
+		static $example;
+		if ( ! isset( $example ) ) {
+			$example = new static( 'payment' );
+			$example->setUserId( User::getExampleInstance()->getId() )
+			        ->setCurrencyValue( new CurrencyValue( 'USD', '2.90' ) )
+			        ->setReference( 'TransRef0987656789032q' )
+			        ->setGateway( 'Stripe' );
+		}
+
+		return $example;
 	}
 }

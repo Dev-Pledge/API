@@ -119,7 +119,7 @@ class PayController extends AbstractController {
 			return $response->withJson( [ 'error' => 'input error' ], 500 );
 		}
 
-		return $response->withJson( [ 'payment' => $payment->toAPIMap() ] );
+		return $response->withJson( $payment->toAPIMap() );
 	}
 
 	/**
@@ -132,9 +132,9 @@ class PayController extends AbstractController {
 	public function payPledgeWithPaymentMethod( Request $request, Response $response ) {
 		$data = $request->getParsedBody();
 
-		$paymentMethodId    = $data['payment_method_id'] ?? null;
-		$pledgeId = $request->getAttribute( 'pledge_id' );
-		$user     = $this->getUserFromRequest( $request );
+		$paymentMethodId = $data['payment_method_id'] ?? null;
+		$pledgeId        = $request->getAttribute( 'pledge_id' );
+		$user            = $this->getUserFromRequest( $request );
 		try {
 			/**
 			 * @var $payment Payment
@@ -148,7 +148,7 @@ class PayController extends AbstractController {
 			return $response->withJson( [ 'error' => 'input error' ], 500 );
 		}
 
-		return $response->withJson( [ 'payment' => $payment->toAPIMap() ] );
+		return $response->withJson( $payment->toAPIMap() );
 	}
 
 

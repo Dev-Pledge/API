@@ -3,6 +3,7 @@
 namespace DevPledge\Framework\RouteGroups;
 
 
+use DevPledge\Domain\Payment;
 use DevPledge\Framework\Controller\Auth\PayController;
 use DevPledge\Framework\Middleware\OriginPermission;
 use DevPledge\Framework\Settings\StripeSettings;
@@ -24,7 +25,7 @@ class PayRouteGroup extends AbstractRouteGroup {
 	}
 
 	protected function callableInGroup() {
-		$this->post( '/pledge/{pledge_id}/stripeToken', PayController::class . ':payPledgeWithStripeToken' );
+		$this->post( '/pledge/{pledge_id}/stripeToken', PayController::class . ':payPledgeWithStripeToken', Payment::getExampleRequest() ,Payment::getExampleResponse());
 		$this->post( '/pledge/{pledge_id}/paymentMethod', PayController::class . ':payPledgeWithPaymentMethod' );
 		$this->post( '/method/stripe/create', PayController::class . ':createUserStripePaymentMethod' );
 		$this->get( '/stripe/apiKey', function ( Request $request, Response $response ) {
