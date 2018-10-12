@@ -116,7 +116,7 @@ class PayController extends AbstractController {
 		} catch ( PaymentException | CommandException $paymentException ) {
 			return $response->withJson( [ 'error' => $paymentException->getMessage() ], 401 );
 		} catch ( \TypeError $error ) {
-			return $response->withJson( [ 'error' => 'input error' ], 500 );
+			return $response->withJson( [ 'error' => 'input error ' . $error->getMessage() ], 500 );
 		}
 
 		return $response->withJson( $payment->toAPIMap() );
