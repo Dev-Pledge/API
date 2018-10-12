@@ -3,6 +3,7 @@
 namespace DevPledge\Application\Commands;
 
 
+use DevPledge\Domain\User;
 use DevPledge\Integrations\Command\AbstractCommand;
 
 /**
