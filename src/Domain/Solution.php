@@ -218,7 +218,7 @@ class Solution extends AbstractDomain implements Example {
 	}
 
 	/**
-	 * @return mixed
+	 * @return Solution
 	 */
 	public static function getExampleInstance() {
 		static $example;

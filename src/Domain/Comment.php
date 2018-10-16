@@ -299,7 +299,7 @@ class Comment extends AbstractDomain implements Example {
 	}
 
 	/**
-	 * @return mixed
+	 * @return Comment
 	 */
 	public static function getExampleInstance() {
 		static $example;

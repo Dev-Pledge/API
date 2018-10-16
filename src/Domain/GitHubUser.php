@@ -1,6 +1,9 @@
 <?php
 
 namespace DevPledge\Domain;
+
+use DevPledge\Integrations\Route\Example;
+
 /**
  * "login": "JRSaunders",
  * "id": 6054445,
@@ -40,7 +43,7 @@ namespace DevPledge\Domain;
  * Class GitHubUser
  * @package DevPledge\Domain
  */
-class GitHubUser extends AbstractDomain {
+class GitHubUser extends AbstractDomain implements Example {
 	/**
 	 * @var string
 	 */
@@ -495,4 +498,48 @@ class GitHubUser extends AbstractDomain {
 	}
 
 
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleResponse(): ?\Closure {
+		return function () {
+			return static::getExampleInstance()->toPublicAPIMap();
+		};
+	}
+
+	/**
+	 * @return null|\Closure
+	 */
+	public static function getExampleRequest(): ?\Closure {
+		return function () {
+			return (object) [
+				'token' => '098uyhvr3Dflefjalsdhclasncasx00'
+			];
+		};
+	}
+
+	/**
+	 * @return GitHubUser
+	 */
+	public static function getExampleInstance() {
+		static $example;
+
+		if ( ! isset( $example ) ) {
+			$example = new static( 'user' );
+			$user    = User::getExampleInstance();
+			$example
+				->setUuid( $user->getUuid() )
+				->setGitHubId( 5678765 )
+				->setEmail( $user->getEmail() )
+				->setNodeId( 'hgy78gifrjwemdc' )
+				->setType( 'User' )
+				->setLogin( $user->getUsername() . '100' )
+				->setLocation( 'Kent' )
+				->setAvatarUrl( 'http://github.com/myprofilepic.jpg' )
+				->setBio( '20 Years Experience Developing Software, Websites & Apps.' );
+		}
+
+		return $example;
+
+	}
 }

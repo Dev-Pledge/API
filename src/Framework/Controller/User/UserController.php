@@ -3,6 +3,12 @@
 namespace DevPledge\Framework\Controller\User;
 
 
+use DevPledge\Domain\Comment;
+use DevPledge\Domain\GitHubUser;
+use DevPledge\Domain\Problem;
+use DevPledge\Domain\Problems;
+use DevPledge\Domain\Solution;
+use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\AbstractController;
 use DevPledge\Framework\ServiceProviders\GitHubServiceProvider;
 use DevPledge\Framework\ServiceProviders\PledgeServiceProvider;
@@ -67,6 +73,22 @@ class UserController extends AbstractController {
 		$cacheService->setEx( 'pi:' . $username, serialize( $responseArray ), 10000 );
 
 		return $response->withJson( $responseArray );
+	}
+
+	/**
+	 * @return \Closure
+	 */
+	public static function getExampleResponse() {
+		return function () {
+			return (object) [
+				'user'          => User::getExampleInstance()->toPublicAPIMap(),
+				'github_user'   => GitHubUser::getExampleInstance()->toPublicAPIMap(),
+				'problems'      => [ Problem::getExampleInstance()->toPublicAPIMap() ],
+				'solutions'     => [ Solution::getExampleInstance()->toPublicAPIMap() ],
+				'statuses'      => [ Comment::getExampleInstance()->toPublicAPIMap() ],
+				'pledges_count' => 20,
+			];
+		};
 	}
 
 }

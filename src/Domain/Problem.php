@@ -385,7 +385,7 @@ class Problem extends AbstractDomain implements Example {
 	}
 
 	/**
-	 * @return mixed
+	 * @return Problem
 	 */
 	public static function getExampleInstance() {
 		static $example;
