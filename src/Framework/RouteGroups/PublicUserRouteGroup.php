@@ -30,7 +30,7 @@ class PublicUserRouteGroup extends AbstractRouteGroup {
 			GitHubUserController::class . ':getUserByGithubId', GitHubUser::getExampleResponse()
 		);
 		$this->get(
-			'/github/{$user_id}',
+			'/github/{user_id}',
 			GitHubUserController::class . ':getUserByUserId', GitHubUser::getExampleResponse()
 		);
 	}
