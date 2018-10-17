@@ -36,8 +36,9 @@ class OriginPermission extends AbstractMiddleware implements MiddleWareAuthRequi
 				/**
 				 * ONLY SERVERS THAT HAVE ACCESS TO OUR REDIS SERVER WILL BE ABLE TO GET THIS TOKEN
 				 */
-				$originToken = CacheServiceProvider::getService()->get( 'originToken' );
-				if ( trim( $h ) == $originToken ) {
+				$possibleToken = trim( $h );
+
+				if ( ( strpos( $possibleToken, 'ogtkn:' ) === 0 ) && ( $originToken = CacheServiceProvider::getService()->get( $possibleToken ) ) ) {
 					$found = true;
 				}
 
