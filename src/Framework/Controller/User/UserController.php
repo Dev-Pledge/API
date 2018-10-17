@@ -76,6 +76,21 @@ class UserController extends AbstractController {
 	}
 
 	/**
+	 * @param Request $request
+	 * @param Response $response
+	 *
+	 * @return Response
+	 */
+	public function getSolution( Request $request, Response $response ) {
+		$solutionId = $request->getAttribute( 'solution_id' );
+		try {
+			return $response->withJson( SolutionServiceProvider::getService()->read( $solutionId )->toPublicAPIMap() );
+		} catch ( \Exception | \TypeError $exception ) {
+			return $response->withJson( [ 'error' => 'Solution not found' ], 404 );
+		}
+	}
+
+	/**
 	 * @return \Closure
 	 */
 	public static function getExampleResponse() {

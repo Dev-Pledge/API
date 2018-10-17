@@ -4,6 +4,7 @@ namespace DevPledge\Framework\RouteGroups;
 
 
 use DevPledge\Domain\GitHubUser;
+use DevPledge\Domain\Solution;
 use DevPledge\Framework\Controller\User\GitHubUserController;
 use DevPledge\Framework\Controller\User\UserController;
 use DevPledge\Integrations\Route\AbstractRouteGroup;
@@ -24,6 +25,11 @@ class PublicUserRouteGroup extends AbstractRouteGroup {
 		$this->get(
 			'/user/{username}',
 			UserController::class . ':getProfileInfoByUsername', UserController::getExampleResponse()
+		);
+
+		$this->get(
+			'/solution/{solution_id}',
+			UserController::class . ':getSolution', Solution::getExampleResponse()
 		);
 		$this->get(
 			'/github/id/{github_id}',
