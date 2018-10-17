@@ -6,7 +6,6 @@ namespace DevPledge\Framework\Controller\User;
 use DevPledge\Domain\Comment;
 use DevPledge\Domain\GitHubUser;
 use DevPledge\Domain\Problem;
-use DevPledge\Domain\Problems;
 use DevPledge\Domain\Solution;
 use DevPledge\Domain\User;
 use DevPledge\Framework\Controller\AbstractController;
