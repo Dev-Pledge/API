@@ -4,6 +4,7 @@ namespace DevPledge\Domain;
 
 use DevPledge\Application\Mapper\PersistMappable;
 use DevPledge\Domain\PreferredUserAuth\UsernameEmailPassword;
+use DevPledge\Framework\ServiceProviders\GitHubServiceProvider;
 use DevPledge\Integrations\Route\Example;
 use DevPledge\Uuid\Uuid;
 
@@ -184,10 +185,30 @@ class User extends AbstractDomain implements Example {
 	 */
 	public function toAPIMap(): \stdClass {
 		$data = parent::toAPIMap();
-
+		try {
+			$data->avatar_url = $this->getAvatarUrl();
+		} catch ( \Exception|\TypeError $exception ) {
+			$data->avatar_url = null;
+		}
 		unset( $data->hashed_password );
 
 		return $data;
+	}
+
+	/**
+	 * @return mixed|null
+	 * @throws \DevPledge\Application\Factory\FactoryException
+	 * @throws \DevPledge\Integrations\Cache\CacheException
+	 */
+	public function getAvatarUrl() {
+		if ( $this->getGitHubId() ) {
+			$githubUser = GitHubServiceProvider::getService()->getGitHubUserFromCacheByGitHubId( $this->getGitHubId() );
+			if ( $githubUser ) {
+				return $githubUser->getAvatarUrl();
+			}
+		}
+
+		return null;
 	}
 
 	/**
@@ -196,6 +217,11 @@ class User extends AbstractDomain implements Example {
 	 */
 	public function toPublicAPIMap(): \stdClass {
 		$data = parent::toAPIMap();
+		try {
+			$data->avatar_url = $this->getAvatarUrl();
+		} catch ( \Exception|\TypeError $exception ) {
+			$data->avatar_url = null;
+		}
 		unset( $data->email );
 		unset( $data->hashed_password );
 		unset( $data->data );
