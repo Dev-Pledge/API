@@ -201,6 +201,9 @@ class User extends AbstractDomain implements Example {
 	 * @throws \DevPledge\Integrations\Cache\CacheException
 	 */
 	public function getAvatarUrl() {
+		/**
+		 * TODO move this to somewhere better thought out
+		 */
 		if ( $this->getGitHubId() ) {
 			$githubUser = GitHubServiceProvider::getService()->getGitHubUserFromCacheByGitHubId( $this->getGitHubId() );
 			if ( $githubUser ) {
